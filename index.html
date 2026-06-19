@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Futebol Interativo — Formações no Futebol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #03263F;
+      color: #F4F4F4;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── TOKENS ── */
+    :root {
+      --navy:      #03263F;
+      --navy-mid:  #04395f;
+      --blue:      #0C98FC;
+      --blue-dark: #0A6FD0;
+      --green:     #08C27A;
+      --green-dark:#05A567;
+      --white:     #F4F4F4;
+      --lightblue: #A9D8F5;
+      --border:    rgba(140,200,245,0.18);
+      --glass-bg:  rgba(10,46,78,0.42);
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .display {
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 0.95;
+    }
+
+    /* ── HEADER ── */
+    .fi-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 14px 0;
+      background: rgba(3,38,63,0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(140,200,245,0.1);
+      transition: border-color .3s ease, box-shadow .3s ease;
+    }
+    .fi-header.scrolled {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      border-bottom-color: var(--border);
+    }
+    .fi-header__inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .fi-logo {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .fi-logo__img {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+    @media (max-width: 900px) {
+      .fi-logo__img { height: 30px; }
+    }
+    .fi-nav {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .fi-nav a {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(244,244,244,0.75);
+      padding: 8px 12px;
+      border-radius: 40px;
+      transition: color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .fi-nav a:hover { color: var(--white); background: rgba(12,152,252,0.12); }
+    .fi-header__cta {
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0;
+    }
+    .fi-btn-ghost {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px; font-weight: 700;
+      color: var(--lightblue);
+      padding: 9px 16px;
+      border-radius: 40px;
+      border: 1px solid rgba(140,200,245,0.3);
+      transition: border-color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .fi-btn-ghost:hover { border-color: var(--blue); background: rgba(12,152,252,0.08); }
+
+    /* ── MOBILE HEADER ── */
+    .hamburger {
+      display: none;
+      background: none;
+      border: 1px solid rgba(140,200,245,0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--white);
+      padding: 6px;
+      width: 36px; height: 36px;
+      align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    @media (max-width: 900px) {
+      .fi-nav { display: none; }
+      .fi-btn-ghost { display: none; }
+      .hamburger { display: flex; }
+      .fi-header__inner { padding: 0 16px; }
+    }
+
+
+    /* ── GREEN CTA ── */
+    .fi-cta {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 12px 12px 20px;
+      border-radius: 14px;
+      border: 1.4px solid rgba(8,194,122,0.9);
+      background: linear-gradient(135deg, #08C27A 0%, #05A567 100%);
+      box-shadow: 0 0 24px rgba(8,194,122,0.45), 0 8px 20px rgba(3,38,63,0.2);
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .4s, background .4s, transform .15s;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--white);
+      white-space: nowrap;
+    }
+    .fi-cta:hover {
+      background: linear-gradient(135deg, #0AD389 0%, #06B873 100%);
+      box-shadow: 0 0 36px rgba(8,220,140,0.65), 0 10px 24px rgba(3,38,63,0.22);
+    }
+    .fi-cta:active { transform: scale(.99); }
+    .fi-cta__icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      background: rgba(3,38,63,0.5);
+      flex-shrink: 0;
+      transition: transform .3s;
+    }
+    .fi-cta:hover .fi-cta__icon { transform: translateX(2px); }
+    .fi-cta__shine {
+      position: absolute;
+      top: -50%; left: -75%;
+      width: 50%; height: 200%;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.26) 50%, transparent 100%);
+      transform: skewX(-18deg);
+      opacity: 0; pointer-events: none;
+    }
+    .fi-cta:hover .fi-cta__shine { opacity: 1; animation: shine 2.2s ease-in-out infinite; }
+    @keyframes shine { 0% { left: -75%; } 65% { left: 130%; } 100% { left: 130%; } }
+
+    /* ── DIVIDER ── */
+    .fi-divider {
+      border: none;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── EYEBROW ── */
+    .eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lightblue);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* ── REVEAL ON SCROLL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: #03263F;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Imagem como background no lado direito — sem distorção, sem corte */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 55%;
+      background-image: url('https://tonojogo.futebolinterativo.com/futebolinterativo/mentores-corretos.-desktop.webp');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom right;
+      z-index: 1;
+    }
+
+    /* Gradiente que protege o texto e funde a imagem */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        /* protege texto à esquerda */
+        linear-gradient(to right,
+          #03263F 0%,
+          #03263F 40%,
+          rgba(3,38,63,0.85) 50%,
+          rgba(3,38,63,0.3) 62%,
+          transparent 75%
+        ),
+        /* escurece base */
+        linear-gradient(to top,
+          rgba(3,38,63,0.6) 0%,
+          transparent 30%
+        );
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Conteúdo sobre tudo */
+    .hero__inner {
+      position: relative;
+      z-index: 3;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      width: 100%;
+    }
+    .hero__content {
+      width: 46%;
+      padding: 120px 0 80px;
+    }
+
+    /* Badge */
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 40px;
+      border: 1px solid rgba(12,152,252,0.3);
+      background: rgba(12,152,252,0.08);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--lightblue);
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
+    }
+    .hero__badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: blink 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(36px, 4.4vw, 64px);
+      line-height: 0.93;
+      letter-spacing: 0.01em;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+    .hero__title em { font-style: normal; color: var(--blue); }
+
+    .hero__sub {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(244,244,244,0.75);
+      margin-bottom: 28px;
+      max-width: 420px;
+    }
+    .hero__sub strong { color: var(--white); font-weight: 700; }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 44px;
+    }
+    .hero__actions .fi-cta {
+      font-size: 14px;
+      padding: 13px 13px 13px 20px;
+      border-radius: 14px;
+    }
+    .hero__link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600;
+      color: rgba(244,244,244,0.65);
+      padding: 13px 20px;
+      border-radius: 14px;
+      border: 1px solid rgba(140,200,245,0.2);
+      transition: color .2s, border-color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .hero__link:hover {
+      color: var(--white);
+      border-color: rgba(140,200,245,0.4);
+      background: rgba(140,200,245,0.05);
+    }
+
+    .hero__stats {
+      display: flex;
+      align-items: flex-start;
+    }
+    .hero__stat {
+      padding-right: 24px;
+      margin-right: 24px;
+      border-right: 1px solid rgba(140,200,245,0.2);
+    }
+    .hero__stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+    .hero__stat-num {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(20px, 2.2vw, 30px);
+      line-height: 1;
+      color: var(--white);
+      white-space: nowrap;
+    }
+    .hero__stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--lightblue);
+      margin-top: 5px;
+      white-space: nowrap;
+    }
+
+    /* ══════════════════════════════
+       MOBILE
+    ══════════════════════════════ */
+    @media (max-width: 860px) {
+      .hero {
+        min-height: auto;
+        display: block;
+      }
+      /* Remove imagem de fundo no mobile */
+      .hero::after { display: none; }
+      .hero::before { display: none; }
+
+      /* Imagem mobile como <img> normal acima do texto */
+      .hero__mentors-mob {
+        display: block;
+        width: 100%;
+        height: 58vw;
+        min-height: 200px;
+        max-height: 340px;
+        object-fit: cover;
+        object-position: top center;
+      }
+      /* Fade de baixo na imagem mobile */
+      .hero__mentors-mob-wrap {
+        position: relative;
+        overflow: hidden;
+        /* Empurra a imagem para baixo do header fixo (62px altura aprox) */
+        padding-top: 62px;
+        background: #03263F;
+      }
+      .hero__mentors-mob-wrap::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 55%;
+        background: linear-gradient(to top, #03263F 25%, transparent 100%);
+        pointer-events: none;
+      }
+
+      .hero__inner {
+        padding: 0 20px;
+      }
+      .hero__content {
+        width: 100%;
+        padding: 24px 0 56px;
+      }
+      .hero__stats { flex-wrap: wrap; gap: 10px 0; }
+      .hero__stat { padding-right: 18px; margin-right: 18px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero__title { font-size: clamp(30px, 9vw, 44px); }
+      .hero__mentors-mob { height: 72vw; }
+      .hero__stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .hero__stat {
+        border-right: none; padding-right: 0; margin-right: 0;
+        padding-left: 10px;
+        border-left: 2px solid rgba(12,152,252,0.5);
+      }
+    }
+
+    /* Desktop: esconde o elemento mobile */
+    @media (min-width: 861px) {
+      .hero__mentors-mob-wrap { display: none; }
+    }
+
+    /* ── MARQUEE CLUBES ── */
+    .clubes-strip {
+      background: rgba(10,46,78,0.42);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0 16px;
+    }
+    .clubes-label {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(244,244,244,0.55);
+      margin-bottom: 12px;
+    }
+    .marquee {
+      overflow: hidden;
+      width: 100%;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+    }
+    .marquee__track {
+      display: flex;
+      align-items: center;
+      gap: clamp(28px, 4vw, 46px);
+      width: max-content;
+      animation: marquee 42s linear infinite;
+      list-style: none;
+    }
+    .marquee__item { flex: 0 0 auto; display: flex; align-items: center; }
+    .marquee__item img {
+      height: clamp(38px, 5.5vw, 52px);
+      width: auto;
+      display: block;
+      opacity: 0.9;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+      transition: opacity .2s;
+    }
+    .marquee__item img:hover { opacity: 1; }
+    @keyframes marquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+    @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+
+    /* ═══════════════════════════════════════════
+       ÁREAS
+    ═══════════════════════════════════════════ */
+    .section { padding: clamp(64px, 9vh, 100px) 0; }
+    .section--dark { background: var(--navy); }
+    .section--mid { background: var(--navy-mid); }
+    .section--white {
+      background: #ffffff;
+      color: #0E2C4A;
+    }
+    .section--white .eyebrow { color: #2E6CA8; }
+
+    .section__head { margin-bottom: clamp(36px, 5vh, 56px); }
+    .section__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+    }
+    .section--white .section__title { color: #0E2C4A; }
+    .section__sub {
+      margin-top: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
+      color: rgba(244,244,244,0.65);
+      max-width: 500px;
+    }
+    .section--white .section__sub { color: #3F5F7C; }
+
+    .areas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    @media (min-width: 768px) {
+      .areas-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .area-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: clamp(20px, 3vw, 28px);
+      border-radius: 20px;
+      border: 1px solid rgba(140,200,245,0.16);
+      background: linear-gradient(145deg, rgba(12,90,150,0.3) 0%, rgba(4,57,95,0.2) 100%);
+      backdrop-filter: blur(10px);
+      transition: border-color .25s, transform .25s, background .25s;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--white);
+    }
+    .area-card:hover {
+      border-color: rgba(12,152,252,0.45);
+      transform: translateY(-3px);
+      background: linear-gradient(145deg, rgba(12,90,150,0.45) 0%, rgba(4,57,95,0.35) 100%);
+    }
+    .area-card__icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .area-card__label {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(18px, 2.2vw, 22px);
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+    .area-card__desc {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.6;
+      color: rgba(244,244,244,0.65);
+      flex: 1;
+    }
+    .area-card__count {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .area-card__shine {
+      position: absolute; inset: 0;
+      background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.07) 50%, transparent 62%);
+      transform: translateX(-180%);
+      animation: area-shine 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .area-card:nth-child(2) .area-card__shine { animation-delay: 1.2s; }
+    .area-card:nth-child(3) .area-card__shine { animation-delay: 2.4s; }
+    .area-card:nth-child(4) .area-card__shine { animation-delay: 3.6s; }
+    @keyframes area-shine { 0% { transform: translateX(-180%); } 55%,100% { transform: translateX(180%); } }
+
+    /* ═══════════════════════════════════════════
+       CURSOS CARROSSEL
+    ═══════════════════════════════════════════ */
+    .courses-scroll-wrap {
+      position: relative;
+    }
+    .courses-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+    }
+    .courses-scroll::-webkit-scrollbar { display: none; }
+    .course-card {
+      flex: 0 0 auto;
+      width: clamp(200px, 44vw, 240px);
+      scroll-snap-align: start;
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(4,57,95,0.5);
+      border: 1px solid rgba(140,200,245,0.14);
+      transition: transform .25s, border-color .25s;
+      cursor: pointer;
+    }
+    .course-card:hover { transform: translateY(-4px); border-color: rgba(12,152,252,0.35); }
+    .course-card__img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(160deg, #0C5896, #03263F);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      color: rgba(169,216,245,0.5);
+      text-align: center;
+      padding: 16px;
+    }
+    .course-card__img.has-img { padding: 0; }
+    .course-card__img.has-img img { width: 100%; height: 100%; object-fit: cover; }
+    .course-card__body { padding: 16px; }
+    .course-card__area {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--lightblue); margin-bottom: 6px;
+    }
+    .course-card__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(16px, 2vw, 18px);
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .course-card__cta {
+      font-size: 12px; font-weight: 700;
+      color: var(--blue);
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+       METODOLOGIA
+    ═══════════════════════════════════════════ */
+    .metodo-grid {
+      display: grid;
+      gap: 14px;
+    }
+    @media (min-width: 768px) {
+      .metodo-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .metodo-card {
+      padding: clamp(24px, 3vw, 32px);
+      border-radius: 20px;
+      border: 1px solid rgba(140,200,245,0.14);
+      background: linear-gradient(145deg, rgba(12,90,150,0.25) 0%, rgba(3,38,63,0.4) 100%);
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .metodo-card__step {
+      font-family: 'Anton', sans-serif;
+      font-size: 48px;
+      line-height: 1;
+      color: rgba(12,152,252,0.18);
+      letter-spacing: 0.02em;
+    }
+    .metodo-card__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(20px, 2.4vw, 26px);
+      line-height: 1;
+      letter-spacing: 0.01em;
+      color: var(--white);
+    }
+    .metodo-card__desc {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(244,244,244,0.65);
+    }
+    .metodo-card__desc strong { color: var(--white); font-weight: 700; }
+
+    /* ═══════════════════════════════════════════
+       MAPA / REDE
+    ═══════════════════════════════════════════ */
+    .rede-grid {
+      display: grid;
+      gap: 56px;
+      align-items: center;
+    }
+    @media (min-width: 900px) {
+      .rede-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .rede-map {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(140,200,245,0.14);
+      background: linear-gradient(145deg, rgba(12,90,150,0.25), rgba(3,38,63,0.5));
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      color: rgba(169,216,245,0.3);
+    }
+    .rede-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    .rede-stat { border-left: 2px solid var(--blue); padding-left: 16px; }
+    .rede-stat__num {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(28px, 3.5vw, 38px);
+      line-height: 1;
+      color: var(--white);
+      letter-spacing: 0.01em;
+    }
+    .rede-stat__label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--lightblue);
+      margin-top: 5px;
+    }
+
+    /* ═══════════════════════════════════════════
+       E-BOOKS (seção branca)
+    ═══════════════════════════════════════════ */
+    .ebooks-grid {
+      display: grid;
+      gap: 0;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid #D8E6F3;
+    }
+    @media (min-width: 768px) {
+      .ebooks-grid { grid-template-columns: 1fr auto; }
+    }
+    .ebooks-body { padding: clamp(32px, 5vw, 52px); background: #EAF3FB; }
+    .ebooks-body .eyebrow { color: #2E6CA8; }
+    .ebooks-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(28px, 4.5vw, 46px);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      color: #103B66;
+      margin-bottom: 14px;
+    }
+    .ebooks-sub {
+      font-size: 15px; font-weight: 500; line-height: 1.7;
+      color: #3F5F7C; max-width: 420px; margin-bottom: 28px;
+    }
+    .ebooks-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 32px;
+    }
+    .ebooks-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 500; color: #1B3F63;
+    }
+    .check-icon {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(12,152,252,0.3);
+      background: rgba(12,152,252,0.08);
+      display: grid; place-items: center;
+      color: #0C98FC;
+    }
+    .ebooks-body .fi-cta {
+      font-size: 14px;
+    }
+    .ebooks-visual {
+      background: #D6EAF8;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: 32px 40px 0;
+      min-height: 240px;
+    }
+    .ebooks-visual .books-placeholder {
+      width: 220px;
+      aspect-ratio: 3/2;
+      background: linear-gradient(145deg, #0C5896, #0a4070);
+      border-radius: 8px 8px 0 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      color: rgba(169,216,245,0.5);
+    }
+
+    /* ═══════════════════════════════════════════
+       DEPOIMENTOS (social proof)
+    ═══════════════════════════════════════════ */
+    .depos-grid {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+    .depos-grid::-webkit-scrollbar { display: none; }
+    @media (min-width: 900px) {
+      .depos-grid { display: grid; grid-template-columns: repeat(3,1fr); overflow: visible; }
+    }
+    .depo-card {
+      flex: 0 0 80%;
+      max-width: 340px;
+      scroll-snap-align: start;
+      background: linear-gradient(145deg, rgba(12,90,150,0.25) 0%, rgba(3,38,63,0.4) 100%);
+      border: 1px solid rgba(140,200,245,0.14);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    @media (min-width: 900px) {
+      .depo-card { flex: none; max-width: none; }
+    }
+    .depo-card__quote {
+      font-size: 14px; font-weight: 500; line-height: 1.65;
+      color: rgba(244,244,244,0.75);
+      flex: 1;
+    }
+    .depo-card__quote strong { color: var(--white); font-weight: 700; }
+    .depo-card__author { display: flex; align-items: center; gap: 12px; }
+    .depo-card__avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      display: grid; place-items: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 14px; color: var(--white);
+      flex-shrink: 0;
+    }
+    .depo-card__name {
+      font-family: 'Anton', sans-serif;
+      font-size: 16px; line-height: 1;
+      letter-spacing: 0.01em;
+      color: var(--white);
+    }
+    .depo-card__role { font-size: 12px; font-weight: 600; color: var(--lightblue); margin-top: 3px; }
+
+    /* ═══════════════════════════════════════════
+       CTA FINAL
+    ═══════════════════════════════════════════ */
+    .cta-final {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(12,152,252,0.2);
+      padding: clamp(40px, 6vw, 64px);
+      background: linear-gradient(135deg, rgba(0,75,156,0.2) 0%, rgba(0,123,255,0.06) 50%, transparent 70%);
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    @media (min-width: 768px) {
+      .cta-final { flex-direction: row; align-items: center; justify-content: space-between; }
+    }
+    .cta-final__glow {
+      position: absolute; right: -80px; top: -80px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(12,152,252,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-final__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 0.95; letter-spacing: 0.01em;
+      color: var(--white); margin-bottom: 12px;
+    }
+    .cta-final__sub {
+      font-size: 15px; font-weight: 500; line-height: 1.65;
+      color: rgba(244,244,244,0.65); max-width: 480px;
+    }
+    .cta-final__actions {
+      display: flex; flex-direction: column; gap: 10px;
+      flex-shrink: 0;
+    }
+    .cta-final__actions .fi-cta { font-size: 14px; padding: 14px 14px 14px 22px; border-radius: 14px; justify-content: space-between; }
+    .cta-wa {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 22px;
+      border-radius: 14px;
+      background: #25d366;
+      color: var(--white);
+      font-weight: 700; font-size: 14px;
+      border: none; cursor: pointer;
+      box-shadow: 0 8px 22px rgba(37,211,102,0.35);
+      transition: transform .15s, box-shadow .2s;
+    }
+    .cta-wa:hover { box-shadow: 0 10px 28px rgba(37,211,102,0.5); transform: translateY(-1px); }
+
+    /* ═══════════════════════════════════════════
+       REDES SOCIAIS
+    ═══════════════════════════════════════════ */
+    .socials-wrap { text-align: center; padding: 56px 24px; }
+    .socials-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(22px, 3vw, 30px);
+      letter-spacing: 0.01em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .socials-sub { font-size: 14px; font-weight: 500; color: rgba(244,244,244,0.55); margin-bottom: 28px; }
+    .socials-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 11px 22px;
+      border-radius: 40px;
+      border: 1px solid var(--border);
+      background: rgba(12,152,252,0.06);
+      font-size: 13px; font-weight: 700;
+      color: rgba(244,244,244,0.75);
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .social-btn:hover { border-color: var(--blue); color: var(--white); background: rgba(12,152,252,0.12); }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    .footer {
+      background: #020d1a;
+      border-top: 1px solid var(--border);
+      padding: 48px 0 32px;
+    }
+    .footer__grid {
+      display: grid;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    @media (min-width: 768px) {
+      .footer__grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    }
+    .footer__brand-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 20px; letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .footer__brand-desc {
+      font-size: 13px; font-weight: 500; line-height: 1.7;
+      color: rgba(244,244,244,0.45); max-width: 280px;
+    }
+    .footer__col-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 13px; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--lightblue);
+      margin-bottom: 16px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a {
+      font-size: 13px; font-weight: 500;
+      color: rgba(244,244,244,0.45);
+      transition: color .2s;
+    }
+    .footer__links a:hover { color: var(--white); }
+    .footer__bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    .footer__copy { font-size: 12px; color: rgba(244,244,244,0.3); }
+    .footer__cnpj { font-size: 11px; color: rgba(244,244,244,0.25); }
+
+    /* ── MOBILE NAV: drawer lateral ── */
+    .mob-drawer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+    }
+    .mob-drawer.is-open { display: block; }
+
+    .mob-drawer__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(2,13,26,0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .mob-drawer__panel {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: min(88vw, 320px);
+      background: #021829;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform .3s cubic-bezier(.2,.8,.2,1);
+    }
+    .mob-drawer.is-open .mob-drawer__panel {
+      transform: translateX(0);
+    }
+    .mob-drawer__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .mob-drawer__logo { height: 28px; width: auto; }
+    .mob-drawer__close {
+      background: rgba(140,200,245,0.08);
+      border: 1px solid var(--border);
+      color: var(--white);
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .2s;
+    }
+    .mob-drawer__close:hover { background: rgba(140,200,245,0.15); }
+    .mob-drawer__nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 12px;
+      gap: 2px;
+    }
+    .mob-drawer__link {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(244,244,244,0.8);
+      transition: background .2s, color .2s;
+    }
+    .mob-drawer__link:hover {
+      background: rgba(12,152,252,0.1);
+      color: var(--white);
+    }
+    .mob-drawer__footer {
+      padding: 16px 20px 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .mob-drawer__aluno {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--lightblue);
+      transition: background .2s, border-color .2s;
+    }
+    .mob-drawer__aluno:hover { background: rgba(140,200,245,0.08); border-color: var(--blue); }
+    .mob-drawer__cta {
+      width: 100%;
+      justify-content: center;
+      font-size: 14px;
+      padding: 13px 16px;
+      border-radius: 12px;
+    }
+
+    /* ── FAIXA ANIMADA ── */
+    .faixa {
+      background: var(--blue);
+      overflow: hidden;
+      padding: 10px 0;
+    }
+    .faixa__track {
+      display: flex;
+      gap: 52px;
+      width: max-content;
+      animation: faixa 26s linear infinite;
+    }
+    .faixa__track span {
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      white-space: nowrap;
+      position: relative;
+    }
+    .faixa__track span::after {
+      content: '•';
+      position: absolute; right: -28px;
+      opacity: 0.5;
+    }
+    @keyframes faixa { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .faixa__track { animation: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="fi-header" id="header">
+    <div class="fi-header__inner">
+      <!-- Logo correta -->
+      <a href="/" class="fi-logo">
+        <img
+          src="https://futebolinterativo.com/novo-site/img/logo.png"
+          alt="Futebol Interativo"
+          class="fi-logo__img"
+        />
+      </a>
+
+      <!-- Nav desktop -->
+      <nav class="fi-nav" id="nav">
+        <a href="#areas">Formações</a>
+        <a href="#metodologia">Como funciona</a>
+        <a href="/sobre/">Sobre</a>
+        <a href="#ebooks">E-books</a>
+        <a href="https://futebolinterativo.com/blog" target="_blank" rel="noreferrer">Blog</a>
+      </nav>
+
+      <!-- CTAs + hamburger -->
+      <div class="fi-header__cta">
+        <a href="https://alunos.futebolinterativo.com/" target="_blank" rel="noreferrer" class="fi-btn-ghost">Área do aluno</a>
+        <a href="#areas" class="fi-cta" style="font-size:13px; padding:10px 10px 10px 18px; border-radius:12px;">
+          Ver formações
+          <span class="fi-cta__icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="fi-cta__shine"></span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Drawer mobile: totalmente separado do header -->
+  <div class="mob-drawer" id="mobDrawer" aria-hidden="true">
+    <div class="mob-drawer__backdrop" id="mobBackdrop"></div>
+    <div class="mob-drawer__panel">
+      <div class="mob-drawer__top">
+        <img src="https://futebolinterativo.com/novo-site/img/logo.png" alt="Futebol Interativo" class="mob-drawer__logo" />
+        <button class="mob-drawer__close" id="mobClose" aria-label="Fechar menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <nav class="mob-drawer__nav">
+        <a href="#areas" class="mob-drawer__link">Formações</a>
+        <a href="#metodologia" class="mob-drawer__link">Como funciona</a>
+        <a href="/sobre/" class="mob-drawer__link">Sobre</a>
+        <a href="#ebooks" class="mob-drawer__link">E-books</a>
+        <a href="https://futebolinterativo.com/blog" target="_blank" rel="noreferrer" class="mob-drawer__link">Blog</a>
+      </nav>
+      <div class="mob-drawer__footer">
+        <a href="https://alunos.futebolinterativo.com/" target="_blank" rel="noreferrer" class="mob-drawer__aluno">
+          Área do aluno
+        </a>
+        <a href="#areas" class="fi-cta mob-drawer__cta">
+          <span class="fi-cta__shine"></span>
+          Ver formações
+          <span class="fi-cta__icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section class="hero">
+
+    <!-- Imagem mobile: aparece ACIMA do texto, só no mobile -->
+    <div class="hero__mentors-mob-wrap">
+      <img
+        class="hero__mentors-mob"
+        src="https://tonojogo.futebolinterativo.com/futebolinterativo/mentores-corretos.-desktop.webp"
+        alt="Mentores do Futebol Interativo"
+        fetchpriority="high"
+      />
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="hero__inner">
+      <div class="hero__content">
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          Matrículas abertas — Turmas 2026
+        </div>
+        <h1 class="hero__title">
+          TRANSFORME SUA<br/>
+          PAIXÃO PELO FUTEBOL<br/>
+          EM <em>CARREIRA.</em>
+        </h1>
+        <p class="hero__sub">
+          Escola de formação com cursos em todas as áreas do futebol.
+          Você aprende online e conclui dentro de um dos nossos
+          <strong>+130 clubes parceiros</strong> espalhados pelo Brasil.
+        </p>
+        <div class="hero__actions">
+          <a href="#areas" class="fi-cta">
+            <span class="fi-cta__shine"></span>
+            Explorar formações
+            <span class="fi-cta__icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+          <a href="https://eventos.futebolinterativo.com/experiencia-pratica/" target="_blank" rel="noreferrer" class="hero__link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+            Como funciona
+          </a>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <div class="hero__stat-num">+25 mil</div>
+            <div class="hero__stat-label">Alunos formados</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-num">+130</div>
+            <div class="hero__stat-label">Clubes parceiros</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-num">34</div>
+            <div class="hero__stat-label">Formações</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-num">100%</div>
+            <div class="hero__stat-label">Prática garantida</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MARQUEE CLUBES ── -->
+  <div class="clubes-strip">
+    <p class="clubes-label">Clubes parceiros</p>
+    <div class="marquee" aria-label="Clubes parceiros" aria-hidden="true">
+      <div class="marquee__track" id="marqueeTrack"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ÁREAS
+  ═══════════════════════════════════════════ -->
+  <section class="section section--mid" id="areas">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Encontre seu caminho</span>
+        <h2 class="section__title">QUAL É A SUA ÁREA<br/>NO FUTEBOL?</h2>
+        <p class="section__sub">Não sabe por onde começar? Explore as áreas e veja quais formações combinam com o seu perfil.</p>
+      </div>
+      <div class="areas-grid">
+        <a href="/cursos/tecnica-e-tatica/" class="area-card reveal">
+          <span class="area-card__shine"></span>
+          <div class="area-card__icon" style="background: rgba(64,150,242,0.15); border: 1px solid rgba(64,150,242,0.25);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4096F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+          </div>
+          <div class="area-card__label">TÉCNICA<br/>E TÁTICA</div>
+          <div class="area-card__desc">Análise de desempenho, IA, ciência de dados e metodologia de jogo.</div>
+          <div class="area-card__count" style="color: #4096F2;">
+            12 formações
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+        <a href="/cursos/comunicacao-marketing/" class="area-card reveal">
+          <span class="area-card__shine"></span>
+          <div class="area-card__icon" style="background: rgba(129,140,248,0.15); border: 1px solid rgba(129,140,248,0.25);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818CF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a5 5 0 0 0 5 5h4l6 3v-9a4 4 0 0 0-4-4H8a5 5 0 0 0-5 5Z"/><circle cx="8" cy="11" r="1.7"/></svg>
+          </div>
+          <div class="area-card__label">COMUNICAÇÃO<br/>E MARKETING</div>
+          <div class="area-card__desc">Jornalismo, narração, marketing esportivo e redes sociais.</div>
+          <div class="area-card__count" style="color: #818CF8;">
+            8 formações
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+        <a href="/cursos/gestao-e-operacao/" class="area-card reveal">
+          <span class="area-card__shine"></span>
+          <div class="area-card__icon" style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.25);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg>
+          </div>
+          <div class="area-card__label">GESTÃO E<br/>OPERAÇÃO</div>
+          <div class="area-card__desc">Direito, finanças, agente FIFA e gestão de clubes empresa.</div>
+          <div class="area-card__count" style="color: #F59E0B;">
+            6 formações
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+        <a href="/cursos/saude/" class="area-card reveal">
+          <span class="area-card__shine"></span>
+          <div class="area-card__icon" style="background: rgba(45,212,191,0.15); border: 1px solid rgba(45,212,191,0.25);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2DD4BF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="area-card__label">SAÚDE</div>
+          <div class="area-card__desc">Fisioterapia, nutrição, psicologia esportiva e medicina.</div>
+          <div class="area-card__count" style="color: #2DD4BF;">
+            8 formações
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="fi-divider" />
+
+  <!-- ═══════════════════════════════════════════
+       CURSOS EM DESTAQUE
+  ═══════════════════════════════════════════ -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="section__head reveal" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:16px;">
+        <div>
+          <span class="eyebrow">Mais procurados</span>
+          <h2 class="section__title">FORMAÇÕES<br/>EM DESTAQUE</h2>
+        </div>
+        <a href="/cursos/" style="font-size:13px; font-weight:700; color:var(--lightblue); display:inline-flex; align-items:center; gap:6px;">
+          Ver todas
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="courses-scroll-wrap reveal">
+        <div class="courses-scroll" id="coursesScroll">
+          <!-- cards gerados por JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="fi-divider" />
+
+  <!-- ═══════════════════════════════════════════
+       METODOLOGIA
+  ═══════════════════════════════════════════ -->
+  <section class="section section--mid" id="metodologia">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Metodologia</span>
+        <h2 class="section__title">APRENDA. APLIQUE.<br/>ENTRE EM CAMPO.</h2>
+        <p class="section__sub">Nossa metodologia foi construída para quem quer resultados reais. Você aprende com quem está no mercado e conclui a formação dentro de um clube profissional.</p>
+      </div>
+      <div class="metodo-grid">
+        <div class="metodo-card reveal">
+          <div class="metodo-card__step">01</div>
+          <div class="metodo-card__title">APRENDA ONLINE</div>
+          <p class="metodo-card__desc">Aulas com <strong>profissionais que atuam no mercado</strong>. Conteúdo direto, sem enrolação. Assista no seu ritmo.</p>
+        </div>
+        <div class="metodo-card reveal">
+          <div class="metodo-card__step">02</div>
+          <div class="metodo-card__title">APLIQUE EM CASES REAIS</div>
+          <p class="metodo-card__desc">Projetos baseados em <strong>situações reais dos bastidores</strong> do futebol profissional. Você sai com repertório.</p>
+        </div>
+        <div class="metodo-card reveal">
+          <div class="metodo-card__step">03</div>
+          <div class="metodo-card__title">VIVA DENTRO DE UM CLUBE</div>
+          <p class="metodo-card__desc">A experiência prática é <strong>garantida</strong>. Você entra em um dos +130 clubes parceiros e coloca o currículo para correr.</p>
+        </div>
+      </div>
+      <div style="margin-top: 40px; text-align: center;" class="reveal">
+        <a href="https://praticas.futebolinterativo.com/" target="_blank" rel="noreferrer" class="fi-cta" style="font-size:15px; padding:14px 14px 14px 24px; border-radius:16px; display:inline-flex;">
+          <span class="fi-cta__shine"></span>
+          Agendar minha prática
+          <span class="fi-cta__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAIXA ANIMADA ── -->
+  <div class="faixa" aria-hidden="true">
+    <div class="faixa__track" id="faixaTrack"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       REDE DE CLUBES
+  ═══════════════════════════════════════════ -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="rede-grid">
+        <div class="reveal">
+          <div class="rede-map">MAPA DOS CLUBES</div>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Rede nacional</span>
+          <h2 class="section__title" style="margin-bottom:16px;">+130 PORTAS ABERTAS<br/>EM TODO O BRASIL.</h2>
+          <p class="section__sub">Nossa rede de parceiros abrange todas as regiões. Não importa onde você esteja — existe um clube pronto para receber você e impulsionar seu currículo.</p>
+          <div class="rede-stats">
+            <div class="rede-stat">
+              <div class="rede-stat__num">+130</div>
+              <div class="rede-stat__label">Clubes parceiros</div>
+            </div>
+            <div class="rede-stat">
+              <div class="rede-stat__num">26</div>
+              <div class="rede-stat__label">Estados</div>
+            </div>
+            <div class="rede-stat">
+              <div class="rede-stat__num">100%</div>
+              <div class="rede-stat__label">Prática garantida</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="fi-divider" />
+
+  <!-- ═══════════════════════════════════════════
+       DEPOIMENTOS
+  ═══════════════════════════════════════════ -->
+  <section class="section section--mid">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Quem já passou pelo FI</span>
+        <h2 class="section__title">+4.500 ALUNOS<br/>CONTRATADOS</h2>
+      </div>
+      <div class="depos-grid">
+        <div class="depo-card reveal">
+          <p class="depo-card__quote">"A experiência prática no Ituano foi o que abriu as portas. Entrei no clube, mostrei meu trabalho e fui contratado. <strong>O FI entregou exatamente o que prometeu.</strong>"</p>
+          <div class="depo-card__author">
+            <div class="depo-card__avatar">RM</div>
+            <div>
+              <div class="depo-card__name">RAFAEL MANTOVANI</div>
+              <div class="depo-card__role">Contratado pelo Ituano</div>
+            </div>
+          </div>
+        </div>
+        <div class="depo-card reveal">
+          <p class="depo-card__quote">"Fiz a prática no Bahia. Hoje sou <strong>Analista de Desempenho do Atlético-MG</strong>. O FI me deu o conteúdo e o caminho para chegar lá."</p>
+          <div class="depo-card__author">
+            <div class="depo-card__avatar">OH</div>
+            <div>
+              <div class="depo-card__name">OTAVIO HOFFMANN</div>
+              <div class="depo-card__role">Analista — Atlético-MG</div>
+            </div>
+          </div>
+        </div>
+        <div class="depo-card reveal">
+          <p class="depo-card__quote">"Realizei minha prática no Bahia e <strong>fui contratada pelo Botafogo</strong>. O FI é a ponte entre quem você é e quem o futebol precisa."</p>
+          <div class="depo-card__author">
+            <div class="depo-card__avatar">VS</div>
+            <div>
+              <div class="depo-card__name">VICTORIA SOUZA</div>
+              <div class="depo-card__role">Contratada pelo Botafogo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="fi-divider" />
+
+  <!-- ═══════════════════════════════════════════
+       E-BOOKS
+  ═══════════════════════════════════════════ -->
+  <section class="section section--dark" id="ebooks">
+    <div class="container">
+      <div class="ebooks-grid reveal">
+        <div class="ebooks-body">
+          <span class="eyebrow">Gratuito</span>
+          <h2 class="ebooks-title">BIBLIOTECA<br/>GRATUITA<br/>DO FUTEBOL.</h2>
+          <p class="ebooks-sub">Ainda não sabe qual área seguir? Baixe nossos guias práticos e entenda como funcionam os departamentos dentro de um clube profissional.</p>
+          <ul class="ebooks-list">
+            <li>
+              <span class="check-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Passo a passo para iniciantes.
+            </li>
+            <li>
+              <span class="check-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Análise das áreas com maior demanda.
+            </li>
+            <li>
+              <span class="check-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Dicas práticas para aplicar hoje.
+            </li>
+          </ul>
+          <a href="/ebooks/" class="fi-cta" style="display:inline-flex; font-size:14px; padding:13px 13px 13px 20px; border-radius:14px;">
+            <span class="fi-cta__shine"></span>
+            Acessar e-books
+            <span class="fi-cta__icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+        </div>
+        <div class="ebooks-visual">
+          <div class="books-placeholder">E-BOOKS FI</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="fi-divider" />
+
+  <!-- ═══════════════════════════════════════════
+       CTA FINAL
+  ═══════════════════════════════════════════ -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="cta-final reveal">
+        <div class="cta-final__glow"></div>
+        <div>
+          <span class="eyebrow">Sem compromisso</span>
+          <h2 class="cta-final__title">NÃO SABE POR<br/>ONDE COMEÇAR?</h2>
+          <p class="cta-final__sub">Fale com um consultor. Ele entende o seu momento e indica a formação certa para o seu perfil.</p>
+        </div>
+        <div class="cta-final__actions">
+          <a href="https://api.whatsapp.com/send/?phone=5511942009407&text=Ol%C3%A1%21+Quero+saber+mais+sobre+as+forma%C3%A7%C3%B5es" target="_blank" rel="noreferrer" class="cta-wa">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Falar com um consultor
+          </a>
+          <a href="/cursos/" class="fi-btn-ghost" style="text-align:center; display:block; padding:12px 22px; border-radius:14px;">
+            Ver todas as formações
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="fi-divider" />
+
+  <!-- ═══════════════════════════════════════════
+       REDES SOCIAIS
+  ═══════════════════════════════════════════ -->
+  <section class="section--mid">
+    <div class="socials-wrap">
+      <h2 class="socials-title">VESTIÁRIO ABERTO</h2>
+      <p class="socials-sub">Acompanhe bastidores, táticas e o dia a dia da nossa comunidade nas redes sociais.</p>
+      <div class="socials-links">
+        <a href="https://instagram.com/futebolinterativobr/" target="_blank" rel="noreferrer" class="social-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram
+        </a>
+        <a href="https://linkedin.com/school/futebolinterativo/" target="_blank" rel="noreferrer" class="social-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://youtube.com/@FutebolInterativobr" target="_blank" rel="noreferrer" class="social-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          YouTube
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-name">
+            <span class="fi-logo__mark" style="font-size:14px; width:28px; height:28px; border-radius:7px;">FI</span>
+            FUTEBOL INTERATIVO
+          </div>
+          <p class="footer__brand-desc">Escola de formação profissional para o mercado do futebol. Fundada em 2018, incubada pela UFRN.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Formações</div>
+          <ul class="footer__links">
+            <li><a href="/cursos/tecnica-e-tatica/">Técnica e Tática</a></li>
+            <li><a href="/cursos/comunicacao-marketing/">Comunicação</a></li>
+            <li><a href="/cursos/gestao-e-operacao/">Gestão e Operação</a></li>
+            <li><a href="/cursos/saude/">Saúde</a></li>
+            <li><a href="/cursos/">Todos os cursos</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-title">Institucional</div>
+          <ul class="footer__links">
+            <li><a href="/sobre/">Sobre o FI</a></li>
+            <li><a href="https://futebolinterativo.com/blog" target="_blank" rel="noreferrer">Blog</a></li>
+            <li><a href="/ebooks/">E-books gratuitos</a></li>
+            <li><a href="https://eventos.futebolinterativo.com/experiencia-pratica/" target="_blank" rel="noreferrer">Experiência prática</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-title">Legal</div>
+          <ul class="footer__links">
+            <li><a href="/termos/">Termos de uso</a></li>
+            <li><a href="/termos/politica-de-privacidade/">Política de privacidade</a></li>
+            <li><a href="https://alunos.futebolinterativo.com/" target="_blank" rel="noreferrer">Área do aluno</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2026 Futebol Interativo. Todos os direitos reservados.</span>
+        <span class="footer__cnpj">CNPJ 29.939.011/0001-13</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════ -->
+  <script>
+    /* ── HEADER SCROLL ── */
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 30);
+    }, { passive: true });
+
+    /* ── MOBILE DRAWER ── */
+    const hamburger = document.getElementById('hamburger');
+    const mobDrawer = document.getElementById('mobDrawer');
+    const mobClose  = document.getElementById('mobClose');
+    const mobBackdrop = document.getElementById('mobBackdrop');
+
+    function openDrawer() {
+      mobDrawer.classList.add('is-open');
+      mobDrawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      mobDrawer.classList.remove('is-open');
+      mobDrawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', openDrawer);
+    mobClose.addEventListener('click', closeDrawer);
+    mobBackdrop.addEventListener('click', closeDrawer);
+    mobDrawer.querySelectorAll('.mob-drawer__link, .mob-drawer__cta').forEach(el =>
+      el.addEventListener('click', closeDrawer)
+    );
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    /* ── REVEAL ON SCROLL ── */
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+
+    /* ── MARQUEE CLUBES ── */
+    const BASE = 'https://tonojogo.futebolinterativo.com/futebolinterativo/clubes/';
+    const totalClubes = 24;
+    const track = document.getElementById('marqueeTrack');
+    // Gera 24 itens + 24 duplicados (técnica de loop infinito sem JS)
+    const items = Array.from({ length: totalClubes }, (_, i) => i + 1);
+    const doubled = [...items, ...items];
+    track.innerHTML = doubled.map(n =>
+      `<li class="marquee__item"><img src="${BASE}clube-${n}.webp" alt="Clube parceiro ${n}" loading="lazy" decoding="async" /></li>`
+    ).join('');
+
+    /* ── COURSES ── */
+    const coursesData = [
+      { title: 'Especialização em Análise de Desempenho e Mercado', area: 'Técnica e Tática', color: '#0C5896' },
+      { title: 'Curso de Correspondente Internacional no Futebol', area: 'Comunicação', color: '#1e1660' },
+      { title: 'Curso de Inteligência Artificial no Futebol', area: 'Técnica e Tática', color: '#0C5896' },
+      { title: 'Especialização em Nutrição no Futebol', area: 'Saúde', color: '#0a4a3a' },
+      { title: 'Curso de Patrocínio e Licenciamento no Futebol', area: 'Comunicação', color: '#1e1660' },
+      { title: 'Especialização em Ciência de Dados no Futebol', area: 'Técnica e Tática', color: '#0C5896' },
+      { title: 'Preparatório Agente FIFA', area: 'Gestão e Operação', color: '#4a3200' },
+      { title: 'Curso de Fisioterapia no Futebol', area: 'Saúde', color: '#0a4a3a' },
+    ];
+    const scroll = document.getElementById('coursesScroll');
+    scroll.innerHTML = coursesData.map(c => `
+      <div class="course-card">
+        <div class="course-card__img" style="background: linear-gradient(160deg, ${c.color}, #020d1a);">
+          ${c.title.toUpperCase()}
+        </div>
+        <div class="course-card__body">
+          <div class="course-card__area">${c.area}</div>
+          <div class="course-card__title">${c.title}</div>
+          <div class="course-card__cta">Ver detalhes
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    /* ── FAIXA ── */
+    const words = ['FORMAÇÕES NO FUTEBOL', 'PRÁTICA GARANTIDA', '+130 CLUBES PARCEIROS', '+25 MIL ALUNOS', 'TURMAS 2026'];
+    const faixa = document.getElementById('faixaTrack');
+    const faixaDoubled = [...words, ...words, ...words, ...words];
+    faixa.innerHTML = faixaDoubled.map(w => `<span>${w}</span>`).join('');
+  </script>
+</body>
+</html>
