@@ -16,7 +16,7 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden" style={{ background: "#03263F", minHeight: "100vh" }}>
 
-      {/* Imagem desktop — background no lado direito */}
+      {/* Imagem desktop */}
       <div className="absolute top-0 right-0 bottom-0 hidden md:block pointer-events-none" style={{ width: "55%", zIndex: 1 }}>
         <div className="absolute inset-0" style={{ backgroundImage: "url('https://tonojogo.futebolinterativo.com/futebolinterativo/mentores-corretos.-desktop.webp')", backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "bottom right" }} />
         <div className="absolute inset-0" style={{ background: "linear-gradient(to right,#03263F 0%,#03263F 15%,rgba(3,38,63,0.7) 35%,rgba(3,38,63,0.1) 60%,transparent 75%)" }} />
@@ -72,12 +72,12 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Stats — nowrap para nunca quebrar linha */}
-          <div style={{ display: "flex", alignItems: "flex-start", flexWrap: "nowrap", gap: 0, overflowX: "auto" }}>
+          {/* Stats — grid fixo 4 colunas, sem overflow */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0 }}>
             {stats.map((s, i) => (
-              <div key={s.label} style={{ paddingRight: i < 3 ? 20 : 0, marginRight: i < 3 ? 20 : 0, borderRight: i < 3 ? "1px solid rgba(169,216,245,0.2)" : "none", flexShrink: 0 }}>
-                <div style={{ fontFamily: F, fontSize: "clamp(18px,2vw,28px)", lineHeight: 1, color: "#F4F4F4", whiteSpace: "nowrap" }}>{s.num}</div>
-                <div style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#A9D8F5", marginTop: 5, whiteSpace: "nowrap" }}>{s.label}</div>
+              <div key={s.label} style={{ paddingRight: 12, borderRight: i < 3 ? "1px solid rgba(169,216,245,0.2)" : "none", paddingLeft: i > 0 ? 12 : 0 }}>
+                <div style={{ fontFamily: F, fontSize: "clamp(16px,1.8vw,24px)", lineHeight: 1, color: "#F4F4F4" }}>{s.num}</div>
+                <div style={{ fontFamily: M, fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
               </div>
             ))}
           </div>
