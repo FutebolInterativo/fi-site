@@ -1,15 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    rules: {},
-  },
-  experimental: {
-    turbo: {
-      enabled: false,
-    },
-  },
-  allowedDevOrigins: ["192.168.2.54"],
   images: {
     remotePatterns: [
       {
