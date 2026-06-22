@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* ... seus tokens de cor e fontes existentes ... */
   --color-fi-navy:       #03263F;
   --color-fi-navy-mid:   #04395f;
   --color-fi-blue:       #0C98FC;
@@ -13,17 +14,30 @@
 
   --animate-blink:   blink 2s ease-in-out infinite;
   --animate-marquee: marquee 42s linear infinite;
+  --animate-arc:     arc-scroll 38s linear infinite;
 
   @keyframes blink {
     0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
+    50%      { opacity: 0.3; }
   }
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
+  }
+  @keyframes arc-scroll {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
   }
 }
 
 html { scroll-behavior: smooth; overflow-x: hidden; }
 body { overflow-x: hidden; }
 * { box-sizing: border-box; }
+
+@keyframes fi-arc-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*="fi-arc-scroll"] { animation: none; }
+}
