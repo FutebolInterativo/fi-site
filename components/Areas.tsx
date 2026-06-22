@@ -2,10 +2,10 @@ import Link from "next/link";
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 const areas = [
-  { href:"/cursos/tecnica-e-tatica", label:"TÉCNICA\nE TÁTICA", desc:"Análise de desempenho, IA, ciência de dados e metodologia de jogo.", count:"12 formações", color:"#4096F2" },
-  { href:"/cursos/comunicacao-marketing", label:"COMUNICAÇÃO\nE MARKETING", desc:"Jornalismo, narração, marketing esportivo e redes sociais.", count:"8 formações", color:"#818CF8" },
-  { href:"/cursos/gestao-e-operacao", label:"GESTÃO E\nOPERAÇÃO", desc:"Direito, finanças, agente FIFA e gestão de clubes empresa.", count:"6 formações", color:"#F59E0B" },
-  { href:"/cursos/saude", label:"SAÚDE", desc:"Fisioterapia, nutrição, psicologia esportiva e medicina.", count:"8 formações", color:"#2DD4BF" },
+  { href:"/cursos?area=tecnica-e-tatica", label:"TÉCNICA\nE TÁTICA", desc:"Análise de desempenho, IA, ciência de dados e metodologia de jogo.", count:"12 formações", color:"#4096F2" },
+  { href:"/cursos?area=comunicacao-marketing", label:"COMUNICAÇÃO\nE MARKETING", desc:"Jornalismo, narração, marketing esportivo e redes sociais.", count:"8 formações", color:"#818CF8" },
+  { href:"/cursos?area=gestao-e-operacao", label:"GESTÃO E\nOPERAÇÃO", desc:"Direito, finanças, agente FIFA e gestão de clubes empresa.", count:"6 formações", color:"#F59E0B" },
+  { href:"/cursos?area=saude", label:"SAÚDE", desc:"Fisioterapia, nutrição, psicologia esportiva e medicina.", count:"8 formações", color:"#2DD4BF" },
 ];
 export default function Areas() {
   return (

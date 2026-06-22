@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { cursos, areas } from "@/lib/cursos";
 import CursoCard from "./CursoCard";
 
@@ -7,8 +8,14 @@ const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 export default function CursosClient() {
+  const searchParams = useSearchParams();
   const [areaAtiva, setAreaAtiva] = useState("todas");
   const [busca, setBusca] = useState("");
+
+  useEffect(() => {
+    const area = searchParams.get("area");
+    if (area) setAreaAtiva(area);
+  }, [searchParams]);
 
   const filtrados = cursos.filter((c) => {
     const matchArea = areaAtiva === "todas" || c.area === areaAtiva;
@@ -18,6 +25,8 @@ export default function CursosClient() {
 
   return (
     <div>
+
+      {/* Hero */}
       <div
         style={{
           background: "linear-gradient(180deg,#021829 0%,#03263F 100%)",
@@ -74,6 +83,7 @@ export default function CursosClient() {
         </div>
       </div>
 
+      {/* Filtros */}
       <div
         style={{
           borderBottom: "1px solid rgba(140,200,245,0.1)",
@@ -122,6 +132,7 @@ export default function CursosClient() {
         </div>
       </div>
 
+      {/* Grid */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px" }}>
         {filtrados.length === 0 ? (
           <div
@@ -151,6 +162,7 @@ export default function CursosClient() {
           </div>
         )}
       </div>
+
     </div>
   );
 }

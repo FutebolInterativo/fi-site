@@ -4,20 +4,20 @@ const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 const cols = [
   { title: "Formações", links: [
-    { href: "/cursos", label: "Técnica e Tática" },
-    { href: "/cursos", label: "Comunicação" },
-    { href: "/cursos", label: "Gestão e Operação" },
-    { href: "/cursos", label: "Saúde" },
-    { href: "/cursos", label: "Todos os cursos" },
+    { href: "/cursos?area=tecnica-e-tatica",      label: "Técnica e Tática" },
+    { href: "/cursos?area=comunicacao-marketing", label: "Comunicação" },
+    { href: "/cursos?area=gestao-e-operacao",     label: "Gestão e Operação" },
+    { href: "/cursos?area=saude",                 label: "Saúde" },
+    { href: "/cursos",                            label: "Todos os cursos" },
   ]},
   { title: "Institucional", links: [
-    { href: "/sobre", label: "Sobre o FI" },
+    { href: "/sobre",  label: "Sobre o FI" },
     { href: "https://futebolinterativo.com/blog", label: "Blog", external: true },
     { href: "/ebooks", label: "E-books gratuitos" },
   ]},
   { title: "Legal", links: [
-    { href: "/termos", label: "Termos de uso" },
-    { href: "/termos/politica-de-privacidade", label: "Política de privacidade" },
+    { href: "/termos",                          label: "Termos de uso" },
+    { href: "/termos/politica-de-privacidade",  label: "Política de privacidade" },
     { href: "https://alunos.futebolinterativo.com/", label: "Área do aluno", external: true },
   ]},
 ];
