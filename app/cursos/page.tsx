@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CursosClient from "./CursosClient";
@@ -12,7 +13,9 @@ export default function CursosPage() {
     <>
       <Header />
       <main style={{ background: "#03263F", minHeight: "100vh" }}>
-        <CursosClient />
+        <Suspense fallback={<div style={{ paddingTop: 120, textAlign: "center", color: "#A9D8F5" }}>Carregando...</div>}>
+          <CursosClient />
+        </Suspense>
       </main>
       <Footer />
     </>
