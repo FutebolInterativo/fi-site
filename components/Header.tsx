@@ -21,10 +21,10 @@ export default function Header() {
   const close = () => setDrawerOpen(false);
 
   const navLinks = [
-    { href: "#areas",       label: "Formações" },
-    { href: "#metodologia", label: "Como funciona" },
-    { href: "/sobre",       label: "Sobre" },
-    { href: "#ebooks",      label: "E-books" },
+    { href: "/cursos",    label: "Formações" },
+    { href: "/sobre",     label: "Como funciona" },
+    { href: "/sobre",     label: "Sobre" },
+    { href: "/ebooks",    label: "E-books" },
     { href: "https://futebolinterativo.com/blog", label: "Blog", external: true },
   ];
 
