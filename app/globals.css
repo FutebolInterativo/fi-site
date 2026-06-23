@@ -52,3 +52,66 @@ body { overflow-x: hidden; }
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.curso-hero { grid-template-columns: 1fr; }
+@media (min-width: 768px) {
+  .curso-hero { grid-template-columns: 380px 1fr; align-items: center; }
+}
+/* ===== Formulário HubSpot (tema escuro FI) ===== */
+.fi-hs-form .hs-form,
+.fi-hs-form form { font-family: var(--font-montserrat), Montserrat, sans-serif; }
+.fi-hs-form fieldset { max-width: none !important; }
+.fi-hs-form .hs-form-field { margin-bottom: 16px; }
+.fi-hs-form .hs-form-field > label,
+.fi-hs-form .hs-form-field > legend {
+  display: block; color: #F4F4F4; font-size: 13px; font-weight: 600; margin-bottom: 6px;
+}
+.fi-hs-form .hs-form-required { color: #08C27A; margin-left: 2px; }
+.fi-hs-form .hs-richtext,
+.fi-hs-form .hs-richtext h1,
+.fi-hs-form .hs-richtext h2,
+.fi-hs-form .hs-richtext h3,
+.fi-hs-form .hs-richtext p { color: #F4F4F4 !important; font-family: var(--font-montserrat), Montserrat, sans-serif; }
+.fi-hs-form input.hs-input:not([type=checkbox]):not([type=radio]),
+.fi-hs-form select.hs-input,
+.fi-hs-form textarea.hs-input {
+  width: 100% !important; box-sizing: border-box;
+  background: rgba(3,38,63,0.6) !important;
+  border: 1px solid rgba(140,200,245,0.22) !important;
+  color: #F4F4F4 !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  font-size: 14px !important;
+  font-family: var(--font-montserrat), Montserrat, sans-serif !important;
+  outline: none;
+}
+.fi-hs-form input.hs-input::placeholder,
+.fi-hs-form textarea.hs-input::placeholder { color: rgba(244,244,244,0.4); }
+.fi-hs-form input.hs-input:focus,
+.fi-hs-form select.hs-input:focus,
+.fi-hs-form textarea.hs-input:focus { border-color: #0C98FC !important; }
+.fi-hs-form select.hs-input option { color: #03263F; }
+.fi-hs-form .hs-form-radio label,
+.fi-hs-form .hs-form-booleancheckbox label,
+.fi-hs-form .inputs-list label { color: rgba(244,244,244,0.85); font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+.fi-hs-form ul.inputs-list { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 14px; }
+.fi-hs-form .hs-button.primary,
+.fi-hs-form input[type=submit].hs-button {
+  width: 100%;
+  background: linear-gradient(135deg,#08C27A,#05A567) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 14px 22px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  font-family: var(--font-montserrat), Montserrat, sans-serif !important;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: transform 0.15s;
+}
+.fi-hs-form .hs-button.primary:hover { transform: translateY(-1px); }
+.fi-hs-form .hs-error-msg,
+.fi-hs-form .hs-error-msgs label { color: #ff9090 !important; font-size: 12px; font-weight: 500; }
+.fi-hs-form .hs_phone .input { display: flex; gap: 8px; }
+.fi-hs-form .hs_phone select.hs-input { width: auto !important; min-width: 140px; }
