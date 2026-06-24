@@ -6,26 +6,26 @@ const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 const cursos = [
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Intelig%C3%AAncia%20Artificial%20no%20Futebol.webp", alt: "Inteligência Artificial no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Treinamento%20de%20Goleiros%20Avan%C3%A7ado.webp", alt: "Treinamento de Goleiros Avançado" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Correspondente%20Internacional%20no%20Futebol.webp", alt: "Correspondente Internacional no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Massagista%20no%20Futebol.webp", alt: "Massagista no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Patroc%C3%ADnio%20e%20Licenciamento%20no%20Futebol.webp", alt: "Patrocínio e Licenciamento no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Preparat%C3%B3rio%20Agente%20FIFA.webp", alt: "Preparatório Agente FIFA" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Narra%C3%A7%C3%A3o%20no%20Futebol.webp", alt: "Narração no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Ci%C3%AAncia%20de%20Dados.webp", alt: "Ciência de Dados" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Fisioterapia%20no%20Futebol.webp", alt: "Fisioterapia no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Gest%C3%A3o%20Executiva.webp", alt: "Gestão Executiva" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Jornalismo%20no%20Futebol.webp", alt: "Jornalismo no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/T%C3%A1tica%20Individual%20e%20Coletiva.webp", alt: "Tática Individual e Coletiva" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Supervisor%20no%20Futebol.webp", alt: "Supervisor no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Finan%C3%A7as%20no%20Futebol.webp", alt: "Finanças no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Psicologia%20no%20Futebol.webp", alt: "Psicologia no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Medicina%20no%20Futebol.webp", alt: "Medicina no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/An%C3%A1lise%20de%20Desempenho%20e%20Mercado.webp", alt: "Análise de Desempenho e Mercado" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Nutri%C3%A7%C3%A3o%20no%20Futebol.webp", alt: "Nutrição no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Direito%20no%20Futebol.webp", alt: "Direito no Futebol" },
-  { src: "https://tonojogo.futebolinterativo.com/futebolinterativo/Prepara%C3%A7%C3%A3o%20F%C3%ADsica%20e%20Recovery.webp", alt: "Preparação Física e Recovery" },
+  { src: "/images/cursos/inteligencia-artificial-no-futebol.webp",        alt: "Inteligência Artificial no Futebol" },
+  { src: "/images/cursos/treinamento-de-goleiros-avancado.webp",          alt: "Treinamento de Goleiros Avançado" },
+  { src: "/images/cursos/correspondente-internacional-no-futebol.webp",   alt: "Correspondente Internacional no Futebol" },
+  { src: "/images/cursos/massagista-no-futebol.webp",                     alt: "Massagista no Futebol" },
+  { src: "/images/cursos/patrocinio-e-licenciamento-no-futebol.webp",     alt: "Patrocínio e Licenciamento no Futebol" },
+  { src: "/images/cursos/preparatorio-agente-fifa.webp",                  alt: "Preparatório Agente FIFA" },
+  { src: "/images/cursos/narracao-no-futebol.webp",                       alt: "Narração no Futebol" },
+  { src: "/images/cursos/ciencia-de-dados.webp",                          alt: "Ciência de Dados" },
+  { src: "/images/cursos/fisioterapia-no-futebol.webp",                   alt: "Fisioterapia no Futebol" },
+  { src: "/images/cursos/gestao-executiva.webp",                          alt: "Gestão Executiva" },
+  { src: "/images/cursos/jornalismo-no-futebol.webp",                     alt: "Jornalismo no Futebol" },
+  { src: "/images/cursos/tatica-individual-e-coletiva.webp",              alt: "Tática Individual e Coletiva" },
+  { src: "/images/cursos/supervisor-no-futebol.webp",                     alt: "Supervisor no Futebol" },
+  { src: "/images/cursos/financas-no-futebol.webp",                       alt: "Finanças no Futebol" },
+  { src: "/images/cursos/psicologia-no-futebol.webp",                     alt: "Psicologia no Futebol" },
+  { src: "/images/cursos/medicina-no-futebol.webp",                       alt: "Medicina no Futebol" },
+  { src: "/images/cursos/analise-de-desempenho-e-mercado.webp",           alt: "Análise de Desempenho e Mercado" },
+  { src: "/images/cursos/nutricao-no-futebol.webp",                       alt: "Nutrição no Futebol" },
+  { src: "/images/cursos/direito-no-futebol.webp",                        alt: "Direito no Futebol" },
+  { src: "/images/cursos/preparacao-fisica-e-recovery.webp",              alt: "Preparação Física e Recovery" },
 ];
 
 const N = cursos.length;
@@ -69,16 +69,15 @@ const areas = [
   },
 ];
 
-// quantos cards aparecem de cada lado do central
 const SIDE = 4;
-const SPACING = 240;   // distância horizontal entre cards (px)
-const SPEED = 0.0065;  // posições por frame (~60fps) → quão rápido gira
+const SPACING = 240;
+const SPEED = 0.0065;
 
 export default function Areas() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const posRef = useRef(0);          // posição fracionária contínua
+  const posRef = useRef(0);
   const rafRef = useRef<number>(0);
-  const [, setTick] = useState(0);   // força re-render por frame
+  const [, setTick] = useState(0);
 
   useEffect(() => {
     function animate() {
@@ -91,209 +90,53 @@ export default function Areas() {
   }, []);
 
   const pos = posRef.current;
-
-  // monta a lista de cards visíveis: para cada offset de -SIDE..SIDE,
-  // o índice base é o card mais próximo da posição atual
   const center = Math.round(pos);
   const visible: { idx: number; rel: number }[] = [];
   for (let o = -SIDE; o <= SIDE; o++) {
     const idx = ((center + o) % N + N) % N;
-    const rel = center + o - pos; // distância contínua ao centro (pode ser fracionária)
+    const rel = center + o - pos;
     visible.push({ idx, rel });
   }
 
   return (
-    <section
-      id="areas"
-      style={{
-        position: "relative",
-        background: "linear-gradient(180deg,#03263F 0%,#04395f 48%,#03263F 100%)",
-        paddingBottom: "clamp(44px,7vh,80px)",
-        overflow: "hidden",
-      }}
-    >
-      {/* Glow central */}
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: "55%",
-          transform: "translate(-50%,-50%)",
-          width: "90%",
-          height: "60%",
-          background: "radial-gradient(ellipse at center,rgba(12,154,255,0.30) 0%,transparent 68%)",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
+    <section id="areas" style={{ position: "relative", background: "linear-gradient(180deg,#03263F 0%,#04395f 48%,#03263F 100%)", paddingBottom: "clamp(44px,7vh,80px)", overflow: "hidden" }}>
+      <div style={{ position: "absolute", left: "50%", top: "55%", transform: "translate(-50%,-50%)", width: "90%", height: "60%", background: "radial-gradient(ellipse at center,rgba(12,154,255,0.30) 0%,transparent 68%)", pointerEvents: "none", zIndex: 0 }} />
 
-      {/* Cabeçalho */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 2,
-          textAlign: "center",
-          padding: "clamp(34px,6vh,60px) 22px clamp(6px,2vh,14px)",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: M,
-            fontWeight: 700,
-            fontSize: "clamp(12px,3.4vw,15px)",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "#A9D8F5",
-            marginBottom: 12,
-          }}
-        >
-          ENCONTRE SEU CAMINHO
-        </p>
-        <h2
-          style={{
-            fontFamily: F,
-            fontSize: "clamp(34px,9vw,60px)",
-            lineHeight: 0.92,
-            color: "#F4F4F4",
-            textShadow: "0 4px 22px rgba(0,0,0,0.35)",
-            margin: 0,
-            marginBottom: 14,
-          }}
-        >
-          QUAL É A SUA ÁREA
-          <br />
-          NO FUTEBOL?
+      <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "clamp(34px,6vh,60px) 22px clamp(6px,2vh,14px)" }}>
+        <p style={{ fontFamily: M, fontWeight: 700, fontSize: "clamp(12px,3.4vw,15px)", letterSpacing: "0.18em", textTransform: "uppercase", color: "#A9D8F5", marginBottom: 12 }}>ENCONTRE SEU CAMINHO</p>
+        <h2 style={{ fontFamily: F, fontSize: "clamp(34px,9vw,60px)", lineHeight: 0.92, color: "#F4F4F4", textShadow: "0 4px 22px rgba(0,0,0,0.35)", margin: 0, marginBottom: 14 }}>
+          QUAL É A SUA ÁREA<br />NO FUTEBOL?
         </h2>
-        <p
-          style={{
-            fontFamily: M,
-            fontWeight: 500,
-            fontSize: "clamp(14px,2.2vw,16px)",
-            lineHeight: 1.5,
-            color: "rgba(244,244,244,0.7)",
-            maxWidth: 440,
-            margin: "0 auto",
-          }}
-        >
+        <p style={{ fontFamily: M, fontWeight: 500, fontSize: "clamp(14px,2.2vw,16px)", lineHeight: 1.5, color: "rgba(244,244,244,0.7)", maxWidth: 440, margin: "0 auto" }}>
           Explore as áreas e veja quais formações combinam com o seu perfil.
         </p>
       </div>
 
-      {/* Coverflow 3D */}
-      <div
-        ref={trackRef}
-        style={{
-          position: "relative",
-          zIndex: 2,
-          height: 290,
-          margin: "20px 0 0",
-          perspective: "1100px",
-          overflow: "visible",
-        }}
-      >
+      <div ref={trackRef} style={{ position: "relative", zIndex: 2, height: 290, margin: "20px 0 0", perspective: "1100px", overflow: "visible" }}>
         {visible.map(({ idx, rel }) => {
           const abs = Math.abs(rel);
-          const x = rel * SPACING;                                  // deslocamento horizontal
-          const scale = Math.max(0.62, 1 - abs * 0.16);             // central maior
-          const rotateY = Math.max(-48, Math.min(48, -rel * 32));   // inclinação
-          const z = -abs * 120;                                     // afasta no eixo Z
+          const x = rel * SPACING;
+          const scale = Math.max(0.62, 1 - abs * 0.16);
+          const rotateY = Math.max(-48, Math.min(48, -rel * 32));
+          const z = -abs * 120;
           const opacity = abs > SIDE - 0.2 ? 0 : Math.max(0.35, 1 - abs * 0.22);
           const brightness = 1 - Math.min(0.5, abs * 0.18);
           const zIndex = 100 - Math.round(abs * 10);
 
           return (
-            <div
-              key={`${idx}-${Math.round(rel * 100)}`}
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                width: 200,
-                aspectRatio: "4/5",
-                marginTop: -125,   // metade da altura (200 * 5/4 / 2 = 125)
-                marginLeft: -100,  // metade da largura
-                borderRadius: 22,
-                overflow: "hidden",
-                boxShadow: abs < 0.5 ? "0 24px 50px rgba(0,0,0,0.6)" : "0 16px 30px rgba(0,0,0,0.4)",
-                transform: `translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg) scale(${scale})`,
-                transformStyle: "preserve-3d",
-                opacity,
-                filter: `brightness(${brightness})`,
-                zIndex,
-                transition: "box-shadow 0.3s ease",
-                willChange: "transform, opacity",
-              }}
-            >
+            <div key={`${idx}-${Math.round(rel * 100)}`} style={{ position: "absolute", top: "50%", left: "50%", width: 200, aspectRatio: "4/5", marginTop: -125, marginLeft: -100, borderRadius: 22, overflow: "hidden", boxShadow: abs < 0.5 ? "0 24px 50px rgba(0,0,0,0.6)" : "0 16px 30px rgba(0,0,0,0.4)", transform: `translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg) scale(${scale})`, transformStyle: "preserve-3d", opacity, filter: `brightness(${brightness})`, zIndex, transition: "box-shadow 0.3s ease", willChange: "transform, opacity" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={cursos[idx].src}
-                alt={cursos[idx].alt}
-                loading="lazy"
-                decoding="async"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-              />
+              <img src={cursos[idx].src} alt={cursos[idx].alt} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             </div>
           );
         })}
       </div>
 
-      {/* Pills de área */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 3,
-          display: "grid",
-          gridTemplateColumns: "repeat(2,minmax(0,1fr))",
-          gap: 14,
-          maxWidth: 560,
-          margin: "clamp(18px,3vh,30px) auto 0",
-          padding: "0 22px",
-        }}
-      >
+      <div style={{ position: "relative", zIndex: 3, display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 14, maxWidth: 560, margin: "clamp(18px,3vh,30px) auto 0", padding: "0 22px" }}>
         {areas.map((a) => (
-          <Link
-            key={a.href}
-            href={a.href}
-            style={{
-              textDecoration: "none",
-              position: "relative",
-              overflow: "hidden",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 6,
-              padding: "11px 13px",
-              borderRadius: 40,
-              border: "1px solid rgba(140,200,245,0.32)",
-              background: "linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)",
-              backdropFilter: "blur(10px)",
-              minHeight: 50,
-            }}
-          >
-            <span
-              style={{
-                fontFamily: M,
-                fontWeight: 700,
-                fontSize: "clamp(10px,2.9vw,13px)",
-                textTransform: "uppercase",
-                letterSpacing: "0.01em",
-                color: "#F4F4F4",
-                lineHeight: 1.12,
-              }}
-            >
-              {a.label}
-            </span>
-            <span
-              style={{
-                flexShrink: 0,
-                display: "inline-flex",
-                alignItems: "center",
-                color: "#2BB4FF",
-                filter: "drop-shadow(0 2px 6px rgba(12,154,255,0.45))",
-              }}
-            >
-              {a.icon}
-            </span>
+          <Link key={a.href} href={a.href} style={{ textDecoration: "none", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, padding: "11px 13px", borderRadius: 40, border: "1px solid rgba(140,200,245,0.32)", background: "linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)", backdropFilter: "blur(10px)", minHeight: 50 }}>
+            <span style={{ fontFamily: M, fontWeight: 700, fontSize: "clamp(10px,2.9vw,13px)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#F4F4F4", lineHeight: 1.12 }}>{a.label}</span>
+            <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", color: "#2BB4FF", filter: "drop-shadow(0 2px 6px rgba(12,154,255,0.45))" }}>{a.icon}</span>
           </Link>
         ))}
       </div>

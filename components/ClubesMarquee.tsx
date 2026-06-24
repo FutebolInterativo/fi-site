@@ -8,7 +8,7 @@ export default function ClubesMarquee() {
           {doubled.map((n,i) => (
             <li key={i} className="flex-shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`https://tonojogo.futebolinterativo.com/futebolinterativo/clubes/clube-${n}.webp`} alt="" loading="lazy" decoding="async" style={{ height:"clamp(38px,5.5vw,52px)", width:"auto", opacity:0.9 }} />
+              <img src={`/images/clubes/clube-${n}.webp`} alt="" loading="lazy" decoding="async" style={{ height:"clamp(38px,5.5vw,52px)", width:"auto", opacity:0.9 }} />
             </li>
           ))}
         </ul>
