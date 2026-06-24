@@ -1,21 +1,19 @@
 "use client";
 import React from "react";
 
-const F = "var(--font-anton), Anton, sans-serif";
-const M = "var(--font-montserrat), Montserrat, sans-serif";
-
-const areaColors: Record<string, string> = {
-  "tecnica-e-tatica": "#4096F2",
+const AREA_COLOR: Record<string, string> = {
+  "tecnica-e-tatica":      "#4096F2",
   "comunicacao-marketing": "#818CF8",
-  "saude": "#2DD4BF",
-  "gestao-e-operacao": "#F59E0B",
+  "gestao-e-operacao":     "#F59E0B",
+  "saude":                 "#2DD4BF",
 };
 
-const areaBg: Record<string, string> = {
-  "tecnica-e-tatica": "rgba(64,150,242,0.08)",
-  "comunicacao-marketing": "rgba(129,140,248,0.08)",
-  "saude": "rgba(45,212,191,0.08)",
-  "gestao-e-operacao": "rgba(245,158,11,0.08)",
+// SVG paths para ícone de cada área
+const ICON: Record<string, string> = {
+  "tecnica-e-tatica":      "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+  "comunicacao-marketing": "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
+  "gestao-e-operacao":     "M22 12h-4l-3 9L9 3l-3 9H2",
+  "saude":                 "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v8M8 12h8",
 };
 
 type Props = {
@@ -28,76 +26,102 @@ type Props = {
 };
 
 export default function CursoCard(props: Props) {
-  const cor = areaColors[props.area] || "#0C98FC";
-  const bg = areaBg[props.area] || "rgba(12,152,252,0.08)";
+  const cor = AREA_COLOR[props.area] ?? "#4096F2";
+  const iconPath = ICON[props.area] ?? ICON["tecnica-e-tatica"];
+  const href = `/cursos/${props.id}`;
 
-  return React.createElement(
-    "a",
+  const card = React.createElement(
+    "div",
     {
-      href: props.externalUrl,
-      target: "_blank",
-      rel: "noreferrer",
       style: {
-        textDecoration: "none",
         display: "flex",
         flexDirection: "column" as const,
-        borderRadius: 18,
+        height: "100%",
+        borderRadius: 16,
         overflow: "hidden",
-        border: "1px solid rgba(140,200,245,0.14)",
-        background: "#04395f",
+        border: "1px solid rgba(64,150,242,0.12)",
+        background: "#0F1D47",
+        cursor: "pointer",
       },
     },
+
+    // Thumbnail topo
     React.createElement(
       "div",
       {
         style: {
           width: "100%",
           aspectRatio: "16/9",
-          background: `linear-gradient(135deg,${bg},rgba(4,57,95,0.8))`,
+          background: `linear-gradient(135deg, ${cor}15 0%, rgba(15,29,71,0.8) 100%)`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "0 16px",
-          borderBottom: "1px solid rgba(140,200,245,0.08)",
+          borderBottom: `1px solid ${cor}18`,
         },
       },
       React.createElement(
-        "span",
+        "div",
         {
           style: {
-            fontFamily: F,
-            fontSize: 11,
-            color: `${cor}88`,
-            textAlign: "center" as const,
-            textTransform: "uppercase" as const,
+            width: 48,
+            height: 48,
+            borderRadius: 14,
+            background: `${cor}18`,
+            border: `1px solid ${cor}30`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           },
         },
-        props.title
+        React.createElement(
+          "svg",
+          { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none" },
+          React.createElement("path", {
+            d: iconPath,
+            stroke: cor,
+            strokeWidth: "1.8",
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+          })
+        )
       )
     ),
+
+    // Corpo
     React.createElement(
       "div",
       {
         style: {
-          padding: "16px 18px 20px",
+          padding: "16px 18px 18px",
           display: "flex",
           flexDirection: "column" as const,
           flex: 1,
         },
       },
+
+      // Badges área + tipo
       React.createElement(
         "div",
-        { style: { display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" as const } },
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 6,
+            marginBottom: 10,
+          },
+        },
         React.createElement(
           "span",
           {
             style: {
-              fontFamily: M,
               fontSize: 10,
               fontWeight: 700,
+              letterSpacing: "0.07em",
               textTransform: "uppercase" as const,
               color: cor,
-              background: `${cor}18`,
+              background: `${cor}14`,
+              border: `1px solid ${cor}25`,
               padding: "3px 8px",
               borderRadius: 20,
             },
@@ -108,32 +132,37 @@ export default function CursoCard(props: Props) {
           "span",
           {
             style: {
-              fontFamily: M,
               fontSize: 10,
-              fontWeight: 700,
-              color: "rgba(244,244,244,0.45)",
-              background: "rgba(255,255,255,0.06)",
-              padding: "3px 8px",
-              borderRadius: 20,
+              fontWeight: 600,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase" as const,
+              color: "rgba(105,158,218,0.7)",
             },
           },
           props.type
         )
       ),
+
+      // Título
       React.createElement(
-        "div",
+        "p",
         {
           style: {
-            fontFamily: F,
-            fontSize: 17,
-            lineHeight: 1.05,
-            color: "#F4F4F4",
-            marginBottom: 16,
+            fontFamily: "var(--font-syne, Syne, sans-serif)",
+            fontWeight: 700,
+            fontSize: 15,
+            lineHeight: 1.35,
+            color: "#E9F2FF",
+            letterSpacing: "-0.01em",
             flex: 1,
+            marginBottom: 16,
+            margin: "0 0 16px 0",
           },
         },
         props.title
       ),
+
+      // Rodapé
       React.createElement(
         "div",
         {
@@ -141,32 +170,56 @@ export default function CursoCard(props: Props) {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            paddingTop: 12,
+            borderTop: "1px solid rgba(64,150,242,0.1)",
           },
         },
         React.createElement(
           "span",
-          { style: { fontFamily: M, fontSize: 13, fontWeight: 700, color: cor } },
+          { style: { fontSize: 13, fontWeight: 600, color: cor } },
           "Ver detalhes"
         ),
         React.createElement(
           "span",
           {
             style: {
-              width: 30,
-              height: 30,
-              borderRadius: 9,
-              background: `${cor}18`,
-              border: `1px solid ${cor}33`,
+              width: 28,
+              height: 28,
+              borderRadius: 8,
+              background: `${cor}14`,
+              border: `1px solid ${cor}28`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: cor,
-              fontSize: 16,
             },
           },
-          "→"
+          React.createElement(
+            "svg",
+            { width: 13, height: 13, viewBox: "0 0 24 24", fill: "none" },
+            React.createElement("path", {
+              d: "M7 17L17 7M17 7H8M17 7V16",
+              stroke: cor,
+              strokeWidth: "2.2",
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+            })
+          )
         )
       )
     )
+  );
+
+  // Wrapper <a> puro — sem next/link para evitar conflito com React.createElement
+  return React.createElement(
+    "a",
+    {
+      href,
+      style: {
+        textDecoration: "none",
+        display: "block",
+        height: "100%",
+      },
+    },
+    card
   );
 }

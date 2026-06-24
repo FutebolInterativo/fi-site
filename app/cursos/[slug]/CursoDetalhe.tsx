@@ -12,210 +12,472 @@ const areaColors: Record<string, string> = {
   "saude": "#2DD4BF",
   "gestao-e-operacao": "#F59E0B",
 };
-const areaLabels: Record<string, string> = {
-  "tecnica-e-tatica": "Técnica e Tática",
-  "comunicacao-marketing": "Comunicação",
-  "saude": "Saúde",
-  "gestao-e-operacao": "Gestão e Operação",
-};
 
-function ytEmbed(url: string) {
-  const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
-  return m ? `https://www.youtube.com/embed/${m[1]}` : "";
+function CheckIcon({ color }: { color: string }) {
+  return React.createElement(
+    "svg",
+    { viewBox: "0 0 24 24", fill: "none", "aria-hidden": true, style: { flexShrink: 0, width: 18, height: 18, marginTop: 2 } },
+    React.createElement("path", { d: "M5 12.5l4.2 4.2L19 7", stroke: color, strokeWidth: "2.6", strokeLinecap: "round", strokeLinejoin: "round" })
+  );
+}
+
+// ─── Seção claro (fundo branco/azul claro) ───
+function SectionLight({ eyebrow, title, children }: { eyebrow?: string; title: string; children: React.ReactNode }) {
+  return React.createElement(
+    "section",
+    { style: { background: "#E9F2FB", padding: "clamp(48px,8vh,96px) clamp(20px,5vw,64px)" } },
+    React.createElement(
+      "div",
+      { style: { maxWidth: 1040, margin: "0 auto" } },
+      eyebrow && React.createElement(
+        "p",
+        { style: { fontFamily: M, fontWeight: 700, fontSize: "clamp(11px,2.4vw,14px)", letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#2E6CA8", marginBottom: 12 } },
+        eyebrow
+      ),
+      React.createElement(
+        "h2",
+        { style: { fontFamily: F, fontWeight: 400, fontSize: "clamp(28px,6vw,52px)", lineHeight: 0.95, letterSpacing: "0.01em", color: "#103B66", marginBottom: "clamp(24px,4vh,44px)" } },
+        title
+      ),
+      children
+    )
+  );
+}
+
+// ─── Seção azul médio ───
+function SectionBlue({ eyebrow, title, children }: { eyebrow?: string; title: string; children: React.ReactNode }) {
+  return React.createElement(
+    "section",
+    { style: { background: "#0C5896", padding: "clamp(48px,8vh,96px) clamp(20px,5vw,64px)" } },
+    React.createElement(
+      "div",
+      { style: { maxWidth: 1040, margin: "0 auto" } },
+      eyebrow && React.createElement(
+        "p",
+        { style: { fontFamily: M, fontWeight: 700, fontSize: "clamp(11px,2.4vw,14px)", letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.9)", marginBottom: 12 } },
+        eyebrow
+      ),
+      React.createElement(
+        "h2",
+        { style: { fontFamily: F, fontWeight: 400, fontSize: "clamp(28px,6vw,52px)", lineHeight: 0.95, letterSpacing: "0.01em", color: "#fff", marginBottom: "clamp(24px,4vh,44px)" } },
+        title
+      ),
+      children
+    )
+  );
+}
+
+// ─── Seção escura (navy) ───
+function SectionDark({ eyebrow, title, children }: { eyebrow?: string; title: string; children: React.ReactNode }) {
+  return React.createElement(
+    "section",
+    { style: { background: "#03263F", padding: "clamp(48px,8vh,96px) clamp(20px,5vw,64px)" } },
+    React.createElement(
+      "div",
+      { style: { maxWidth: 1040, margin: "0 auto" } },
+      eyebrow && React.createElement(
+        "p",
+        { style: { fontFamily: M, fontWeight: 700, fontSize: "clamp(11px,2.4vw,14px)", letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#A9D8F5", marginBottom: 12 } },
+        eyebrow
+      ),
+      React.createElement(
+        "h2",
+        { style: { fontFamily: F, fontWeight: 400, fontSize: "clamp(28px,6vw,52px)", lineHeight: 0.95, letterSpacing: "0.01em", color: "#fff", marginBottom: "clamp(24px,4vh,44px)" } },
+        title
+      ),
+      children
+    )
+  );
+}
+
+// ─── Linha do check ───
+function CheckItem({ text, cor, light }: { text: string; cor: string; light?: boolean }) {
+  return React.createElement(
+    "li",
+    {
+      style: {
+        display: "flex", alignItems: "flex-start", gap: 10,
+        fontFamily: M, fontWeight: 500, fontSize: "clamp(13px,1.6vw,15px)", lineHeight: 1.45,
+        color: light ? "rgba(255,255,255,0.9)" : "#1B3F63",
+      }
+    },
+    React.createElement(CheckIcon, { color: light ? "#4ADBF8" : cor }),
+    React.createElement("span", null, text)
+  );
 }
 
 export default function CursoDetalhe({ curso }: { curso: Curso }) {
   const cor = areaColors[curso.area] || "#0C98FC";
-  const areaLabel = areaLabels[curso.area] || curso.area;
 
-  const diferenciais = (curso.diferenciais || []).map((item, i) =>
-    React.createElement("div", {
-      key: i,
-      style: { display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderRadius: 14, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.1)", fontFamily: M, fontSize: 13.5, fontWeight: 600, color: "#F4F4F4", lineHeight: 1.3 },
+  // ── HERO ──────────────────────────────────────────────────────────────────
+  const hero = React.createElement(
+    "section",
+    {
+      style: {
+        background: "linear-gradient(160deg,#021829 0%,#03263F 55%,#052e4d 100%)",
+        padding: "120px clamp(20px,5vw,64px) clamp(48px,8vh,80px)",
+      }
     },
-      React.createElement("span", { style: { width: 26, height: 26, flexShrink: 0, borderRadius: 8, background: `${cor}22`, border: `1px solid ${cor}44`, display: "flex", alignItems: "center", justifyContent: "center", color: cor, fontWeight: 700, fontSize: 13 } }, "✓"),
-      item
-    )
-  );
+    React.createElement(
+      "div",
+      { style: { maxWidth: 1040, margin: "0 auto" } },
 
-  const paraQuem = (curso.paraQuem || []).map((item, i) =>
-    React.createElement("li", {
-      key: i,
-      style: { display: "flex", alignItems: "flex-start", gap: 12, fontFamily: M, fontSize: 15, lineHeight: 1.55, color: "rgba(244,244,244,0.85)", marginBottom: 14 },
-    },
-      React.createElement("span", { style: { flexShrink: 0, width: 24, height: 24, borderRadius: 8, background: `${cor}22`, border: `1px solid ${cor}44`, display: "flex", alignItems: "center", justifyContent: "center", color: cor, fontSize: 13, fontWeight: 700, marginTop: 1 } }, "→"),
-      item
-    )
-  );
+      // Eyebrow + badge de área
+      React.createElement(
+        "div",
+        { style: { display: "flex", flexWrap: "wrap" as const, alignItems: "center", gap: 10, marginBottom: 20 } },
+        React.createElement(
+          "span",
+          {
+            style: {
+              fontFamily: M, fontWeight: 700, fontSize: 11, letterSpacing: "0.12em",
+              textTransform: "uppercase" as const, color: cor,
+              background: `${cor}20`, padding: "5px 14px", borderRadius: 20,
+              border: `1px solid ${cor}40`,
+            }
+          },
+          curso.area === "tecnica-e-tatica" ? "Técnica e Tática"
+            : curso.area === "comunicacao-marketing" ? "Comunicação"
+            : curso.area === "saude" ? "Saúde"
+            : "Gestão e Operação"
+        ),
+        React.createElement(
+          "span",
+          {
+            style: {
+              fontFamily: M, fontWeight: 700, fontSize: 11, letterSpacing: "0.08em",
+              textTransform: "uppercase" as const, color: "rgba(244,244,244,0.45)",
+              background: "rgba(255,255,255,0.06)", padding: "5px 14px", borderRadius: 20,
+            }
+          },
+          curso.type
+        )
+      ),
 
-  const ementa = (curso.ementa || []).map((it, i) =>
-    React.createElement("div", {
-      key: i,
-      style: { display: "flex", gap: 14, padding: "16px 0", borderTop: i === 0 ? "none" : "1px solid rgba(140,200,245,0.1)" },
-    },
-      React.createElement("div", { style: { fontFamily: F, fontSize: 18, color: cor, flexShrink: 0, width: 34, lineHeight: 1.2 } }, String(i + 1).padStart(2, "0")),
-      React.createElement("div", null,
-        React.createElement("div", { style: { fontFamily: M, fontWeight: 700, fontSize: 15, color: "#F4F4F4", marginBottom: it.descricao ? 5 : 0 } }, it.titulo),
-        it.descricao ? React.createElement("div", { style: { fontFamily: M, fontSize: 13.5, lineHeight: 1.55, color: "rgba(244,244,244,0.6)" } }, it.descricao) : null
-      )
-    )
-  );
+      // Título
+      React.createElement(
+        "h1",
+        {
+          style: {
+            fontFamily: F, fontWeight: 400,
+            fontSize: "clamp(38px,5.5vw,72px)", lineHeight: 0.93, letterSpacing: "0.01em",
+            color: "#F4F4F4", marginBottom: 20,
+          }
+        },
+        curso.title
+      ),
 
-  const mentores = (curso.mentores || []).map((m, i) =>
-    React.createElement("div", {
-      key: i,
-      style: { display: "flex", flexDirection: "column" as const, alignItems: "center", textAlign: "center" as const, padding: 18, borderRadius: 16, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.12)" },
-    },
-      React.createElement("img", { src: m.foto, alt: m.nome, loading: "lazy", style: { width: 88, height: 88, borderRadius: "50%", objectFit: "cover" as const, marginBottom: 12, border: `2px solid ${cor}55` } }),
-      React.createElement("div", { style: { fontFamily: F, fontSize: 16, color: "#F4F4F4", marginBottom: 4 } }, m.nome),
-      React.createElement("div", { style: { fontFamily: M, fontSize: 12, lineHeight: 1.4, color: "rgba(244,244,244,0.6)" } }, m.bio)
-    )
-  );
+      // Subheadline
+      curso.subheadline && React.createElement(
+        "p",
+        {
+          style: {
+            fontFamily: M, fontWeight: 500, fontSize: "clamp(15px,1.6vw,18px)",
+            lineHeight: 1.6, color: "rgba(244,244,244,0.75)", maxWidth: 640, marginBottom: 28,
+          }
+        },
+        curso.subheadline
+      ),
 
-  const expPratica = (curso.experienciaPratica || []).map((item, i) =>
-    React.createElement("div", {
-      key: i,
-      style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px", borderRadius: 12, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.1)", fontFamily: M, fontSize: 14, lineHeight: 1.45, color: "rgba(244,244,244,0.85)" },
-    },
-      React.createElement("span", { style: { color: cor, flexShrink: 0, fontWeight: 700, marginTop: 1 } }, "▸"),
-      item
-    )
-  );
-
-  const depoimentos = (curso.depoimentos || []).map((d, i) =>
-    React.createElement("div", {
-      key: i,
-      style: { borderRadius: 16, overflow: "hidden", border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.12)" },
-    },
-      d.videoUrl
-        ? React.createElement("div", { style: { position: "relative" as const, paddingBottom: "56.25%", height: 0 } },
-            React.createElement("iframe", { src: ytEmbed(d.videoUrl), title: d.nome, allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowFullScreen: true, style: { position: "absolute" as const, top: 0, left: 0, width: "100%", height: "100%", border: 0 } })
+      // Stats da linha
+      (curso.cargaHoraria || curso.numAulas || curso.formato) && React.createElement(
+        "div",
+        { style: { display: "flex", flexWrap: "wrap" as const, gap: 0, marginBottom: 40 } },
+        ...[
+          curso.cargaHoraria && { num: curso.cargaHoraria, label: "Carga horária" },
+          curso.numAulas && { num: String(curso.numAulas), label: "Aulas" },
+          curso.formato && { num: curso.formato, label: "Formato" },
+        ].filter(Boolean).map((s: any, i: number, arr: any[]) =>
+          React.createElement(
+            "div",
+            {
+              key: s.label,
+              style: {
+                paddingRight: 24, marginRight: 24,
+                borderRight: i < arr.length - 1 ? "1px solid rgba(140,200,245,0.2)" : "none",
+              }
+            },
+            React.createElement("div", { style: { fontFamily: F, fontSize: "clamp(24px,3vw,40px)", lineHeight: 1, color: "#F4F4F4" } }, s.num),
+            React.createElement("div", { style: { fontFamily: M, fontWeight: 700, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 5 } }, s.label)
           )
-        : null,
-      React.createElement("div", { style: { padding: "14px 16px 18px" } },
-        React.createElement("div", { style: { fontFamily: F, fontSize: 16, color: "#F4F4F4", marginBottom: 4 } }, d.nome),
-        d.papel ? React.createElement("div", { style: { fontFamily: M, fontSize: 12.5, lineHeight: 1.4, color: cor } }, d.papel) : null
+        )
+      ),
+
+      // Descrição curta / para quem é
+      curso.headline && React.createElement(
+        "p",
+        { style: { fontFamily: M, fontWeight: 500, fontSize: 15, lineHeight: 1.7, color: "rgba(244,244,244,0.65)", maxWidth: 580 } },
+        curso.headline
       )
     )
   );
 
-  const stats = (curso.stats || []).map((s, i) =>
-    React.createElement("div", {
-      key: i,
-      style: { textAlign: "center" as const, padding: "22px 14px", borderRadius: 16, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.12)" },
-    },
-      React.createElement("div", { style: { fontFamily: F, fontSize: "clamp(28px,5vw,40px)", color: cor, lineHeight: 1 } }, s.valor),
-      React.createElement("div", { style: { fontFamily: M, fontSize: 12.5, fontWeight: 600, color: "rgba(244,244,244,0.7)", marginTop: 8 } }, s.label)
+  // ── PARA QUEM É ──────────────────────────────────────────────────────────
+  const paraQuem = curso.paraQuem && curso.paraQuem.length > 0 && SectionLight(
+    {
+      eyebrow: "Para quem é este curso",
+      title: "ESTE CURSO É PARA VOCÊ SE...",
+      children: React.createElement(
+        "ul",
+        { style: { listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 12 } },
+        ...curso.paraQuem.map((item, i) =>
+          React.createElement(CheckItem, { key: i, text: item, cor })
+        )
+      )
+    }
+  );
+
+  // ── EMENTA ───────────────────────────────────────────────────────────────
+  const ementa = curso.ementa && curso.ementa.length > 0 && SectionBlue(
+    {
+      eyebrow: "Conteúdo do curso",
+      title: "O QUE VOCÊ VAI APRENDER",
+      children: React.createElement(
+        "div",
+        { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 } },
+        ...curso.ementa.map((item, i) =>
+          React.createElement(
+            "div",
+            {
+              key: i,
+              style: {
+                display: "flex", alignItems: "flex-start", gap: 12,
+                background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 18px",
+                border: "1px solid rgba(255,255,255,0.1)",
+              }
+            },
+            React.createElement(
+              "span",
+              {
+                style: {
+                  fontFamily: F, fontSize: 13, color: "rgba(169,216,245,0.6)",
+                  flexShrink: 0, width: 28, lineHeight: 1.2,
+                }
+              },
+              String(i + 1).padStart(2, "0")
+            ),
+            React.createElement(
+              "span",
+              { style: { fontFamily: M, fontWeight: 500, fontSize: 14, lineHeight: 1.45, color: "rgba(255,255,255,0.9)" } },
+              item
+            )
+          )
+        )
+      )
+    }
+  );
+
+  // ── MENTORES ─────────────────────────────────────────────────────────────
+  const mentores = curso.mentores && curso.mentores.length > 0 && SectionLight(
+    {
+      eyebrow: "Quem vai te ensinar",
+      title: "OS MENTORES",
+      children: React.createElement(
+        "div",
+        { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "clamp(16px,3vw,28px)" } },
+        ...curso.mentores.map((m, i) =>
+          React.createElement(
+            "div",
+            { key: i, style: { display: "flex", flexDirection: "column" as const, gap: 12 } },
+            m.foto && React.createElement(
+              "div",
+              { style: { borderRadius: 18, overflow: "hidden", background: "#d8e8f4", aspectRatio: "3/4" } },
+              React.createElement("img", {
+                src: m.foto, alt: m.nome,
+                style: { width: "100%", height: "100%", objectFit: "cover", display: "block" }
+              })
+            ),
+            React.createElement("div", { style: { fontFamily: F, fontSize: "clamp(18px,2.4vw,24px)", lineHeight: 1, color: "#103B66" } }, m.nome),
+            m.cargo && React.createElement("div", { style: { fontFamily: M, fontWeight: 700, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: cor } }, m.cargo),
+            m.bio && React.createElement("div", { style: { fontFamily: M, fontWeight: 500, fontSize: 13, lineHeight: 1.55, color: "#3F5F7C" } }, m.bio)
+          )
+        )
+      )
+    }
+  );
+
+  // ── DIFERENCIAIS ─────────────────────────────────────────────────────────
+  const diferenciais = curso.diferenciais && curso.diferenciais.length > 0 && SectionDark(
+    {
+      eyebrow: "Por que escolher este curso",
+      title: "DIFERENCIAIS DO CURSO",
+      children: React.createElement(
+        "ul",
+        { style: { listStyle: "none", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 } },
+        ...curso.diferenciais.map((d, i) =>
+          React.createElement(
+            "li",
+            {
+              key: i,
+              style: {
+                display: "flex", alignItems: "flex-start", gap: 10,
+                fontFamily: M, fontWeight: 500, fontSize: 14, lineHeight: 1.45,
+                color: "rgba(255,255,255,0.88)",
+                background: "rgba(12,152,252,0.08)", borderRadius: 14, padding: "14px 16px",
+                border: "1px solid rgba(140,200,245,0.15)",
+              }
+            },
+            React.createElement(CheckIcon, { color: "#4ADBF8" }),
+            React.createElement("span", null, d)
+          )
+        )
+      )
+    }
+  );
+
+  // ── EXPERIÊNCIA PRÁTICA ───────────────────────────────────────────────────
+  const expPratica = curso.experienciaPratica && curso.experienciaPratica.length > 0 && SectionBlue(
+    {
+      eyebrow: "Prática incluída",
+      title: "EXPERIÊNCIA PRÁTICA",
+      children: React.createElement(
+        "ul",
+        { style: { listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 10 } },
+        ...curso.experienciaPratica.map((item, i) =>
+          React.createElement(CheckItem, { key: i, text: item, cor: "#4ADBF8", light: true })
+        )
+      )
+    }
+  );
+
+  // ── DEPOIMENTOS ───────────────────────────────────────────────────────────
+  const depoimentos = curso.depoimentos && curso.depoimentos.length > 0 && React.createElement(
+    "section",
+    { style: { background: "#fff", padding: "clamp(48px,8vh,96px) clamp(20px,5vw,64px)" } },
+    React.createElement(
+      "div",
+      { style: { maxWidth: 1040, margin: "0 auto" } },
+      React.createElement("p", { style: { fontFamily: M, fontWeight: 700, fontSize: "clamp(11px,2.4vw,14px)", letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#2E6CA8", marginBottom: 12 } }, "Depoimentos"),
+      React.createElement("h2", { style: { fontFamily: F, fontWeight: 400, fontSize: "clamp(28px,6vw,52px)", lineHeight: 0.95, color: "#103B66", marginBottom: "clamp(24px,4vh,44px)" } }, "QUEM JÁ CURSOU"),
+      React.createElement(
+        "div",
+        {
+          style: {
+            display: "grid",
+            gridTemplateColumns: `repeat(${Math.min(curso.depoimentos.length, 3)}, 1fr)`,
+            gap: "clamp(20px,3vw,36px)",
+          }
+        },
+        ...curso.depoimentos.map((d, i) =>
+          React.createElement(
+            "div",
+            { key: i, style: { display: "flex", flexDirection: "column" as const } },
+            React.createElement(
+              "div",
+              { style: { borderRadius: 18, overflow: "hidden", background: "#07101c", aspectRatio: "16/9", marginBottom: 18 } },
+              React.createElement(
+                "iframe",
+                {
+                  src: `https://www.youtube.com/embed/${d.youtubeId}`,
+                  title: d.nome,
+                  style: { width: "100%", height: "100%", border: "none", display: "block" },
+                  allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true,
+                }
+              )
+            ),
+            React.createElement("div", { style: { fontFamily: F, fontWeight: 400, fontSize: "clamp(22px,2.8vw,30px)", lineHeight: 1, color: "#103B66", marginBottom: 8 } }, d.nome),
+            d.texto && React.createElement("div", { style: { fontFamily: M, fontWeight: 500, fontSize: 14, lineHeight: 1.5, color: "#3F5F7C" } }, d.texto)
+          )
+        )
+      )
     )
   );
 
-  return (
-    <div>
-      {/* HERO */}
-      <div style={{ background: "radial-gradient(900px 500px at 80% -10%, rgba(12,152,252,0.12), transparent 60%), linear-gradient(180deg,#021829 0%,#03263F 100%)" }}>
-        <div className="max-w-6xl mx-auto px-6 pt-28 pb-14">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 lg:items-start">
-            {/* texto */}
-            <div className="flex-1">
-              <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-                <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: cor, background: `${cor}1A`, padding: "5px 12px", borderRadius: 20 }}>{areaLabel}</span>
-                <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(244,244,244,0.55)", background: "rgba(255,255,255,0.06)", padding: "5px 12px", borderRadius: 20 }}>{curso.type}</span>
-              </div>
-              <h1 style={{ fontFamily: F, fontSize: "clamp(30px,5.5vw,56px)", lineHeight: 0.98, color: "#F4F4F4", marginBottom: 18, letterSpacing: "0.01em" }}>{curso.headline || curso.title}</h1>
-              {curso.subheadline ? <p style={{ fontFamily: M, fontSize: 16, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.7)", marginBottom: 28, maxWidth: 560 }}>{curso.subheadline}</p> : null}
-              <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
-                {curso.cargaHoraria ? <Meta label="Certificado" value={curso.cargaHoraria} cor={cor} /> : null}
-                {curso.numAulas ? <Meta label="Conteúdo" value={curso.numAulas} cor={cor} /> : null}
-                {curso.formato ? <Meta label="Formato" value={curso.formato} cor={cor} /> : null}
-              </div>
-            </div>
-            {/* oferta */}
-            <div className="w-full lg:w-[360px] lg:flex-shrink-0">
-              <CursoCTA curso={curso} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CORPO */}
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        {diferenciais.length > 0 ? (
-          <Section eyebrow="O que está incluído" titulo="Neste curso você terá" cor={cor}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">{diferenciais}</div>
-          </Section>
-        ) : null}
-
-        {paraQuem.length > 0 ? (
-          <Section eyebrow="Público" titulo="Para quem é este curso" cor={cor}>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>{paraQuem}</ul>
-          </Section>
-        ) : null}
-
-        {ementa.length > 0 ? (
-          <Section eyebrow="Conteúdo programático" titulo="Tudo que você vai aprender" cor={cor}>
-            <div style={{ borderRadius: 18, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.08)", padding: "8px 22px" }}>{ementa}</div>
-          </Section>
-        ) : null}
-
-        {mentores.length > 0 ? (
-          <Section eyebrow="Mentores" titulo="Com quem você vai aprender" cor={cor}>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">{mentores}</div>
-          </Section>
-        ) : null}
-
-        {expPratica.length > 0 ? (
-          <Section eyebrow="Diferencial FI" titulo="Experiência prática em grandes clubes" cor={cor}>
-            <p style={{ fontFamily: M, fontSize: 15, lineHeight: 1.6, color: "rgba(244,244,244,0.75)", marginBottom: 20 }}>Após as aulas, você é inserido em um clube parceiro para atuar como um verdadeiro analista. Na prática, você vai:</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{expPratica}</div>
-          </Section>
-        ) : null}
-
-        {depoimentos.length > 0 ? (
-          <Section eyebrow="Depoimentos" titulo="Quem viveu, recomenda" cor={cor}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{depoimentos}</div>
-          </Section>
-        ) : null}
-
-        {stats.length > 0 ? (
-          <Section eyebrow="Números" titulo="O melhor do Futebol Interativo" cor={cor}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">{stats}</div>
-          </Section>
-        ) : null}
-
-        {/* CTA final + formulário */}
-        <div style={{ marginTop: 8, borderRadius: 22, border: `1px solid ${cor}33`, background: "linear-gradient(180deg, rgba(12,90,150,0.16), rgba(3,38,63,0.3))", padding: "32px 28px" }}>
-          <h2 style={{ fontFamily: F, fontSize: "clamp(24px,4vw,34px)", lineHeight: 1.02, color: "#F4F4F4", marginBottom: 10, textAlign: "center" }}>Garanta sua vaga</h2>
-          <p style={{ fontFamily: M, fontSize: 14.5, lineHeight: 1.6, color: "rgba(244,244,244,0.7)", textAlign: "center", maxWidth: 460, margin: "0 auto 24px" }}>Inscreva-se agora ou preencha o formulário para tirar dúvidas com nossa equipe.</p>
-          <div className="max-w-sm mx-auto">
-            <CursoCTA curso={curso} />
-          </div>
-          {curso.hubspotFormId ? (
-            <div style={{ marginTop: 28, borderTop: "1px solid rgba(140,200,245,0.14)", paddingTop: 26 }}>
-              <div style={{ fontFamily: M, fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#A9D8F5", marginBottom: 16, textAlign: "center" }}>Ainda com dúvidas? Fale com a gente</div>
-              <CursoForm curso={curso} />
-            </div>
-          ) : null}
-        </div>
-      </div>
-    </div>
+  // ── STATS ─────────────────────────────────────────────────────────────────
+  const stats = curso.stats && curso.stats.length > 0 && React.createElement(
+    "section",
+    { style: { background: "#fff", padding: "clamp(40px,6vh,64px) clamp(20px,5vw,64px)" } },
+    React.createElement(
+      "div",
+      { style: { maxWidth: 1040, margin: "0 auto", display: "flex", justifyContent: "center", flexWrap: "wrap" as const, gap: "clamp(28px,6vw,72px)" } },
+      ...curso.stats.map((s, i) =>
+        React.createElement(
+          "div",
+          { key: i, style: { textAlign: "center" as const } },
+          React.createElement("div", { style: { fontFamily: F, fontSize: "clamp(40px,7vw,72px)", lineHeight: 0.9, color: "#8FCBEF", letterSpacing: "0.01em" } }, s.num),
+          React.createElement("div", { style: { fontFamily: F, fontSize: "clamp(12px,2vw,16px)", letterSpacing: "0.02em", color: "#103B66", marginTop: 6 } }, s.label)
+        )
+      )
+    )
   );
-}
 
-function Meta({ label, value, cor }: { label: string; value: string; cor: string }) {
-  return (
-    <div>
-      <div style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: cor, marginBottom: 4 }}>{label}</div>
-      <div style={{ fontFamily: M, fontSize: 15, fontWeight: 600, color: "#F4F4F4" }}>{value}</div>
-    </div>
+  // ── OFERTA / CTA ──────────────────────────────────────────────────────────
+  const oferta = (curso.preco || curso.checkoutUrl || curso.hubspotFormId) && React.createElement(
+    "section",
+    { id: "oferta", style: { background: "#fff", padding: "clamp(48px,8vh,96px) clamp(20px,5vw,64px)" } },
+    React.createElement(
+      "div",
+      { style: { maxWidth: 860, margin: "0 auto" } },
+      React.createElement("p", { style: { fontFamily: M, fontWeight: 700, fontSize: "clamp(11px,2.4vw,14px)", letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#2E6CA8", marginBottom: 10, textAlign: "center" as const } }, "Garanta sua vaga"),
+      React.createElement("h2", { style: { fontFamily: F, fontWeight: 400, fontSize: "clamp(32px,6vw,60px)", lineHeight: 0.95, color: "#103B66", marginBottom: "clamp(28px,4vh,48px)", textAlign: "center" as const } }, "INVISTA NA SUA CARREIRA"),
+      React.createElement(
+        "div",
+        { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(18px,3vw,24px)", alignItems: "start" } },
+        // card de oferta navy
+        React.createElement(CursoCTA, { curso }),
+        // formulário HubSpot (quando disponível)
+        curso.hubspotPortalId && curso.hubspotFormId && React.createElement(
+          "div",
+          { style: { background: "#E9F2FB", borderRadius: 24, padding: "clamp(22px,3vw,32px)" } },
+          React.createElement("p", { style: { fontFamily: F, fontSize: "clamp(20px,2.4vw,28px)", lineHeight: 1, color: "#103B66", marginBottom: 16 } }, "FALE COM UM CONSULTOR"),
+          React.createElement("p", { style: { fontFamily: M, fontWeight: 500, fontSize: 14, lineHeight: 1.55, color: "#3F5F7C", marginBottom: 20 } }, "Tire suas dúvidas sobre o curso antes de se inscrever."),
+          React.createElement(CursoForm, null)
+        )
+      )
+    )
   );
-}
 
-function Section({ eyebrow, titulo, cor, children }: { eyebrow?: string; titulo: string; cor: string; children: React.ReactNode }) {
-  return (
-    <section style={{ marginBottom: 52 }}>
-      {eyebrow ? <div style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: cor, marginBottom: 8 }}>{eyebrow}</div> : null}
-      <h2 style={{ fontFamily: F, fontSize: "clamp(22px,3.5vw,32px)", lineHeight: 1.05, color: "#F4F4F4", marginBottom: 22 }}>{titulo}</h2>
-      {children}
-    </section>
+  // ── GARANTIA ─────────────────────────────────────────────────────────────
+  const garantia = curso.garantiaTexto && React.createElement(
+    "section",
+    { style: { background: "#fff", padding: "0 clamp(20px,5vw,64px) clamp(48px,8vh,80px)" } },
+    React.createElement(
+      "div",
+      {
+        style: {
+          maxWidth: 860, margin: "0 auto",
+          background: "#E9F2FB", borderRadius: 28,
+          padding: "clamp(28px,5vw,48px) clamp(24px,4vw,56px)",
+          display: "flex", flexWrap: "wrap" as const, alignItems: "center", gap: "clamp(20px,3vw,36px)",
+        }
+      },
+      React.createElement(
+        "div",
+        {
+          style: {
+            width: "clamp(80px,16vw,110px)", height: "clamp(80px,16vw,110px)", flexShrink: 0,
+            borderRadius: "50%", background: "#BFE0F5",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }
+        },
+        React.createElement(
+          "svg",
+          { width: 40, height: 40, viewBox: "0 0 24 24", fill: "none" },
+          React.createElement("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", stroke: "#15538F", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" })
+        )
+      ),
+      React.createElement(
+        "div",
+        { style: { flex: 1, minWidth: 200 } },
+        React.createElement("h3", { style: { fontFamily: F, fontWeight: 400, fontSize: "clamp(22px,3.5vw,34px)", letterSpacing: "0.01em", color: "#15538F", marginBottom: 10 } }, "GARANTIA FI"),
+        React.createElement("p", { style: { fontFamily: M, fontWeight: 500, fontSize: "clamp(13px,1.4vw,15px)", lineHeight: 1.6, color: "#3F5F7C" } }, curso.garantiaTexto)
+      )
+    )
+  );
+
+  return React.createElement(
+    "div",
+    null,
+    hero,
+    curso.paraQuem && paraQuem,
+    curso.ementa && ementa,
+    curso.mentores && mentores,
+    curso.diferenciais && diferenciais,
+    curso.experienciaPratica && expPratica,
+    curso.depoimentos && depoimentos,
+    curso.stats && stats,
+    oferta,
+    garantia
   );
 }
