@@ -81,6 +81,7 @@ export default function CursosClient() {
               const area      = c.area  ?? "";
               const areaLabel = areas.find((a) => a.id === area)?.label ?? area;
               const externalUrl = c.externalUrl ?? "";
+              const capa      = c.capa ?? "";
               return (
                 <CursoCard
                   key={id}
@@ -90,6 +91,7 @@ export default function CursosClient() {
                   area={area}
                   areaLabel={areaLabel}
                   externalUrl={externalUrl}
+                  capa={capa}
                 />
               );
             })}
