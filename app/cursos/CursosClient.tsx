@@ -80,7 +80,8 @@ export default function CursosClient() {
               const type      = c.type  ?? "";
               const area      = c.area  ?? "";
               const areaLabel = areas.find((a) => a.id === area)?.label ?? area;
-              const externalUrl = c.externalUrl ?? "";
+              // Cursos com ementa têm página interna — não redireciona para externo
+              const externalUrl = c.ementa && c.ementa.length > 0 ? "" : (c.externalUrl ?? "");
               const capa      = c.capa ?? "";
               return (
                 <CursoCard
