@@ -22,7 +22,7 @@ export default function Header() {
 
   const navLinks = [
     { href: "/cursos",                              label: "Formações" },
-    { href: "/#metodologia",                        label: "Como funciona" },
+    { href: "/experiencia-pratica",                 label: "Experiência Prática" },
     { href: "/sobre",                               label: "Sobre" },
     { href: "/ebooks",                              label: "E-books" },
     { href: "https://futebolinterativo.com/blog",   label: "Blog", external: true },
