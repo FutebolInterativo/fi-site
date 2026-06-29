@@ -75,12 +75,12 @@ export default function CursoDetalhe({ curso }: { curso: Curso }) {
               {(curso.cargaHoraria || curso.numAulas || curso.formato) && (
                 <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "clamp(20px,3vw,36px)", marginBottom: 36, paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
                   {[
-                    curso.cargaHoraria && { icon: "🕐", v: curso.cargaHoraria, l: "Carga horária" },
-                    curso.numAulas && { icon: "🎥", v: String(curso.numAulas), l: "Aulas ao vivo" },
-                    curso.formato && { icon: "💻", v: curso.formato, l: "Formato" },
+                    curso.cargaHoraria && { icon: <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>, v: curso.cargaHoraria, l: "Carga horária" },
+                    curso.numAulas && { icon: <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M10 8l6 4-6 4V8z" fill="currentColor"/></svg>, v: String(curso.numAulas), l: "Aulas ao vivo" },
+                    curso.formato && { icon: <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M8 20h8M12 18v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>, v: curso.formato, l: "Formato" },
                   ].filter(Boolean).map((s: any, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <div style={{ width: 40, height: 40, borderRadius: 12, background: `${cor}16`, border: `1px solid ${cor}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>{s.icon}</div>
+                      <div style={{ width: 40, height: 40, borderRadius: 12, background: `${cor}16`, border: `1px solid ${cor}30`, display: "flex", alignItems: "center", justifyContent: "center", color: cor }}>{s.icon}</div>
                       <div>
                         <div style={{ fontFamily: F, fontSize: "clamp(20px,2.5vw,28px)", lineHeight: 1, color: "#fff" }}>{s.v}</div>
                         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)", marginTop: 3 }}>{s.l}</div>
@@ -208,8 +208,6 @@ export default function CursoDetalhe({ curso }: { curso: Curso }) {
                       </div>
                     </div>
                   )}
-                  <p style={{ fontFamily: F, fontSize: "clamp(14px,1.6vw,17px)", lineHeight: 1.05, color: "#0A1E35", marginBottom: 3 }}>{m.nome}</p>
-                  <p style={{ fontSize: 11, fontWeight: 500, color: "#5A7FA0", lineHeight: 1.45 }}>{m.bio}</p>
                 </div>
               ))}
             </div>
@@ -304,13 +302,13 @@ export default function CursoDetalhe({ curso }: { curso: Curso }) {
           {/* Formas de pagamento */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24, marginTop: 32, flexWrap: "wrap" as const }}>
             {[
-              { icon: "💳", label: "Cartão de crédito" },
-              { icon: "📋", label: "Boleto bancário" },
-              { icon: "⚡", label: "Pix" },
-            ].map((p, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ fontSize: 16 }}>{p.icon}</span>
-                <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", fontWeight: 500 }}>{p.label}</span>
+              { icon: <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M2 10h20" stroke="currentColor" strokeWidth="1.8"/></svg>, label: "Cartão de crédito" },
+              { icon: <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M8 9h8M8 13h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>, label: "Boleto bancário" },
+              { icon: <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "Pix" },
+            ].map((p: any, i: number) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.35)" }}>
+                {p.icon}
+                <span style={{ fontSize: 12, fontWeight: 500, color: "rgba(255,255,255,0.35)" }}>{p.label}</span>
               </div>
             ))}
           </div>
@@ -414,10 +412,26 @@ export default function CursoDetalhe({ curso }: { curso: Curso }) {
       {(curso.preco || curso.checkoutUrl || curso.hubspotFormId) && (
         <section id="oferta" style={{ background: "#F0F6FF", padding: "clamp(64px,9vh,104px) 0" }}>
           <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
-            <div style={{ textAlign: "center" as const, marginBottom: "clamp(40px,6vh,56px)" }}>
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.25em", textTransform: "uppercase" as const, color: cor, marginBottom: 14 }}>Garanta sua vaga</p>
-              <h2 style={{ fontFamily: F, fontSize: "clamp(30px,5vw,60px)", lineHeight: 0.91, color: "#0A1E35", marginBottom: 12 }}>INVISTA NA SUA CARREIRA</h2>
-              <p style={{ fontSize: 15, color: "#3F5F7C", maxWidth: 400, margin: "0 auto", lineHeight: 1.65 }}>Junte-se a mais de 4.500 profissionais que já transformaram suas carreiras.</p>
+            {/* Header com layout diferenciado — título + trust signals */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: 32, marginBottom: "clamp(40px,6vh,56px)", paddingBottom: "clamp(28px,4vh,44px)", borderBottom: "1px solid rgba(0,40,100,0.1)" }}>
+              <div>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.25em", textTransform: "uppercase" as const, color: cor, marginBottom: 12 }}>Última etapa</p>
+                <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4.5vw,52px)", lineHeight: 0.91, color: "#0A1E35", marginBottom: 10 }}>GARANTA SUA VAGA AGORA</h2>
+                <p style={{ fontSize: 14, color: "#3F5F7C", lineHeight: 1.65, maxWidth: 400 }}>Escolha a melhor forma de começar sua carreira no futebol.</p>
+              </div>
+              {/* Trust badges */}
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, flexShrink: 0 }}>
+                {[
+                  { icon: <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>, txt: "Garantia de 12 meses" },
+                  { icon: <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>, txt: "Compra 100% segura" },
+                  { icon: <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>, txt: "+4.500 alunos formados" },
+                ].map((b, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, color: "#2E6CA8" }}>
+                    {b.icon}
+                    <span style={{ fontSize: 12, fontWeight: 600, color: "#2E6CA8" }}>{b.txt}</span>
+                  </div>
+                ))}
+              </div>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(16px,2.5vw,24px)", alignItems: "start" }}>
               <CursoCTA curso={curso} />
