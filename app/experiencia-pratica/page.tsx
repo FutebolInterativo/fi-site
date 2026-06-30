@@ -1,23 +1,24 @@
 // app/experiencia-pratica/page.tsx
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MapaClubes from "@/components/MapaClubes";
 import Link from "next/link";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 const depoimentos = [
-  { area: "Análise e Dados",       nome: "Rafael Mantovani",  texto: "A experiência prática no Ituano foi o que abriu as portas. Entrei no clube, mostrei meu trabalho e fui contratado.",           ytId: "KEZ8JXbGvl4" },
-  { area: "Análise e Dados",       nome: "Rhostann de Almeida", texto: "Fiz minha Experiência Prática no Atlético-GO. Logo depois, fui contratado pelo clube.",                                    ytId: "NAe8BMn3E0g" },
-  { area: "Análise e Dados",       nome: "Giulia Zanchett",   texto: "Realizei minha Experiência Prática no Avaí. Depois, fui contratada pelo clube.",                                               ytId: "_foOBOYAWTM" },
-  { area: "Técnica e Tática",      nome: "Rafael Belini",     texto: "Fiz experiência prática no departamento técnico da Portuguesa/RJ.",                                                            ytId: "UkmLfPMX8_s" },
-  { area: "Técnica e Tática",      nome: "Alan Ramos",        texto: "Fiz experiência prática no departamento técnico do Grêmio Osasco Audax.",                                                     ytId: "yy4-EH5rfEE" },
-  { area: "Saúde e Performance",   nome: "Roque Alencar",     texto: "Realizei minha Experiência Prática no Atlético-GO. Depois, fui contratado pelo clube.",                                       ytId: "a49fOzPuZE4" },
-  { area: "Saúde e Performance",   nome: "Caique Neves",      texto: "Fiz minha experiência prática no departamento de preparação física do São Caetano/SP.",                                       ytId: "TKrFekb3yMc" },
-  { area: "Gestão e Operação",     nome: "Diego Carneiro",    texto: "Realizei minha Experiência Prática no departamento de gestão do Bahia.",                                                      ytId: "2fENX6EJN0E" },
-  { area: "Gestão e Operação",     nome: "Thamires Hermida",  texto: "Formada em direito, fiz experiência prática no jurídico do Figueirense e fui contratada pelo clube.",                         ytId: "WpaGKFy-Ls0" },
-  { area: "Comunicação",           nome: "Victória Souza",    texto: "Fiz experiência prática no departamento de comunicação do Bahia e fui contratada pelo Botafogo.",                             ytId: "XX5ml4f0zeM" },
-  { area: "Comunicação",           nome: "Pedro Tanure",      texto: "Fiz experiência prática no departamento de comunicação do América-MG.",                                                       ytId: "Saz4bGb-YEM" },
+  { area: "Análise e Dados",     nome: "Rafael Mantovani",   texto: "A experiência prática no Ituano foi o que abriu as portas. Entrei no clube, mostrei meu trabalho e fui contratado.",        ytId: "KEZ8JXbGvl4" },
+  { area: "Análise e Dados",     nome: "Rhostann de Almeida",texto: "Fiz minha Experiência Prática no Atlético-GO. Logo depois, fui contratado pelo clube.",                                    ytId: "NAe8BMn3E0g" },
+  { area: "Análise e Dados",     nome: "Giulia Zanchett",    texto: "Realizei minha Experiência Prática no Avaí. Depois, fui contratada pelo clube.",                                            ytId: "_foOBOYAWTM" },
+  { area: "Técnica e Tática",    nome: "Rafael Belini",      texto: "Fiz experiência prática no departamento técnico da Portuguesa/RJ.",                                                         ytId: "UkmLfPMX8_s" },
+  { area: "Técnica e Tática",    nome: "Alan Ramos",         texto: "Fiz experiência prática no departamento técnico do Grêmio Osasco Audax.",                                                  ytId: "yy4-EH5rfEE" },
+  { area: "Saúde e Performance", nome: "Roque Alencar",      texto: "Realizei minha Experiência Prática no Atlético-GO. Depois, fui contratado pelo clube.",                                    ytId: "a49fOzPuZE4" },
+  { area: "Saúde e Performance", nome: "Caique Neves",       texto: "Fiz minha experiência prática no departamento de preparação física do São Caetano/SP.",                                   ytId: "TKrFekb3yMc" },
+  { area: "Gestão e Operação",   nome: "Diego Carneiro",     texto: "Realizei minha Experiência Prática no departamento de gestão do Bahia.",                                                   ytId: "2fENX6EJN0E" },
+  { area: "Gestão e Operação",   nome: "Thamires Hermida",   texto: "Formada em direito, fiz experiência prática no jurídico do Figueirense e fui contratada pelo clube.",                     ytId: "WpaGKFy-Ls0" },
+  { area: "Comunicação",         nome: "Victória Souza",     texto: "Fiz experiência prática no departamento de comunicação do Bahia e fui contratada pelo Botafogo.",                         ytId: "XX5ml4f0zeM" },
+  { area: "Comunicação",         nome: "Pedro Tanure",       texto: "Fiz experiência prática no departamento de comunicação do América-MG.",                                                   ytId: "Saz4bGb-YEM" },
 ];
 
 const areas = [
@@ -29,10 +30,10 @@ const areas = [
 ];
 
 const passos = [
-  { num: "01", titulo: "Conclua a parte teórica", desc: "Termine as aulas online da sua especialização no seu ritmo, com profissionais que atuam no mercado." },
+  { num: "01", titulo: "Conclua a parte teórica",  desc: "Termine as aulas online da sua especialização no seu ritmo, com profissionais que atuam no mercado." },
   { num: "02", titulo: "Escolha o clube parceiro", desc: "Selecione um dos +130 clubes parceiros espalhados pelo Brasil para realizar sua experiência prática." },
-  { num: "03", titulo: "Viva dentro de um clube", desc: "Durante até 15 dias, você atua dentro do departamento da sua área, ao lado de profissionais reais." },
-  { num: "04", titulo: "Seja contratado", desc: "Com o currículo rodando e a experiência comprovada, as portas do mercado se abrem para você." },
+  { num: "03", titulo: "Viva dentro de um clube",  desc: "Durante até 15 dias, você atua dentro do departamento da sua área, ao lado de profissionais reais." },
+  { num: "04", titulo: "Seja contratado",           desc: "Com o currículo rodando e a experiência comprovada, as portas do mercado se abrem para você." },
 ];
 
 export const metadata = {
@@ -48,11 +49,9 @@ export default function ExperienciaPraticaPage() {
 
         {/* ── HERO ─────────────────────────────────────────────── */}
         <section style={{ background: "linear-gradient(160deg,#021829 0%,#03263F 60%,#04395f 100%)", padding: "120px 24px 80px", position: "relative", overflow: "hidden" }}>
-          
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 30% 40%, rgba(8,194,122,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
 
           <div style={{ position: "relative", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-            {/* Badge */}
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 99, border: "1px solid rgba(8,194,122,0.4)", background: "rgba(8,194,122,0.08)", marginBottom: 24 }}>
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#08C27A", display: "inline-block" }} />
               <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, color: "#A9D8F5", letterSpacing: "0.12em" }}>DIFERENCIAL EXCLUSIVO DO FUTEBOL INTERATIVO</span>
@@ -86,14 +85,14 @@ export default function ExperienciaPraticaPage() {
         <section style={{ background: "rgba(4,57,95,0.5)", borderTop: "1px solid rgba(140,200,245,0.12)", borderBottom: "1px solid rgba(140,200,245,0.12)", padding: "40px 24px" }}>
           <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 32, textAlign: "center" }}>
             {[
-              { num: "+130",     label: "Clubes parceiros" },
-              { num: "+3.500",   label: "Alunos enviados" },
-              { num: "15 dias",  label: "De imersão prática" },
-              { num: "100%",     label: "Garantida na especialização" },
+              { num: "+130",    label: "Clubes parceiros" },
+              { num: "+3.500", label: "Alunos enviados" },
+              { num: "15 dias", label: "De imersão prática" },
+              { num: "100%",   label: "Garantida na especialização" },
             ].map((s) => (
               <div key={s.label}>
                 <div style={{ fontFamily: F, fontSize: "clamp(32px,4vw,52px)", lineHeight: 1, color: "#08C27A" }}>{s.num}</div>
-                <div style={{ fontFamily: M, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#A9D8F5", marginTop: 8 }}>{s.label}</div>
+                <div style={{ fontFamily: M, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 8 }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -135,21 +134,8 @@ export default function ExperienciaPraticaPage() {
           </div>
         </section>
 
-        {/* ── MAPA DE CLUBES ───────────────────────────────────── */}
-        <section style={{ background: "#03263F", padding: "80px 24px", textAlign: "center" }}>
-          <div style={{ maxWidth: 1040, margin: "0 auto" }}>
-            <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#A9D8F5", display: "block", marginBottom: 12 }}>Onde você pode viver essa experiência</span>
-            <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4vw,44px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 32 }}>+130 CLUBES PARCEIROS</h2>
-            <div style={{ borderRadius: 20, overflow: "hidden", marginBottom: 32 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/site/Mapa_Clubes_Parceiros.png" alt="Clubes parceiros" style={{ width: "100%", height: "auto", display: "block", opacity: 0.9 }} />
-            </div>
-            <a href="#oferta" style={{ fontFamily: M, fontWeight: 700, fontSize: 14, color: "#fff", display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: 14, background: "linear-gradient(135deg,#08C27A,#05A567)", border: "1.4px solid rgba(8,194,122,0.9)", boxShadow: "0 0 28px rgba(8,194,122,0.4)", textDecoration: "none" }}>
-              Quero participar da Experiência Prática
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </a>
-          </div>
-        </section>
+        {/* ── MAPA INTERATIVO DE CLUBES ────────────────────────── */}
+        <MapaClubes />
 
         {/* ── DEPOIMENTOS POR ÁREA ─────────────────────────────── */}
         <section style={{ background: "#04395f", padding: "80px 24px" }}>
@@ -187,7 +173,7 @@ export default function ExperienciaPraticaPage() {
           </div>
         </section>
 
-        {/* ── CTA / FORMULÁRIO ─────────────────────────────────── */}
+        {/* ── CTA FINAL ────────────────────────────────────────── */}
         <section id="oferta" style={{ background: "#021829", padding: "80px 24px" }}>
           <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
             <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#A9D8F5", display: "block", marginBottom: 12 }}>Dê o próximo passo</span>
