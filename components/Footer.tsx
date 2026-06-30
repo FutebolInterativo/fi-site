@@ -14,6 +14,7 @@ const cols = [
     { href: "/sobre",  label: "Sobre o FI" },
     { href: "https://futebolinterativo.com/blog", label: "Blog", external: true },
     { href: "/ebooks", label: "E-books gratuitos" },
+    { href: "https://jobs.quickin.io/futebolinterativo", label: "Trabalhe conosco", external: true },
   ]},
   { title: "Legal", links: [
     { href: "/termos",                          label: "Termos de uso" },

@@ -25,7 +25,7 @@ export default function Header() {
     { href: "/experiencia-pratica",                 label: "Experiência Prática" },
     { href: "/sobre",                               label: "Sobre" },
     { href: "/ebooks",                              label: "E-books" },
-    { href: "https://futebolinterativo.com/blog",   label: "Blog", external: true },
+    { href: "https://blog.futebolinterativo.com/",   label: "Blog", external: true },
   ];
 
   // Logo — usa local se existir, senão CDN como fallback

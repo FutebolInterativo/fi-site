@@ -16,9 +16,8 @@ export default function Hero() {
   return (
     <section style={{ background: "#03263F", position: "relative", overflow: "hidden" }}>
 
-      {/* ── MOBILE: imagem no topo, texto embaixo ─────────────── */}
+      {/* ── MOBILE ───────────────────────────────────────────── */}
       <div className="md:hidden">
-        {/* Imagem ocupa topo — sem sobreposição de texto */}
         <div style={{ position: "relative", width: "100%", paddingTop: 64 }}>
           <Image
             src="/images/site/mentores-corretos.-desktop.webp"
@@ -28,13 +27,11 @@ export default function Hero() {
             priority
             style={{ width: "100%", height: "auto", display: "block", objectFit: "cover", objectPosition: "top center" }}
           />
-          {/* Fade embaixo da imagem para fundir com o fundo */}
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "40%", background: "linear-gradient(to top, #03263F, transparent)" }} />
         </div>
 
-        {/* Conteúdo mobile — abaixo da imagem */}
         <div style={{ padding: "0 20px 60px", position: "relative", zIndex: 2 }}>
-          <h1 style={{ fontFamily: F, fontSize: "clamp(36px,10vw,52px)", lineHeight: 0.93, letterSpacing: "0.01em", color: "#F4F4F4", marginBottom: 16 }}>
+          <h1 style={{ fontFamily: F, fontSize: "clamp(36px,10vw,52px)", lineHeight: 1.02, letterSpacing: "0.01em", color: "#F4F4F4", marginBottom: 16 }}>
             TRANSFORME SUA<br />PAIXÃO PELO FUTEBOL<br />EM <span style={{ color: "#0C98FC" }}>CARREIRA.</span>
           </h1>
 
@@ -43,7 +40,6 @@ export default function Hero() {
             <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>+130 clubes parceiros</strong>.
           </p>
 
-          {/* CTAs */}
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
             <Link href="#areas" style={{ fontFamily: M, fontWeight: 700, fontSize: 15, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "14px 20px", borderRadius: 14, background: "linear-gradient(135deg,#08C27A,#05A567)", border: "1.4px solid rgba(8,194,122,0.9)", boxShadow: "0 0 24px rgba(8,194,122,0.45)", textDecoration: "none" }}>
               Explorar formações
@@ -57,7 +53,6 @@ export default function Hero() {
             </Link>
           </div>
 
-          {/* Stats — 2×2 no mobile */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px 0" }}>
             {stats.map((s, i) => (
               <div key={s.label} style={{
@@ -75,23 +70,34 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── DESKTOP: layout original com imagem à direita ─────── */}
-      <div className="hidden md:block" style={{ minHeight: "100vh", position: "relative" }}>
-        {/* Imagem desktop */}
-        <div className="absolute top-0 right-0 bottom-0 pointer-events-none" style={{ width: "55%", zIndex: 1 }}>
-          <div className="absolute inset-0" style={{ backgroundImage: "url('/images/site/mentores-corretos.-desktop.webp')", backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "bottom right" }} />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right,#03263F 0%,#03263F 15%,rgba(3,38,63,0.7) 35%,rgba(3,38,63,0.1) 60%,transparent 75%)" }} />
-          <div className="absolute bottom-0 left-0 right-0" style={{ height: 100, background: "linear-gradient(to top,#03263F,transparent)" }} />
-        </div>
+      {/* ── DESKTOP ──────────────────────────────────────────── */}
+      <div className="hidden md:block" style={{ position: "relative" }}>
+        <div style={{
+          position: "absolute", top: "10%", right: "2%", width: "48%", height: "85%",
+          background: "radial-gradient(ellipse 60% 55% at 60% 45%, rgba(12,152,252,0.16) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
 
-        {/* Conteúdo desktop */}
-        <div className="relative w-full max-w-6xl mx-auto px-6 flex items-center" style={{ zIndex: 10, minHeight: "100vh" }}>
-          <div style={{ width: "48%", paddingTop: 140, paddingBottom: 80 }}>
-            <h1 style={{ fontFamily: F, fontSize: "clamp(38px,4.4vw,68px)", lineHeight: 0.93, letterSpacing: "0.01em", color: "#F4F4F4", marginBottom: 20 }}>
+        <div
+          style={{
+            maxWidth: 1440,
+            margin: "0 auto",
+            padding: "clamp(110px,14vh,150px) clamp(32px,5vw,72px) 0",
+            display: "grid",
+            gridTemplateColumns: "minmax(380px, 540px) minmax(320px, 560px)",
+            gap: "clamp(24px,4vw,56px)",
+            alignItems: "end",
+            justifyContent: "space-between",
+            position: "relative",
+          }}
+        >
+          {/* ── Coluna de texto ──────────────────────────────────── */}
+          <div style={{ paddingBottom: "clamp(56px,7vh,84px)" }}>
+            <h1 style={{ fontFamily: F, fontSize: "clamp(34px,3.8vw,60px)", lineHeight: 1.04, letterSpacing: "0.01em", color: "#F4F4F4", marginBottom: 20 }}>
               TRANSFORME SUA<br />PAIXÃO PELO FUTEBOL<br />EM <span style={{ color: "#0C98FC" }}>CARREIRA.</span>
             </h1>
 
-            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", marginBottom: 28, maxWidth: 440 }}>
+            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", marginBottom: 28, maxWidth: 460 }}>
               Escola de formação com cursos em todas as áreas do futebol. Você aprende online e conclui dentro de um dos nossos{" "}
               <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>+130 clubes parceiros</strong>{" "}espalhados pelo Brasil.
             </p>
@@ -109,15 +115,31 @@ export default function Hero() {
               </Link>
             </div>
 
-            {/* Stats — 4 colunas no desktop */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0 }}>
               {stats.map((s, i) => (
                 <div key={s.label} style={{ paddingRight: 12, borderRight: i < 3 ? "1px solid rgba(169,216,245,0.2)" : "none", paddingLeft: i > 0 ? 12 : 0 }}>
-                  <div style={{ fontFamily: F, fontSize: "clamp(16px,1.8vw,24px)", lineHeight: 1, color: "#F4F4F4" }}>{s.num}</div>
-                  <div style={{ fontFamily: M, fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
+                  <div style={{ fontFamily: F, fontSize: "clamp(15px,1.6vw,22px)", lineHeight: 1, color: "#F4F4F4" }}>{s.num}</div>
+                  <div style={{ fontFamily: M, fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* ── Coluna de imagem — fade orgânico na base, sem linha reta ── */}
+          <div style={{ position: "relative", width: "100%", aspectRatio: "4/3.3", alignSelf: "end" }}>
+            <Image
+              src="/images/site/mentores-corretos.-desktop.webp"
+              alt="Mentores Futebol Interativo"
+              fill
+              priority
+              style={{ objectFit: "contain", objectPosition: "bottom center" }}
+            />
+            {/* Fade orgânico que dissolve a base da imagem no fundo da seção — sem corte reto */}
+            <div style={{
+              position: "absolute", bottom: 0, left: 0, right: 0, height: "22%",
+              background: "linear-gradient(to top, #03263F 0%, rgba(3,38,63,0.7) 35%, transparent 100%)",
+              pointerEvents: "none",
+            }} />
           </div>
         </div>
       </div>
