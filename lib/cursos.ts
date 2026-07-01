@@ -111,12 +111,12 @@ export const cursos: Curso[] = [
     ],
 
     mentores: [
-      { nome: "André Velloso",    bio: "Head Scout do Atlético/MG",                                                          foto: "/images/mentores/mentor1.png" },
-      { nome: "Matheus Alvarez",  bio: "Coord. do Centro de Inteligência da Base do Santos",                                  foto: "/images/mentores/matheus-alvarez.webp" },
-      { nome: "Gabriel Gomes",    bio: "Scout do Bayer Leverkusen",                                                           foto: "/images/mentores/mentor2.png" },
-      { nome: "Caio Freitas",     bio: "Analista de Desempenho do Boavista S.C.",                                             foto: "/images/mentores/mentor3.png" },
-      { nome: "Leonardo Maciel",  bio: "Analista de Desempenho do Sub-20 da Seleção dos Emirados Árabes Unidos",              foto: "/images/mentores/mentor4.png" },
-      { nome: "Otávio Hoffmann",  bio: "Analista de Desempenho do Anápolis",                                                  foto: "/images/mentores/mentor5.png" },
+      { nome: "André Velloso",   bio: "Head Scout do Atlético/MG",                                                         foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Andre-Velloso.png" },
+      { nome: "Matheus Alvarez", bio: "Coord. do Centro de Inteligência da Base do Santos",                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Matheus-Alvarez.png" },
+      { nome: "Gabriel Gomes",   bio: "Scout do Bayer Leverkusen",                                                          foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/04/Gabriel-Gomes-Scout-do-Bayer-Leverkusen.png" },
+      { nome: "Caio Freitas",    bio: "Analista de Desempenho do Boavista S.C.",                                            foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/04/Caio-Freitas-1.png" },
+      { nome: "Leonardo Maciel", bio: "Analista de Desempenho do Sub-20 da Seleção dos Emirados Árabes Unidos",             foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Leonardo-Maciel-analista-de-desempenho-da-selecao-dos-Emirados-Arabes-U20.png" },
+      { nome: "Otávio Hoffmann", bio: "Analista de Desempenho do Anápolis",                                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Otavio-Hoffmann-Analista-de-Desempenho-do-Anapolis.png" },
     ],
 
     diferenciais: [
@@ -142,22 +142,24 @@ export const cursos: Curso[] = [
     ],
 
     depoimentos: [
-      { nome: "Rafael Mantovani", papel: "Contratado pelo Ituano após a Experiência Prática",          texto: "Depoimento sobre a jornada até a contratação no Ituano.",                              videoUrl: "https://www.youtube.com/watch?v=KEZ8JXbGvl4" },
-      { nome: "Otávio Hoffmann",  papel: "Experiência Prática no Bahia · hoje Analista do Atlético/MG", texto: "Da experiência prática no Bahia ao cargo de analista de desempenho.",                  videoUrl: "https://www.youtube.com/watch?v=OYYnYM1fhVg" },
-      { nome: "Ralff Frederico",  papel: "Experiência Prática no América/RJ",                          texto: "Experiência prática no departamento de análise de desempenho do América/RJ.", videoUrl: "https://www.youtube.com/watch?v=xlayC4Pn0RM" },
+      { nome: "Rafael Mantovani", papel: "Contratado pelo Ituano após a Experiência Prática",           videoUrl: "https://www.youtube.com/watch?v=KEZ8JXbGvl4",  texto: "Depoimento sobre a jornada até a contratação no Ituano." },
+      { nome: "Otávio Hoffmann",  papel: "Experiência Prática no Bahia · hoje Analista do Atlético/MG", videoUrl: "https://www.youtube.com/watch?v=OYYnYM1fhVg",   texto: "Da experiência prática no Bahia ao cargo de analista de desempenho." },
+      { nome: "Ralff Frederico",  papel: "Experiência Prática no América/RJ",                           videoUrl: "https://www.youtube.com/watch?v=xlayC4Pn0RM",   texto: "Experiência prática no departamento de análise de desempenho do América/RJ." },
     ],
 
     stats: [
-      { valor: "+4.500", label: "Alunos formados"   },
-      { valor: "120+",   label: "Clubes parceiros"  },
-      { valor: "150h",   label: "De conteúdo"       },
-      { valor: "15",     label: "Aulas ao vivo"     },
+      { valor: "+4.500", label: "Alunos formados"  },
+      { valor: "120+",   label: "Clubes parceiros" },
+      { valor: "150h",   label: "De conteúdo"      },
+      { valor: "15",     label: "Aulas ao vivo"    },
     ],
 
-    preco:          "12x R$ 533,99",
-    precoAvista:    "R$ 5.997,00",
-    checkoutUrl:    "https://pay.hub.la/eUrUSvogYqISw44PtERp",
-    garantiaTexto:  "Se você completar todas as aulas e a experiência prática e, depois de 12 meses, não estiver trabalhando no futebol, devolvemos 100% do seu investimento. Sem burocracia.",
+    preco:           "12x R$ 533,99",
+    precoAvista:     "R$ 5.997,00",
+    checkoutUrl:     "https://alunos.futebolinterativo.com/pay/4027-2-especializacao-analise-de-desempenho-e-mercado-turma-11",
+    hubspotPortalId: "46152446",
+    hubspotFormId:   "612e2e5f-7d2f-4535-8d74-10195b0df33e",
+    garantiaTexto:   "Se você completar todas as aulas e a experiência prática e, depois de 12 meses, não estiver trabalhando no futebol, devolvemos 100% do seu investimento. Sem burocracia.",
   },
 
   // ── demais cursos (somente campos básicos) ────────────────────────────
