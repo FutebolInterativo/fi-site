@@ -4,118 +4,97 @@ import type { Curso } from "@/lib/cursos";
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
-type Props = { curso: Curso };
-
-function Check() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, width: 17, height: 17, marginTop: 1 }}>
-      <circle cx="12" cy="12" r="11" fill="rgba(8,194,122,0.18)" />
-      <path d="M7.5 12.3l2.8 2.8L16.5 9" stroke="#08C27A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function Arrow() {
-  return (
-    <svg width={14} height={14} viewBox="0 0 24 24" fill="none">
-      <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-export default function CursoCTA({ curso }: Props) {
+export default function CursoCTA({ curso }: { curso: Curso }) {
   const url = curso.checkoutUrl || curso.externalUrl;
 
-  const checkItems = [
+  // "12x R$ 533,99" → parcelas=12, inteiro=533, centavos=99
+  const match    = curso.preco?.match(/(\d+)[xX]\s*R\$\s*(\d[\d.]*),(\d{2})/);
+  const parcelas = match?.[1];
+  const inteiro  = match?.[2];
+  const cents    = match?.[3];
+
+  // precoAvista pode vir com ou sem "R$" — limpa e exibe consistente
+  const avista   = curso.precoAvista?.replace(/^R\$\s*/, "").trim();
+
+  const items = [
     "Acesso completo ao conteúdo do curso",
     "Certificado de conclusão",
-    "Suporte com os mentores",
-    "Comunidade de alunos FI",
+    "Suporte direto com os mentores",
+    "Comunidade exclusiva de alunos FI",
+    "Experiência prática em clube parceiro",
   ];
-
-  // Tenta extrair "12x R$ 533,99"
-  const match = curso.preco?.match(/(\d+)[xX]\s*R\$\s*([\d.,]+)/);
-  const parcelas = match?.[1];
-  const valor = match?.[2]?.split(",");
 
   return (
     <div style={{
-      background: "linear-gradient(165deg, #16365C 0%, #0F2A47 100%)",
+      background: "linear-gradient(160deg, #0F2744 0%, #0A1E35 100%)",
       borderRadius: 24,
-      border: "1px solid rgba(140,200,245,0.12)",
-      boxShadow: "0 24px 60px -20px rgba(0,20,50,0.5)",
+      border: "1px solid rgba(64,150,242,0.2)",
+      boxShadow: "0 32px 64px -24px rgba(0,10,30,0.6)",
       overflow: "hidden",
     }}>
-
-      {/* ── Cabeçalho: faixa sutil acima do conteúdo, sem pílula flutuante ── */}
-      <div style={{ padding: "22px 26px 18px", borderBottom: "1px solid rgba(140,200,245,0.1)" }}>
-        <p style={{ fontFamily: M, fontWeight: 700, fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase" as const, color: "#7FC4F5" }}>
+      {/* Header */}
+      <div style={{ padding: "20px 26px 16px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+        <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.5)" }}>
           O que está incluso
         </p>
       </div>
 
-      {/* ── Checklist ── */}
-      <div style={{ padding: "20px 26px 4px" }}>
-        <ul style={{ listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 13 }}>
-          {checkItems.map((item, i) => (
-            <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 11, fontFamily: M, fontWeight: 500, fontSize: 13.5, lineHeight: 1.4, color: "rgba(255,255,255,0.88)" }}>
-              <Check />
-              <span>{item}</span>
+      {/* Checklist */}
+      <div style={{ padding: "18px 26px 0" }}>
+        <ul style={{ listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 12 }}>
+          {items.map((item, i) => (
+            <li key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.85)", lineHeight: 1.4 }}>
+              <svg width={18} height={18} viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+                <circle cx="9" cy="9" r="8.5" fill="rgba(8,194,122,0.16)" stroke="rgba(8,194,122,0.4)" strokeWidth="1"/>
+                <path d="M5 9l2.5 2.5L13 6.5" stroke="#08C27A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              {item}
             </li>
           ))}
         </ul>
       </div>
 
-      {/* ── Preço — hierarquia clara: label esquerda, número grande centralizado ── */}
-      <div style={{ margin: "22px 26px 0", paddingTop: 22, borderTop: "1px solid rgba(140,200,245,0.1)", textAlign: "center" as const }}>
+      {/* Preço */}
+      <div style={{ margin: "20px 26px 0", paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.07)", textAlign: "center" as const }}>
+        <p style={{ fontFamily: M, fontSize: 11.5, fontWeight: 600, color: "rgba(169,216,245,0.5)", marginBottom: 8, letterSpacing: "0.04em" }}>por apenas</p>
         {match ? (
           <>
-            <p style={{ fontFamily: M, fontWeight: 600, fontSize: 12.5, color: "rgba(207,226,243,0.7)", marginBottom: 6 }}>Por apenas</p>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 4 }}>
-              <span style={{ fontFamily: F, fontSize: 18, color: "#fff", paddingBottom: 8 }}>{parcelas}x</span>
-              <span style={{ fontFamily: F, fontSize: 22, color: "#fff", paddingBottom: 8 }}>R$</span>
-              <span style={{ fontFamily: F, fontSize: "clamp(48px,7vw,62px)", color: "#fff", lineHeight: 0.85 }}>{valor?.[0]}</span>
-              {valor?.[1] && <span style={{ fontFamily: F, fontSize: 22, color: "#fff", paddingBottom: 8 }}>,{valor[1]}</span>}
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 3, lineHeight: 1 }}>
+              <span style={{ fontFamily: F, fontSize: 16, color: "rgba(255,255,255,0.7)", paddingBottom: 10 }}>{parcelas}x R$</span>
+              <span style={{ fontFamily: F, fontSize: 60, color: "#fff", lineHeight: 0.88, letterSpacing: "-0.02em" }}>{inteiro}</span>
+              <span style={{ fontFamily: F, fontSize: 22, color: "rgba(255,255,255,0.7)", paddingBottom: 8 }}>,{cents}</span>
             </div>
-            {curso.precoAvista && (
-              <p style={{ fontFamily: M, fontWeight: 500, fontSize: 12.5, color: "rgba(207,226,243,0.55)", marginTop: 8 }}>
-                ou <strong style={{ color: "rgba(255,255,255,0.85)" }}>R$ {curso.precoAvista}</strong> à vista
+            {avista && (
+              <p style={{ fontFamily: M, fontSize: 12.5, color: "rgba(169,216,245,0.45)", marginTop: 10 }}>
+                ou <strong style={{ color: "rgba(255,255,255,0.75)", fontWeight: 700 }}>R$ {avista}</strong> à vista
               </p>
             )}
           </>
         ) : curso.preco ? (
-          <>
-            <p style={{ fontFamily: M, fontWeight: 600, fontSize: 12.5, color: "rgba(207,226,243,0.7)", marginBottom: 6 }}>Investimento</p>
-            <p style={{ fontFamily: F, fontSize: "clamp(28px,4vw,40px)", color: "#fff", lineHeight: 1 }}>{curso.preco}</p>
-          </>
+          <p style={{ fontFamily: F, fontSize: 36, color: "#fff" }}>{curso.preco}</p>
         ) : null}
       </div>
 
-      {/* ── Botão CTA ── */}
+      {/* Botão */}
       <div style={{ padding: "22px 26px 26px" }}>
         <a
           href={url}
           target="_blank"
           rel="noreferrer"
           style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
-            width: "100%",
-            padding: "15px 16px 15px 22px",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            gap: 12, width: "100%",
+            padding: "15px 18px 15px 24px",
             borderRadius: 14,
-            border: "1px solid rgba(8,194,122,0.6)",
-            background: "linear-gradient(135deg, #08C27A 0%, #059669 100%)",
-            boxShadow: "0 12px 28px -8px rgba(8,194,122,0.5)",
+            background: "linear-gradient(135deg, #08C27A, #059669)",
+            border: "1.5px solid rgba(8,194,122,0.6)",
+            boxShadow: "0 12px 32px -8px rgba(8,194,122,0.55)",
             textDecoration: "none",
-            overflow: "hidden",
           }}
         >
-          <span style={{ fontFamily: M, fontWeight: 700, fontSize: 14.5, color: "#fff" }}>Garantir minha vaga</span>
-          <span style={{ width: 32, height: 32, borderRadius: 9, background: "rgba(0,0,0,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <Arrow />
+          <span style={{ fontFamily: M, fontWeight: 700, fontSize: 15, color: "#fff" }}>Garantir minha vaga</span>
+          <span style={{ width: 34, height: 34, borderRadius: 10, background: "rgba(0,0,0,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <svg width={15} height={15} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </span>
         </a>
       </div>
