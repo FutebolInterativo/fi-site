@@ -49,8 +49,8 @@ function Chk({ c }: { c: string }) {
 }
 
 /* ── wrapper de seção ─────────────────────────────────────────────────── */
-const W = ({ children, dark = false, style = {} }: { children: React.ReactNode; dark?: boolean; style?: React.CSSProperties }) => (
-  <section style={{ background: dark ? "#020C18" : "#EEF4FF", padding: "clamp(64px,9vh,100px) 0", ...style }}>
+const W = ({ children, dark = false, style = {}, id }: { children: React.ReactNode; dark?: boolean; style?: React.CSSProperties; id?: string }) => (
+  <section id={id} style={{ background: dark ? "#020C18" : "#EEF4FF", padding: "clamp(64px,9vh,100px) 0", ...style }}>
     <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)" }}>{children}</div>
   </section>
 );
