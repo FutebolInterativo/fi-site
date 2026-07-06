@@ -43,24 +43,47 @@ function preconnectHubspot() {
   });
 }
 
+// UTMs fixas deste CTA — atribuem o lead a este botão específico,
+// independente de como o visitante chegou até a página.
+const UTM_PARAMS: Record<string, string> = {
+  utm_source: "site-fi",
+  utm_medium: "institucional",
+  utm_campaign: "site-institucional-falar-com-um-consultor",
+  utm_content: "botao-wa-final-lp",
+};
+
+function urlWithUtms(href: string): string {
+  const url = new URL(href);
+  Object.entries(UTM_PARAMS).forEach(([k, v]) => url.searchParams.set(k, v));
+  return url.toString();
+}
+
 /* ── Modal com formulário HubSpot ─────────────────────────────────── */
 function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const formHostRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
+  const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
   const [formReady, setFormReady] = useState(false);
 
-  // Monta o host do formulário assim que a página carrega (fica escondido)
-  // para que o HubSpot já processe o iframe antes do usuário clicar.
+  // Preconecta e carrega o script do HubSpot assim que a página monta
   useEffect(() => {
-    setMounted(true);
     preconnectHubspot();
     loadHubspotScript();
   }, []);
 
+  // A cada abertura: a URL já foi atualizada com as UTMs (ver openModal),
+  // então remontamos o host do formulário para que o HubSpot capture o
+  // contexto correto e pré-preencha os campos ocultos utm_*.
+  useEffect(() => {
+    if (!open) return;
+    setHasOpenedOnce(true);
+    setFormReady(false);
+    loadHubspotScript();
+  }, [open]);
+
   // Detecta quando o iframe do formulário foi injetado dentro do host
   useEffect(() => {
-    if (!mounted) return;
+    if (!open) return;
     const host = formHostRef.current;
     if (!host) return;
     if (host.querySelector("iframe")) { setFormReady(true); return; }
@@ -69,11 +92,6 @@ function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     });
     obs.observe(host, { childList: true, subtree: true });
     return () => obs.disconnect();
-  }, [mounted]);
-
-  // Fallback: se por algum motivo o preload não rodou, garante o carregamento ao abrir
-  useEffect(() => {
-    if (open) loadHubspotScript();
   }, [open]);
 
   // Fecha com ESC + trava scroll do body enquanto o modal está aberto
@@ -102,7 +120,7 @@ function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         opacity: open ? 1 : 0,
         pointerEvents: open ? "auto" : "none",
         transition: "opacity .2s ease",
-        visibility: mounted ? "visible" : "hidden",
+        visibility: hasOpenedOnce ? "visible" : "hidden",
       }}
     >
       <div
@@ -153,7 +171,7 @@ function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         `}} />
 
         <div style={{ position: "relative", minHeight: formReady ? 0 : 220 }}>
-          {/* spinner enquanto o iframe não chegou (fallback p/ preload que não deu tempo) */}
+          {/* spinner enquanto o iframe não chegou */}
           {!formReady && (
             <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", gap: 14 }}>
               <div style={{
@@ -165,7 +183,10 @@ function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
               <span style={{ fontFamily: M, fontSize: 11.5, fontWeight: 600, color: "rgba(169,216,245,0.4)" }}>Carregando formulário…</span>
             </div>
           )}
-          <div ref={formHostRef} className="hs-form-frame" data-region="na1" data-form-id={HS_FORM_ID} data-portal-id={HS_PORTAL_ID} style={{ opacity: formReady ? 1 : 0, transition: "opacity .25s ease" }} />
+          {/* montado só quando aberto: garante que o HubSpot leia a URL já com as UTMs */}
+          {open && (
+            <div ref={formHostRef} className="hs-form-frame" data-region="na1" data-form-id={HS_FORM_ID} data-portal-id={HS_PORTAL_ID} style={{ opacity: formReady ? 1 : 0, transition: "opacity .25s ease" }} />
+          )}
         </div>
         <style dangerouslySetInnerHTML={{ __html: `@keyframes hsSpin{to{transform:rotate(360deg)}}` }} />
       </div>
@@ -176,8 +197,24 @@ function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 /* ── CTA Final ─────────────────────────────────────────────────────── */
 export default function CTAFinal() {
   const [modalOpen, setModalOpen] = useState(false);
-  const openModal = useCallback(() => setModalOpen(true), []);
-  const closeModal = useCallback(() => setModalOpen(false), []);
+  const originalUrlRef = useRef<string | null>(null);
+
+  const openModal = useCallback(() => {
+    if (typeof window !== "undefined") {
+      originalUrlRef.current = window.location.href;
+      window.history.replaceState(window.history.state, "", urlWithUtms(window.location.href));
+    }
+    loadHubspotScript();
+    setModalOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false);
+    if (typeof window !== "undefined" && originalUrlRef.current) {
+      window.history.replaceState(window.history.state, "", originalUrlRef.current);
+      originalUrlRef.current = null;
+    }
+  }, []);
 
   return (
     <section style={{ background: "#03263F", padding: "80px 0" }}>
