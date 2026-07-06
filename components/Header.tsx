@@ -57,7 +57,7 @@ export default function Header() {
             <a href="https://alunos.futebolinterativo.com/" target="_blank" rel="noreferrer" className="hidden lg:block text-[13px] font-bold text-fi-lightblue px-4 py-2 rounded-full border border-fi-lightblue/30 hover:border-fi-blue transition-colors">
               Área do aluno
             </a>
-            <Link href="#areas" className="hidden sm:flex items-center gap-2 text-[13px] font-bold text-white px-4 py-2 rounded-xl" style={{ background: "linear-gradient(135deg,#08C27A,#05A567)", border: "1.4px solid rgba(8,194,122,0.9)", boxShadow: "0 0 20px rgba(8,194,122,0.4)" }}>
+            <Link href="/cursos" className="hidden sm:flex items-center gap-2 text-[13px] font-bold text-white px-4 py-2 rounded-xl" style={{ background: "linear-gradient(135deg,#08C27A,#05A567)", border: "1.4px solid rgba(8,194,122,0.9)", boxShadow: "0 0 20px rgba(8,194,122,0.4)" }}>
               Ver formações
               <span className="w-6 h-6 rounded-lg bg-fi-navy/50 flex items-center justify-center">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
