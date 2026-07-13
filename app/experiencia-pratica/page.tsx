@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MapaClubes from "@/components/MapaClubes";
+import PraticaInternacional from "@/components/PraticaInternacional";
 import Link from "next/link";
 
 const F = "var(--font-anton), Anton, sans-serif";
@@ -298,6 +299,9 @@ export default function ExperienciaPraticaPage() {
             </div>
           </div>
         </section>
+
+        {/* ════════════  PRÁTICA INTERNACIONAL  ════════════ */}
+        <PraticaInternacional />
 
         {/* ════════════  CTA FINAL  ════════════ */}
         <section style={{ background: "#03263F", padding: "clamp(72px,10vh,104px) 0" }}>
