@@ -193,8 +193,8 @@ export default function ExperienciaPraticaPage() {
         </section>
 
         {/* ════════════  STATS  ════════════ */}
-        <section style={{ background: "#03263F", padding: "clamp(40px,6vh,60px) 0" }}>
-          <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(130px,1fr))", gap: "clamp(20px,4vw,48px)", textAlign: "center" as const }}>
+        <section style={{ background: "#03263F", padding: "clamp(40px,6vh,60px) 0", borderTop: "1px solid rgba(140,200,245,0.1)" }}>
+          <div className="grid grid-cols-2 md:grid-cols-4" style={{ maxWidth: 860, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", gap: "32px clamp(16px,4vw,48px)", textAlign: "center" as const }}>
             {[
               { raw: "+130",   label: "Clubes parceiros" },
               { raw: "+4.500", label: "Alunos enviados" },
@@ -212,19 +212,20 @@ export default function ExperienciaPraticaPage() {
         </section>
 
         {/* ════════════  COMO FUNCIONA  ════════════ */}
-        <section id="como-funciona" style={{ background: "#03263F", padding: "clamp(72px,10vh,104px) 0" }}>
-          <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)" }}>
+        <section id="como-funciona" style={{ background: "#03263F", padding: "clamp(72px,10vh,104px) 0", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 50% 45% at 85% 10%,rgba(12,152,252,0.08),transparent 60%)", pointerEvents: "none" }} />
+          <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", position: "relative" }}>
             <FadeIn>
               <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "#A9D8F5", marginBottom: 12 }}>Passo a passo</p>
               <h2 style={{ fontFamily: F, fontSize: "clamp(28px,5vw,52px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 44 }}>COMO FUNCIONA A<br />EXPERIÊNCIA PRÁTICA?</h2>
             </FadeIn>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 14 }}>
+            <div className="grid sm:grid-cols-2 gap-4">
               {passos.map((p, i) => (
                 <FadeIn key={p.num} delay={i * 80}>
-                  <div className="ep-passo" style={{ padding: "28px 24px", borderRadius: 20, border: "1px solid rgba(140,200,245,0.12)", background: "linear-gradient(145deg,rgba(12,90,150,0.22),rgba(3,38,63,0.5))", height: "100%" }}>
-                    <div style={{ fontFamily: F, fontSize: 56, lineHeight: 1, color: "rgba(8,194,122,0.2)", marginBottom: 14 }}>{p.num}</div>
-                    <div style={{ fontFamily: F, fontSize: "clamp(17px,2vw,21px)", lineHeight: 1.05, color: "#F4F4F4", marginBottom: 10 }}>{p.titulo}</div>
-                    <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.58)", lineHeight: 1.65 }}>{p.desc}</p>
+                  <div className="ep-passo" style={{ padding: "32px 28px", borderRadius: 20, border: "1px solid rgba(140,200,245,0.12)", background: "linear-gradient(145deg,rgba(12,90,150,0.22),rgba(3,38,63,0.5))", height: "100%" }}>
+                    <div style={{ fontFamily: F, fontSize: 56, lineHeight: 1, color: "rgba(12,152,252,0.22)", marginBottom: 14 }}>{p.num}</div>
+                    <div style={{ fontFamily: F, fontSize: "clamp(18px,2vw,22px)", lineHeight: 1.1, color: "#F4F4F4", marginBottom: 10 }}>{p.titulo}</div>
+                    <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.58)", lineHeight: 1.65, maxWidth: 340 }}>{p.desc}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -232,22 +233,48 @@ export default function ExperienciaPraticaPage() {
           </div>
         </section>
 
-        {/* ════════════  VÍDEO PRINCIPAL  ════════════ */}
-        <section style={{ background: "#020C18", padding: "clamp(64px,9vh,96px) 0" }}>
-          <div style={{ maxWidth: 780, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)" }}>
+        {/* ════════════  O QUE VOCÊ VIVE LÁ DENTRO  ════════════ */}
+        <section style={{ background: "#020C18", padding: "clamp(72px,10vh,104px) 0", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 55% 45% at 15% 15%,rgba(12,152,252,0.08),transparent 60%)", pointerEvents: "none" }} />
+          <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", position: "relative" }}>
             <FadeIn>
-              <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "#A9D8F5", marginBottom: 12, textAlign: "center" as const }}>Veja como é</p>
-              <h2 style={{ fontFamily: F, fontSize: "clamp(26px,4.5vw,48px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 32, textAlign: "center" as const }}>A EXPERIÊNCIA NA PRÁTICA</h2>
-              <div style={{ borderRadius: 22, overflow: "hidden", aspectRatio: "16/9", background: "#021829", boxShadow: "0 24px 64px rgba(0,0,0,0.5)" }}>
-                <iframe
-                  src="https://www.youtube-nocookie.com/embed/892M4EUIp1w?rel=0&modestbranding=1"
-                  title="Experiência Prática Futebol Interativo"
-                  style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
+              <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "#A9D8F5", marginBottom: 12 }}>O que você vive lá dentro</p>
+              <h2 style={{ fontFamily: F, fontSize: "clamp(28px,5vw,52px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 16 }}>COMO É UM DIA DENTRO<br />DO CLUBE</h2>
+              <p style={{ fontFamily: M, fontSize: 15, fontWeight: 400, color: "rgba(244,244,244,0.55)", lineHeight: 1.75, maxWidth: 560, marginBottom: 48 }}>
+                Cada área tem sua rotina, mas alguns momentos se repetem para todo aluno durante os dias de imersão.
+              </p>
             </FadeIn>
+
+            <div style={{ position: "relative" }}>
+              <div style={{ position: "absolute", left: 19, top: 4, bottom: 4, width: 2, background: "linear-gradient(to bottom, rgba(169,216,245,0.35), rgba(169,216,245,0.05))" }} />
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 30 }}>
+                {[
+                  { titulo: "Chegada e integração", desc: "Você é recebido pela equipe do clube e conhece a estrutura, os processos e os profissionais do departamento.", icone: <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" /> },
+                  { titulo: "Rotina real do departamento", desc: "Atua lado a lado com quem trabalha ali todos os dias, usando as mesmas ferramentas e seguindo os mesmos processos.", icone: <path d="M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1ZM6 6h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" /> },
+                  { titulo: "Mentoria direta com profissionais", desc: "Recebe orientação de quem já está no mercado, tira dúvidas reais e recebe feedback sobre o próprio trabalho.", icone: <path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.7a8.3 8.3 0 0 1-.9-3.8A8.4 8.4 0 0 1 12.5 3a8.4 8.4 0 0 1 8.4 8.4Z" /> },
+                  { titulo: "Bastidores do dia de jogo", desc: "Acompanha a preparação de um jogo por dentro, vendo como cada área atua nas horas que antecedem a partida.", icone: <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1v18" /> },
+                  { titulo: "Entrega com propósito", desc: "Contribui com entregas reais para o departamento — o mesmo trabalho que fortalece o currículo na saída.", icone: <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM9 12l2 2 4-4" /> },
+                ].map((m, i) => (
+                  <FadeIn key={m.titulo} delay={i * 70}>
+                    <div style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
+                      <div style={{
+                        flexShrink: 0, width: 40, height: 40, borderRadius: "50%",
+                        background: "#03263F", border: "2px solid #0C98FC",
+                        display: "flex", alignItems: "center", justifyContent: "center", position: "relative", zIndex: 1,
+                      }}>
+                        <svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="#0C98FC" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          {m.icone}
+                        </svg>
+                      </div>
+                      <div style={{ paddingTop: 6 }}>
+                        <h3 style={{ fontFamily: F, fontSize: "clamp(16px,1.8vw,19px)", lineHeight: 1.1, color: "#F4F4F4", marginBottom: 6 }}>{m.titulo}</h3>
+                        <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.5)", lineHeight: 1.6, maxWidth: 520 }}>{m.desc}</p>
+                      </div>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -255,8 +282,9 @@ export default function ExperienciaPraticaPage() {
         <MapaClubes />
 
         {/* ════════════  DEPOIMENTOS  ════════════ */}
-        <section style={{ background: "#020C18", padding: "clamp(72px,10vh,104px) 0" }}>
-          <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)" }}>
+        <section style={{ background: "#020C18", padding: "clamp(72px,10vh,104px) 0", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 50% 40% at 90% 5%,rgba(8,194,122,0.06),transparent 60%)", pointerEvents: "none" }} />
+          <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", position: "relative" }}>
             <FadeIn>
               <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "#A9D8F5", marginBottom: 12 }}>Casos de sucesso</p>
               <h2 style={{ fontFamily: F, fontSize: "clamp(28px,5vw,52px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 36 }}>ALUNOS QUE FIZERAM E<br />FORAM CONTRATADOS</h2>
@@ -264,7 +292,7 @@ export default function ExperienciaPraticaPage() {
 
             {/* Tabs de área */}
             <FadeIn delay={100}>
-              <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8, marginBottom: 36 }}>
+              <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8, marginBottom: 36, justifyContent: "center" }}>
                 {AREAS.map((area) => {
                   const ativa = areaAtiva === area;
                   const c = AREA_COR[area];
