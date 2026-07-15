@@ -35,6 +35,7 @@ const socials = [
     path: "M16.6 5.82a4.7 4.7 0 0 1-2.9-1.03A4.68 4.68 0 0 1 12.06 1H9.13v13.4a2.59 2.59 0 1 1-1.83-2.48V8.85a5.62 5.62 0 1 0 4.66 5.55V9.01a7.6 7.6 0 0 0 4.64 1.57V7.65a4.68 4.68 0 0 1 0-1.83z",
   },
 ];
+
 const cols = [
   { title: "Formações", links: [
     { href: "/cursos?area=tecnica-e-tatica",      label: "Técnica e Tática" },
@@ -55,12 +56,30 @@ const cols = [
     { href: "https://alunos.futebolinterativo.com/", label: "Área do aluno", external: true },
   ]},
 ];
+
+/*
+  Contraste do footer melhorado: as cores anteriores usavam navy em
+  opacidade baixa (0.55 / 0.4 / 0.35) sobre fundo branco, resultando num
+  contraste abaixo do ideal. Trocado por tons sólidos e um azul mais
+  escuro (melhor contraste em fundo claro que o azul de marca padrão,
+  que é pensado pra fundo escuro).
+*/
+const NAVY = "#03263F";
+const TEXT_BODY = "#4A5D70";
+const TEXT_LINK = "#33495C";
+const TEXT_LINK_HOVER = "#0B72D9";
+const TITLE_BLUE = "#0B72D9";
+const TEXT_BOTTOM = "#5C7080";
+
 export default function Footer() {
   return (
-    <footer style={{ background:"#FFFFFF", borderTop:"1px solid rgba(3,38,63,0.1)" }}>
+    <footer style={{ background:"#FFFFFF", borderTop:"1px solid rgba(3,38,63,0.12)" }}>
       <style dangerouslySetInnerHTML={{ __html: `
         .fi-social{ transition: border-color .18s ease, background .18s ease; }
-        .fi-social:hover{ border-color: rgba(12,152,252,0.6) !important; background: rgba(12,152,252,0.1) !important; }
+        .fi-social:hover{ border-color: ${TITLE_BLUE} !important; background: rgba(11,114,217,0.1) !important; }
+        .fi-social:hover svg{ fill: ${TITLE_BLUE} !important; }
+        .fi-footer-link{ transition: color .16s ease; }
+        .fi-footer-link:hover{ color: ${TEXT_LINK_HOVER} !important; }
       `}} />
       <div className="max-w-6xl mx-auto px-6" style={{ paddingTop:48, paddingBottom:32 }}>
         <div className="grid md:grid-cols-4 gap-10" style={{ marginBottom:48 }}>
@@ -68,8 +87,8 @@ export default function Footer() {
             {/* TODO: logo.png é a versão branca (feita pra fundo escuro) — o filter
                 abaixo é um jeito provisório de deixá-la legível no footer branco.
                 O ideal é trocar por uma versão navy/escura do logo quando existir. */}
-            <Image src="https://futebolinterativo.com/novo-site/img/logo.png" alt="Futebol Interativo" width={140} height={36} style={{ height:32, width:"auto", marginBottom:16, filter:"invert(1) brightness(0.25)" }} />
-            <p style={{ fontFamily:M, fontSize:13, fontWeight:500, color:"rgba(3,38,63,0.55)", lineHeight:1.7, maxWidth:280 }}>Escola de formação profissional para o mercado do futebol. Fundada em 2018, incubada pela UFRN.</p>
+            <Image src="https://futebolinterativo.com/novo-site/img/logo.png" alt="Futebol Interativo" width={140} height={36} style={{ height:32, width:"auto", marginBottom:16, filter:"invert(1) brightness(0.2)" }} />
+            <p style={{ fontFamily:M, fontSize:13, fontWeight:500, color:TEXT_BODY, lineHeight:1.7, maxWidth:280 }}>Escola de formação profissional para o mercado do futebol. Fundada em 2018, incubada pela UFRN.</p>
             <div style={{ display:"flex", flexWrap:"wrap" as const, gap:8, marginTop:20 }}>
               {socials.map((s) => (
                 <a
@@ -81,25 +100,25 @@ export default function Footer() {
                   className="fi-social"
                   style={{
                     width:32, height:32, borderRadius:"50%",
-                    border:"1px solid rgba(3,38,63,0.14)",
+                    border:`1px solid rgba(3,38,63,0.3)`,
                     display:"flex", alignItems:"center", justifyContent:"center",
                     flexShrink:0,
                   }}
                 >
-                  <svg width={14} height={14} viewBox="0 0 24 24" fill="rgba(3,38,63,0.55)"><path d={s.path} /></svg>
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill={NAVY}><path d={s.path} /></svg>
                 </a>
               ))}
             </div>
           </div>
           {cols.map((col) => (
             <div key={col.title}>
-              <div style={{ fontFamily:F, fontSize:12, letterSpacing:"0.12em", textTransform:"uppercase" as const, color:"#0C98FC", marginBottom:16 }}>{col.title}</div>
+              <div style={{ fontFamily:F, fontSize:12, letterSpacing:"0.12em", textTransform:"uppercase" as const, color:TITLE_BLUE, marginBottom:16 }}>{col.title}</div>
               <ul style={{ listStyle:"none", display:"flex", flexDirection:"column" as const, gap:10 }}>
                 {col.links.map((l) => (
                   <li key={l.href}>
                     {"external" in l && l.external
-                      ? <a href={l.href} target="_blank" rel="noreferrer" style={{ fontFamily:M, fontSize:13, fontWeight:500, color:"rgba(3,38,63,0.55)" }}>{l.label}</a>
-                      : <Link href={l.href} style={{ fontFamily:M, fontSize:13, fontWeight:500, color:"rgba(3,38,63,0.55)" }}>{l.label}</Link>
+                      ? <a href={l.href} target="_blank" rel="noreferrer" className="fi-footer-link" style={{ fontFamily:M, fontSize:13, fontWeight:600, color:TEXT_LINK }}>{l.label}</a>
+                      : <Link href={l.href} className="fi-footer-link" style={{ fontFamily:M, fontSize:13, fontWeight:600, color:TEXT_LINK }}>{l.label}</Link>
                     }
                   </li>
                 ))}
@@ -107,9 +126,9 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div style={{ borderTop:"1px solid rgba(3,38,63,0.1)", paddingTop:24, display:"flex", flexWrap:"wrap" as const, alignItems:"center", justifyContent:"space-between", gap:12 }}>
-          <span style={{ fontFamily:M, fontSize:12, color:"rgba(3,38,63,0.4)" }}>© 2026 Futebol Interativo. Todos os direitos reservados.</span>
-          <span style={{ fontFamily:M, fontSize:11, color:"rgba(3,38,63,0.35)" }}>CNPJ 29.939.011/0001-13</span>
+        <div style={{ borderTop:"1px solid rgba(3,38,63,0.12)", paddingTop:24, display:"flex", flexWrap:"wrap" as const, alignItems:"center", justifyContent:"space-between", gap:12 }}>
+          <span style={{ fontFamily:M, fontSize:12, fontWeight:500, color:TEXT_BOTTOM }}>© 2026 Futebol Interativo. Todos os direitos reservados.</span>
+          <span style={{ fontFamily:M, fontSize:11, fontWeight:500, color:TEXT_BOTTOM }}>CNPJ 29.939.011/0001-13</span>
         </div>
       </div>
     </footer>

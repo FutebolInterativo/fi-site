@@ -5,24 +5,18 @@ import Link from "next/link";
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
-/*
-  IMPORTANTE: só existem fotos reais em /public/images/mentores/ para
-  mauro-beting, katy-matias e leonardo-bertozzi. As demais (precisaFoto: true)
-  precisam ser adicionadas nesse caminho — enquanto isso, o card cai no
-  fallback com a inicial do nome (a imagem quebrada é escondida via onError).
-*/
 const PROFESSORES = [
-  { foto: "/images/mentores/mauro-beting.webp",      nome: "Mauro Beting",      cargo: "Jornalista e Comentarista — SBT, Jovem Pan e outros veículos" },
-  { foto: "/images/mentores/katy-matias.webp",        nome: "Katy Matias",       cargo: "Nutricionista do Palmeiras" },
-  { foto: "/images/mentores/calza-neto.webp",         nome: "Calza Neto",        cargo: "DPO do Corinthians", precisaFoto: true },
-  { foto: "/images/mentores/henrique-almeida.webp",   nome: "Henrique Almeida",  cargo: "Diretor de Marketing e Negócios do Sport/PE", precisaFoto: true },
-  { foto: "/images/mentores/leonardo-bertozzi.webp",  nome: "Leonardo Bertozzi", cargo: "Jornalista e Comentarista na ESPN" },
-  { foto: "/images/mentores/eduardo-afonso.webp",     nome: "Eduardo Afonso",    cargo: "Jornalista e Repórter na ESPN", precisaFoto: true },
-  { foto: "/images/mentores/roberta-farias.webp",     nome: "Roberta Farias",    cargo: "Advogada do Cruzeiro", precisaFoto: true },
-  { foto: "/images/mentores/wilson-nakamura.webp",    nome: "Wilson Nakamura",   cargo: "Conselheiro e Diretor Estatutário do Palmeiras", precisaFoto: true },
-  { foto: "/images/mentores/rodrigo-salvador.webp",   nome: "Rodrigo Salvador",  cargo: "Coordenador de Analytics do Red Bull Bragantino", precisaFoto: true },
-  { foto: "/images/mentores/gabriel-gomes.webp",      nome: "Gabriel Gomes",     cargo: "Scout do Bayer Leverkusen", precisaFoto: true },
-  { foto: "/images/mentores/michelle-rios.webp",      nome: "Michelle Rios",     cargo: "Psicóloga do Atlético/MG", precisaFoto: true },
+  { foto: "/images/mentores/m-beting.png",    nome: "Mauro Beting",      cargo: "Jornalista e Comentarista — SBT, Jovem Pan e outros veículos" },
+  { foto: "/images/mentores/k-matias.png",    nome: "Katy Matias",       cargo: "Nutricionista do Palmeiras" },
+  { foto: "/images/mentores/c-neto.png",      nome: "Calza Neto",        cargo: "DPO do Corinthians" },
+  { foto: "/images/mentores/h-aguiar.png",    nome: "Henrique Almeida",  cargo: "Diretor de Marketing e Negócios do Sport/PE" },
+  { foto: "/images/mentores/l-bertozzi.png",  nome: "Leonardo Bertozzi", cargo: "Jornalista e Comentarista na ESPN" },
+  { foto: "/images/mentores/e-affonso.png",   nome: "Eduardo Afonso",    cargo: "Jornalista e Repórter na ESPN" },
+  { foto: "/images/mentores/r-farias.png",    nome: "Roberta Farias",    cargo: "Advogada do Cruzeiro" },
+  { foto: "/images/mentores/w-nakamura.png",  nome: "Wilson Nakamura",   cargo: "Conselheiro e Diretor Estatutário do Palmeiras" },
+  { foto: "/images/mentores/r-salvador.png",  nome: "Rodrigo Salvador",  cargo: "Coordenador de Analytics do Red Bull Bragantino" },
+  { foto: "/images/mentores/g-gomes.png",     nome: "Gabriel Gomes",     cargo: "Scout do Bayer Leverkusen" },
+  { foto: "/images/mentores/m-rios.png",      nome: "Michelle Rios",     cargo: "Psicóloga do Atlético/MG" },
 ];
 
 const VISIBLE = 4;
@@ -115,7 +109,7 @@ export default function NossaFormacao() {
                   position: "relative" as const,
                   borderRadius: 18,
                   overflow: "hidden",
-                  aspectRatio: "3/4",
+                  aspectRatio: "1/1",
                   background: "linear-gradient(155deg,#0A1E35,#0C5A9628)",
                 }}
               >
@@ -158,7 +152,7 @@ export default function NossaFormacao() {
         ))}
       </div>
 
-      {/* Fechamento — antes a seção não tinha um encerramento com CTA */}
+      {/* Fechamento */}
       <div style={{ textAlign: "center", padding: "0 20px" }}>
         <p style={{ fontFamily: F, fontSize: "clamp(18px,2.4vw,28px)", color: "#F4F4F4", lineHeight: 1.2, marginBottom: 22, maxWidth: 620, margin: "0 auto 22px" }}>
           São +100 profissionais do mercado.<br />Qual deles vai te ensinar primeiro?
