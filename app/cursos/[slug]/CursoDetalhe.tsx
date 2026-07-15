@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 import type { Curso } from "@/lib/cursos";
 import CursoCTA from "./CursoCTA";
-import CursoForm from "./CursoForm";
 
 /* ─── tokens de marca (Anton + Montserrat são a identidade visual do
    projeto — usados via arbitrary property do Tailwind, não via `style`,
@@ -151,8 +150,6 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
   const [tab,setTab]=useState<number|null>(0);
   const [sticky,setSticky]=useState(false);
   const url=curso.checkoutUrl??curso.externalUrl;
-  const comFoto=curso.mentores?.filter(m=>m.foto)??[];
-  const semFoto=curso.mentores?.filter(m=>!m.foto)??[];
 
   useEffect(()=>{
     const fn=()=>setSticky(window.scrollY>600);
@@ -183,7 +180,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
 
               {/* título — tipografia agressiva, tracking apertado */}
               <h1 className={`${FD} text-[38px] sm:text-5xl lg:text-6xl leading-tight tracking-tight text-white mb-5`}>
-                {curso.title}
+                {curso.heroTitle ?? curso.title}
               </h1>
 
               {curso.subheadline&&(
@@ -203,8 +200,26 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 </a>
               </div>
 
-              {/* stats */}
-              {(curso.cargaHoraria||curso.numAulas||curso.formato)&&(
+              {/* stats — usa heroStats (com itens de check quando valor="✓") ou cai no fallback antigo */}
+              {curso.heroStats&&curso.heroStats.length>0?(
+                <div className="flex flex-wrap gap-x-9 gap-y-4 border-t border-white/10 pt-7">
+                  {curso.heroStats.map((s,i)=>(
+                    <div key={i}>
+                      {s.valor==="✓"?(
+                        <div className="flex items-center gap-2">
+                          <svg width={16} height={16} viewBox="0 0 20 20" fill="none" className="flex-shrink-0"><path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          <span className={`${FB} text-[12.5px] font-bold text-white/75 leading-tight`}>{s.label}</span>
+                        </div>
+                      ):(
+                        <>
+                          <div className={`${FD} text-2xl lg:text-3xl text-white`}>{s.valor}</div>
+                          <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/30 mt-1.5`}>{s.label}</div>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ):(curso.cargaHoraria||curso.numAulas||curso.formato)&&(
                 <div className="flex flex-wrap gap-x-9 gap-y-4 border-t border-white/10 pt-7">
                   {[
                     curso.cargaHoraria&&{v:curso.cargaHoraria,l:"Carga horária"},
@@ -241,18 +256,23 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           <div className="absolute top-0 right-0 w-[460px] h-[460px] rounded-full blur-[120px] opacity-[0.09] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
             <FI className="mb-12 lg:mb-16 max-w-xl">
-              <Tag cor={cor}>O que muda</Tag>
+              <Tag cor={cor}>O que só existe aqui</Tag>
               <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mt-5`}>
-                POR QUE ESTA FORMAÇÃO É DIFERENTE
+                POR QUE ESTA FORMAÇÃO NÃO EXISTE EM NENHUM OUTRO LUGAR
               </h2>
             </FI>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {curso.diferenciais.map((d,i)=>(
-                <FI key={i} d={i*45} className="h-full rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md p-5 hover:border-white/[0.14] hover:bg-white/[0.04] transition-all duration-300">
-                  <span className={`${FD} text-3xl leading-none block mb-4`} style={{ color:`${cor}60` }}>{String(i+1).padStart(2,"0")}</span>
-                  <p className={`${FB} text-[13px] font-medium text-white/70 leading-relaxed`}>{d}</p>
-                </FI>
-              ))}
+            <div className="grid sm:grid-cols-2 gap-5">
+              {curso.diferenciais.map((d,i)=>{
+                const [lead,resto]=d.split("|");
+                return(
+                  <FI key={i} d={i*60} className="h-full rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md p-7 lg:p-8 hover:border-white/[0.14] hover:bg-white/[0.04] transition-all duration-300">
+                    <span className={`${FD} text-4xl leading-none block mb-5`} style={{ color:`${cor}60` }}>{String(i+1).padStart(2,"0")}</span>
+                    <p className={`${FB} text-[15px] leading-relaxed`}>
+                      <strong className="text-white font-bold">{lead}</strong>{resto?<span className="text-white/60"> {resto}</span>:null}
+                    </p>
+                  </FI>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -281,6 +301,23 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               ))}
             </div>
           </div>
+
+          {/* espelho: "Não é pra você se..." — aumenta credibilidade e filtra lead */}
+          {curso.naoEPara&&curso.naoEPara.length>0&&(
+            <div className="max-w-6xl mx-auto px-6 lg:px-10 mt-10">
+              <FI className="rounded-3xl border border-red-500/[0.15] bg-red-500/[0.03] backdrop-blur-md p-6 lg:p-8">
+                <p className={`${FB} text-[11px] font-bold tracking-[0.2em] uppercase text-red-300/60 mb-4`}>Não é pra você se</p>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  {curso.naoEPara.map((t,i)=>(
+                    <div key={i} className="flex items-start gap-2.5">
+                      <span className="text-red-400/70 font-bold leading-none mt-0.5">—</span>
+                      <span className={`${FB} text-[13px] font-medium text-white/55 leading-relaxed`}>{t}</span>
+                    </div>
+                  ))}
+                </div>
+              </FI>
+            </div>
+          )}
         </section>
       )}
 
@@ -341,37 +378,61 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               <span className={`${FD} text-lg`} style={{ color:`${cor}88` }}>{curso.ementa.length} módulos</span>
             </FI>
 
-            <div className="grid sm:grid-cols-2 gap-4">
-              {curso.ementa.map((item,i)=>{
-                const op=tab===i;
-                return(
-                  <FI key={i} d={i*30} className="h-full">
-                    <button
-                      onClick={()=>setTab(op?null:i)}
-                      className={`w-full h-full text-left rounded-2xl border p-5 backdrop-blur-md transition-all duration-300 ${op?"border-white/[0.16] bg-white/[0.05]":"border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.035]"}`}
-                    >
-                      <div className="flex items-center gap-4">
-                        <span
-                          className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center border-2 ${FD} text-[12.5px] transition-colors duration-300`}
-                          style={{ borderColor:op?cor:"rgba(255,255,255,0.12)", background:op?cor:"transparent", color:op?"#fff":"rgba(255,255,255,0.4)" }}
-                        >
-                          {String(i+1).padStart(2,"0")}
-                        </span>
-                        <span className={`${FB} flex-1 text-[14px] font-bold text-white leading-snug`}>{item.titulo}</span>
-                        <span className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-transform duration-300 ${op?"rotate-45":""}`} style={{ background:op?cor:"rgba(255,255,255,0.06)" }}>
-                          <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke={op?"#fff":"rgba(255,255,255,0.5)"} strokeWidth="2.5" strokeLinecap="round"/></svg>
-                        </span>
-                      </div>
-                      <div className={`grid transition-[grid-template-rows] duration-300 ${op?"grid-rows-[1fr]":"grid-rows-[0fr]"}`}>
-                        <div className="overflow-hidden">
-                          {item.descricao&&<p className={`${FB} text-[13px] text-white/45 leading-relaxed pt-4 pl-[52px]`}>{item.descricao}</p>}
-                        </div>
-                      </div>
-                    </button>
-                  </FI>
+            {(() => {
+              const GRUPOS: { key: "desempenho"|"mercado"|"entrada"; label: string }[] = [
+                { key: "desempenho", label: "Análise de Desempenho" },
+                { key: "mercado",    label: "Análise de Mercado" },
+                { key: "entrada",    label: "Sua Entrada no Mercado" },
+              ];
+              const AMARELO = "#F5C542";
+              let contador = 0;
+              return GRUPOS.map((g) => {
+                const itens = curso.ementa!.filter(it => (it.grupo ?? "desempenho") === g.key);
+                if (itens.length === 0) return null;
+                const destaque = g.key === "entrada";
+                return (
+                  <div key={g.key} className="mb-10 last:mb-0">
+                    <FI className="mb-5 flex items-center gap-3">
+                      <span className="h-[3px] w-7 rounded-full" style={{ background: destaque ? AMARELO : cor }} />
+                      <p className={`${FB} text-[12px] font-bold tracking-[0.14em] uppercase`} style={{ color: destaque ? AMARELO : "rgba(255,255,255,0.5)" }}>{g.label}</p>
+                    </FI>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {itens.map((item) => {
+                        const i = contador++;
+                        const op = tab === i;
+                        return (
+                          <FI key={i} d={i * 30} className="h-full">
+                            <button
+                              onClick={() => setTab(op ? null : i)}
+                              className={`w-full h-full text-left rounded-2xl border p-5 backdrop-blur-md transition-all duration-300 ${op ? "bg-white/[0.05]" : "bg-white/[0.02] hover:bg-white/[0.035]"}`}
+                              style={{ borderColor: op ? (destaque ? `${AMARELO}80` : "rgba(255,255,255,0.16)") : destaque ? `${AMARELO}30` : "rgba(255,255,255,0.06)" }}
+                            >
+                              <div className="flex items-center gap-4">
+                                <span
+                                  className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center border-2 ${FD} text-[12.5px] transition-colors duration-300`}
+                                  style={{ borderColor: op ? (destaque ? AMARELO : cor) : "rgba(255,255,255,0.12)", background: op ? (destaque ? AMARELO : cor) : "transparent", color: op ? "#03263F" : "rgba(255,255,255,0.4)" }}
+                                >
+                                  {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <span className={`${FB} flex-1 text-[14px] font-bold text-white leading-snug`}>{item.titulo}</span>
+                                <span className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-transform duration-300 ${op ? "rotate-45" : ""}`} style={{ background: op ? (destaque ? AMARELO : cor) : "rgba(255,255,255,0.06)" }}>
+                                  <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke={op ? "#03263F" : "rgba(255,255,255,0.5)"} strokeWidth="2.5" strokeLinecap="round"/></svg>
+                                </span>
+                              </div>
+                              <div className={`grid transition-[grid-template-rows] duration-300 ${op ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                                <div className="overflow-hidden">
+                                  {item.descricao && <p className={`${FB} text-[13px] text-white/45 leading-relaxed pt-4 pl-[52px]`}>{item.descricao}</p>}
+                                </div>
+                              </div>
+                            </button>
+                          </FI>
+                        );
+                      })}
+                    </div>
+                  </div>
                 );
-              })}
-            </div>
+              });
+            })()}
           </div>
         </section>
       )}
@@ -379,27 +440,61 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
       {/* ══════════════════════════════════════════════════════
           §4 MENTORES — grid assíncrono estilo elite
          ══════════════════════════════════════════════════════ */}
-      {curso.mentores&&curso.mentores.length>0&&(
+      {curso.mentores&&curso.mentores.length>0&&(() => {
+        const ancora = curso.mentores.find(m => m.ancora);
+        const resto = curso.mentores.filter(m => !m.ancora);
+        const restoComFoto = resto.filter(m => m.foto);
+        const restoSemFoto = resto.filter(m => !m.foto);
+        return(
         <section className="relative py-16 md:py-20 overflow-hidden">
           <div className="absolute top-0 left-0 w-[420px] h-[420px] rounded-full blur-[120px] opacity-[0.08] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
             <FI className="mb-10 lg:mb-14">
               <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-3`}>Quem vai te ensinar</p>
-              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white`}>OS MENTORES</h2>
+              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mb-4`}>MENTORES QUE ESTÃO NOS CLUBES AGORA</h2>
+              {curso.mentores.length>0&&(
+                <p className={`${FB} text-[14px] text-white/40`}>quem te dá aula na segunda, analisa jogo na quarta.</p>
+              )}
             </FI>
 
-            {comFoto.length>0&&(
+            {/* mentor-âncora — card grande, foto em ambiente de trabalho, frase 1ª pessoa */}
+            {ancora&&(
+              <FI className="mb-6">
+              <div className="rounded-3xl border p-6 lg:p-8 flex flex-col sm:flex-row gap-6 items-start" style={{ borderColor:`${cor}45`, background:"rgba(255,255,255,0.02)" }}>
+                <div className="relative w-full sm:w-40 h-40 rounded-2xl overflow-hidden flex-shrink-0" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={ancora.foto} alt={ancora.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}} className="absolute inset-0 w-full h-full object-cover object-top"/>
+                  {ancora.clubeTag&&(
+                    <span className={`${FD} absolute top-2 right-2 w-9 h-9 rounded-full flex items-center justify-center text-[10px] text-white border-2`} style={{ background:"#03263F", borderColor:cor }}>{ancora.clubeTag}</span>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <span className="inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] border mb-3" style={{ color:cor, borderColor:`${cor}45`, background:`${cor}14` }}>Mentor âncora</span>
+                  <p className={`${FD} text-xl text-white leading-tight mb-1`}>{ancora.nome}</p>
+                  <p className={`${FB} text-[13px] text-white/45 mb-4`}>{ancora.bio}{ancora.clube?<> · <strong className="text-white/70 font-bold">{ancora.clube}</strong></>:null}</p>
+                  {ancora.quote&&(
+                    <p className={`${FB} text-[15px] text-white/75 italic leading-relaxed border-l-2 pl-4`} style={{ borderColor:cor }}>&ldquo;{ancora.quote}&rdquo;</p>
+                  )}
+                </div>
+              </div>
+              </FI>
+            )}
+
+            {restoComFoto.length>0&&(
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-3">
-                {comFoto.map((m,i)=>(
+                {restoComFoto.map((m,i)=>(
                   <FI key={i} d={i*55} className="group relative rounded-2xl overflow-hidden border border-white/[0.06] aspect-[3/4]">
                     <div className="absolute inset-0" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}/>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
                       className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"/>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"/>
+                    {m.clubeTag&&(
+                      <span className={`${FD} absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center text-[9.5px] text-white border-2`} style={{ background:"#03263Fcc", borderColor:cor }}>{m.clubeTag}</span>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"/>
                     <div className="absolute inset-x-0 bottom-0 p-3.5">
                       <p className={`${FD} text-[13px] text-white leading-tight mb-1`}>{m.nome}</p>
-                      <p className={`${FB} text-[10.5px] font-semibold leading-snug opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-20 transition-all duration-300 overflow-hidden`} style={{ color:cor }}>
+                      <p className={`${FB} text-[10.5px] font-semibold leading-snug`} style={{ color:cor }}>
                         {m.bio}
                       </p>
                     </div>
@@ -407,9 +502,9 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 ))}
               </div>
             )}
-            {semFoto.length>0&&(
+            {restoSemFoto.length>0&&(
               <div className="grid sm:grid-cols-2 gap-3">
-                {semFoto.map((m,i)=>(
+                {restoSemFoto.map((m,i)=>(
                   <div key={i} className="flex items-center gap-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] p-4">
                     <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 border" style={{ background:`${cor}20`, borderColor:`${cor}45` }}>
                       <span className={`${FD} text-sm`} style={{ color:cor }}>{m.nome.charAt(0)}</span>
@@ -422,9 +517,19 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 ))}
               </div>
             )}
+
+            {/* fechamento — contagem + CTA, reforça "só ensina quem faz" */}
+            <FI className="mt-8 pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-4">
+              <p className={`${FB} text-[13px] font-semibold text-white/45`}>{curso.mentores.length} mentores · todos atuando em clubes profissionais hoje</p>
+              <a href="#ementa" className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor }}>
+                <span className={`${FB} text-[13px] font-bold`}>Aprenda com eles</span>
+                <svg width={12} height={12} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </a>
+            </FI>
           </div>
         </section>
-      )}
+        );
+      })()}
 
       {/* ══════════════════════════════════════════════════════
           §5 DEPOIMENTOS — masonry
@@ -476,44 +581,11 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background:cor }}/>
                 <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35`}>Última etapa · vagas limitadas</p>
               </div>
-              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mb-8`}>GARANTA SUA VAGA AGORA</h2>
-              <div className="flex flex-wrap gap-x-7 gap-y-3">
-                {["Garantia de 12 meses","Compra 100% segura","+4.500 alunos formados","Acesso vitalício"].map(t=>(
-                  <div key={t} className="flex items-center gap-2">
-                    <svg width={13} height={13} viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <span className={`${FB} text-[12.5px] font-semibold text-white/45`}>{t}</span>
-                  </div>
-                ))}
-              </div>
+              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mb-3`}>GARANTA SUA VAGA NA PRÓXIMA TURMA</h2>
+              <p className={`${FB} text-[15px] text-white/45 max-w-lg`}>Matricule-se agora ou tire suas dúvidas com um consultor antes de decidir.</p>
             </FI>
 
-            <div className="grid lg:grid-cols-2 gap-6 items-start">
-              <CursoCTA curso={curso} cor={cor}/>
-              {curso.hubspotPortalId&&curso.hubspotFormId&&(
-                <FI d={100}>
-                  <div className="flex flex-col rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-md p-7 lg:p-9">
-                    <p className={`${FD} text-lg lg:text-xl text-white mb-2 leading-tight`}>FALE COM UM CONSULTOR</p>
-                    <p className={`${FB} text-[13px] text-white/35 mb-6 leading-relaxed`}>Tire suas dúvidas antes de se inscrever.</p>
-                    <style dangerouslySetInnerHTML={{__html:`
-                      .hs-form-private input[type=text],.hs-form-private input[type=email],.hs-form-private input[type=tel],.hs-form-private select{background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.12)!important;border-radius:10px!important;color:#F4F4F4!important;padding:11px 14px!important;font-size:13.5px!important;width:100%!important;box-sizing:border-box!important;outline:none!important;}
-                      .hs-form-private input::placeholder{color:rgba(169,216,245,0.3)!important;}
-                      .hs-form-private select option{background:#0A1E35;color:#F4F4F4;}
-                      .hs-form-private label{font-size:10px!important;font-weight:700!important;letter-spacing:0.1em!important;text-transform:uppercase!important;color:rgba(169,216,245,0.45)!important;margin-bottom:6px!important;display:block!important;}
-                      .hs-form-private .hs-form-field{margin-bottom:14px!important;}
-                      .hs-form-private .hs-error-msgs{list-style:none!important;}
-                      .hs-form-private .hs-error-msgs li{color:#ff6b6b!important;font-size:11px!important;margin-top:4px!important;}
-                      .hs-form-private .hs-button{width:100%!important;padding:14px!important;background:linear-gradient(135deg,#08C27A,#059669)!important;border:none!important;border-radius:12px!important;color:#fff!important;font-size:14px!important;font-weight:700!important;cursor:pointer!important;margin-top:8px!important;box-shadow:0 8px 24px rgba(8,194,122,0.4)!important;}
-                      .hs-form-private .hs-button:hover{transform:translateY(-2px)!important;}
-                      .hs-form-private .inputs-list{list-style:none!important;}
-                      .hs-form-private .inputs-list li label{text-transform:none!important;font-size:13px!important;color:rgba(244,244,244,0.7)!important;letter-spacing:0!important;display:flex!important;align-items:center!important;gap:8px!important;}
-                    `}}/>
-                    <div className="flex-1">
-                      <CursoForm curso={curso}/>
-                    </div>
-                  </div>
-                </FI>
-              )}
-            </div>
+            <CursoCTA curso={curso} cor={cor}/>
           </div>
         </section>
       )}

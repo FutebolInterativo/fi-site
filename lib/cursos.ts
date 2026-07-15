@@ -4,6 +4,10 @@ export type Mentor = {
   nome: string;
   bio: string;
   foto: string;
+  clube?: string;      // label curto pro badge (ex: "Atlético-MG")
+  clubeTag?: string;   // sigla pro selo redondo (ex: "CAM")
+  ancora?: boolean;    // mentor em destaque (card grande) na seção
+  quote?: string;      // frase em 1ª pessoa, só usada quando ancora=true
 };
 
 export type Depoimento = {
@@ -13,7 +17,11 @@ export type Depoimento = {
   videoUrl?: string;
 };
 
-export type EmentaItem = { titulo: string; descricao?: string };
+export type EmentaItem = {
+  titulo: string;
+  descricao?: string;
+  grupo?: "desempenho" | "mercado" | "entrada"; // agrupamento visual da ementa
+};
 export type FaqItem = { q: string; a: string };
 export type Stat = { valor: string; label: string };
 
@@ -30,11 +38,14 @@ export type Curso = {
   // ---- conteúdo rico (todos opcionais) ----
   capa?: string;
   headline?: string;
+  heroTitle?: string;      // título só do H1 do hero — se ausente, usa `title`
   subheadline?: string;
   cargaHoraria?: string;
   numAulas?: string;
   formato?: string;
+  heroStats?: Stat[];      // se presente, substitui a barra derivada de cargaHoraria/numAulas/formato
   paraQuem?: string[];
+  naoEPara?: string[];     // bloco espelho "Não é pra você se..."
   ementa?: EmentaItem[];
   aprendizado?: string[];
   mentores?: Mentor[];
@@ -82,7 +93,14 @@ export const cursos: Curso[] = [
     cargaHoraria: "150h",
     numAulas:     "15",
     formato:      "100% Online",
-    subheadline:  "Forme-se analista de desempenho e mercado com mentores que trabalham nos maiores clubes do Brasil e do mundo.",
+    heroTitle:    "TORNE-SE O ANALISTA QUE OS CLUBES DISPUTAM",
+    subheadline:  "15 aulas ao vivo com analistas que trabalham nos maiores clubes do Brasil e do mundo, e experiência prática garantida dentro de um clube parceiro.",
+    heroStats: [
+      { valor: "150h",  label: "Carga horária" },
+      { valor: "15",    label: "Aulas ao vivo" },
+      { valor: "✓",     label: "Prática em clube garantida" },
+      { valor: "✓",     label: "Certificado" },
+    ],
 
     paraQuem: [
       "Quer trabalhar na análise de desempenho ou de mercado de um clube profissional",
@@ -92,42 +110,44 @@ export const cursos: Curso[] = [
       "Quer aprender a usar os softwares mais usados pelos clubes",
     ],
 
+    naoEPara: [
+      "Procura renda rápida ou \"trabalhar com futebol\" sem estudar de verdade",
+      "Quer só assistir aulas: aqui você vai praticar dentro de um clube",
+      "Acredita que paixão basta. O mercado exige método",
+    ],
+
     ementa: [
-      { titulo: "Por Dentro do Departamento de Análise", descricao: "Visão geral do funcionamento de um departamento de análise em um clube, suas funções, processos e integração com comissão técnica e diretoria." },
-      { titulo: "Modelos Estatísticos para Análise de Jogo", descricao: "Principais métricas e estatísticas usadas para avaliar o desempenho de jogadores e equipes, interpretando dados quantitativos no futebol." },
-      { titulo: "Análise de Treinos e Jogos da Própria Equipe", descricao: "Métodos para análise tática e técnica do próprio time, utilizando filmagens, relatórios e indicadores de desempenho." },
-      { titulo: "Utilização de Softwares de Análise", descricao: "Ferramentas mais usadas no mercado (como Wyscout e Once Sports) e como auxiliam na coleta, tratamento e apresentação de dados." },
-      { titulo: "Soft-skills para a Análise no Futebol", descricao: "Quais competências comportamentais um profissional precisa ter para ingressar e crescer na análise no futebol." },
-      { titulo: "Protocolos de Análise", descricao: "Criação de padrões para observação e avaliação de jogos, garantindo eficiência e consistência na coleta de informações." },
-      { titulo: "Relatórios e Visualização de Dados", descricao: "Estruturação de relatórios e visualizações claras a partir dos dados, com foco na comunicação com comissão técnica e diretoria." },
-      { titulo: "O Departamento de Análise de Mercado", descricao: "Como funciona o departamento de análise de mercado dentro do clube, suas responsabilidades e fluxos de trabalho." },
-      { titulo: "Ferramentas e Tecnologias para Análise de Mercado", descricao: "As principais ferramentas e tecnologias aplicadas à análise de mercado no futebol." },
-      { titulo: "Remuneração e Carreira na Análise", descricao: "Possibilidades de atuação e remuneração na área de análise no futebol." },
-      { titulo: "Identificação de Talentos", descricao: "Critérios e processos para identificação de talentos utilizados pelos melhores departamentos de scout do mundo." },
-      { titulo: "Análise de Mercado na Prática", descricao: "Da definição de necessidades do clube à apresentação de alvos, com simulações e estudos de caso reais." },
-      { titulo: "Valuation de Atletas e Transfermarkt", descricao: "Métodos para estimar o valor de mercado de um jogador e o uso estratégico de plataformas como o Transfermarkt." },
-      { titulo: "Montagem de um Elenco Profissional", descricao: "Equilíbrio entre posições, perfis táticos, idade, liderança e orçamento na construção de um elenco." },
-      { titulo: "Primeiros Passos Após a Experiência Prática", descricao: "Como aproveitar a experiência prática para dar o salto definitivo para o mercado profissional." },
+      { grupo: "desempenho", titulo: "Por Dentro do Departamento de Análise", descricao: "Visão geral do funcionamento de um departamento de análise em um clube, suas funções, processos e integração com comissão técnica e diretoria." },
+      { grupo: "desempenho", titulo: "Modelos Estatísticos para Análise de Jogo", descricao: "Principais métricas e estatísticas usadas para avaliar o desempenho de jogadores e equipes, interpretando dados quantitativos no futebol." },
+      { grupo: "desempenho", titulo: "Análise de Treinos e Jogos da Própria Equipe", descricao: "Métodos para análise tática e técnica do próprio time, utilizando filmagens, relatórios e indicadores de desempenho." },
+      { grupo: "desempenho", titulo: "Utilização de Softwares de Análise", descricao: "Ferramentas mais usadas no mercado (como Wyscout e Once Sports) e como auxiliam na coleta, tratamento e apresentação de dados." },
+      { grupo: "desempenho", titulo: "Protocolos de Análise", descricao: "Criação de padrões para observação e avaliação de jogos, garantindo eficiência e consistência na coleta de informações." },
+      { grupo: "desempenho", titulo: "Relatórios e Visualização de Dados", descricao: "Estruturação de relatórios e visualizações claras a partir dos dados, com foco na comunicação com comissão técnica e diretoria." },
+      { grupo: "mercado", titulo: "O Departamento de Análise de Mercado", descricao: "Como funciona o departamento de análise de mercado dentro do clube, suas responsabilidades e fluxos de trabalho." },
+      { grupo: "mercado", titulo: "Ferramentas e Tecnologias para Análise de Mercado", descricao: "As principais ferramentas e tecnologias aplicadas à análise de mercado no futebol." },
+      { grupo: "mercado", titulo: "Identificação de Talentos", descricao: "Critérios e processos para identificação de talentos utilizados pelos melhores departamentos de scout do mundo." },
+      { grupo: "mercado", titulo: "Análise de Mercado na Prática", descricao: "Da definição de necessidades do clube à apresentação de alvos, com simulações e estudos de caso reais." },
+      { grupo: "mercado", titulo: "Valuation de Atletas e Transfermarkt", descricao: "Métodos para estimar o valor de mercado de um jogador e o uso estratégico de plataformas como o Transfermarkt." },
+      { grupo: "mercado", titulo: "Montagem de um Elenco Profissional", descricao: "Equilíbrio entre posições, perfis táticos, idade, liderança e orçamento na construção de um elenco." },
+      { grupo: "entrada", titulo: "Soft-skills para a Análise no Futebol", descricao: "Quais competências comportamentais um profissional precisa ter para ingressar e crescer na análise no futebol." },
+      { grupo: "entrada", titulo: "Remuneração e Carreira na Análise", descricao: "Possibilidades de atuação e remuneração na área de análise no futebol." },
+      { grupo: "entrada", titulo: "Primeiros Passos Após a Experiência Prática", descricao: "Como aproveitar a experiência prática para dar o salto definitivo para o mercado profissional." },
     ],
 
     mentores: [
-      { nome: "André Velloso",   bio: "Head Scout do Atlético/MG",                                                         foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Andre-Velloso.png" },
-      { nome: "Matheus Alvarez", bio: "Coord. do Centro de Inteligência da Base do Santos",                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Matheus-Alvarez.png" },
-      { nome: "Gabriel Gomes",   bio: "Scout do Bayer Leverkusen",                                                          foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/04/Gabriel-Gomes-Scout-do-Bayer-Leverkusen.png" },
-      { nome: "Caio Freitas",    bio: "Analista de Desempenho do Boavista S.C.",                                            foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/04/Caio-Freitas-1.png" },
-      { nome: "Leonardo Maciel", bio: "Analista de Desempenho do Sub-20 da Seleção dos Emirados Árabes Unidos",             foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Leonardo-Maciel-analista-de-desempenho-da-selecao-dos-Emirados-Arabes-U20.png" },
-      { nome: "Otávio Hoffmann", bio: "Analista de Desempenho do Anápolis",                                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Otavio-Hoffmann-Analista-de-Desempenho-do-Anapolis.png" },
+      { nome: "Matheus Alvarez", bio: "Coord. do Centro de Inteligência da Base do Santos",                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Matheus-Alvarez.png", clube: "Santos FC", clubeTag: "SFC", ancora: true, quote: "Você vai aprender o processo que eu uso pra analisar a base do Santos — do vídeo bruto ao relatório na mesa da comissão." },
+      { nome: "André Velloso",   bio: "Head Scout do Atlético/MG",                                                         foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Andre-Velloso.png", clube: "Atlético-MG", clubeTag: "CAM" },
+      { nome: "Gabriel Gomes",   bio: "Scout do Bayer Leverkusen",                                                          foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/04/Gabriel-Gomes-Scout-do-Bayer-Leverkusen.png", clube: "Bayer Leverkusen", clubeTag: "B04" },
+      { nome: "Caio Freitas",    bio: "Analista de Desempenho do Boavista S.C.",                                            foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/04/Caio-Freitas-1.png", clube: "Boavista S.C.", clubeTag: "BOA" },
+      { nome: "Leonardo Maciel", bio: "Analista de Desempenho do Sub-20 da Seleção dos Emirados Árabes Unidos",             foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Leonardo-Maciel-analista-de-desempenho-da-selecao-dos-Emirados-Arabes-U20.png", clube: "Seleção EAU", clubeTag: "UAE" },
+      { nome: "Otávio Hoffmann", bio: "Analista de Desempenho do Anápolis",                                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Otavio-Hoffmann-Analista-de-Desempenho-do-Anapolis.png", clube: "Anápolis/GO", clubeTag: "ANA" },
     ],
 
     diferenciais: [
-      "Mentores que trabalham em clubes da Série A e no exterior",
-      "Conteúdo atualizado com o mercado atual — não teoria desatualizada",
-      "Experiência prática real dentro de um clube parceiro",
-      "Acesso vitalício ao material do curso",
-      "Comunidade exclusiva de alunos com vagas diárias",
-      "Suporte direto com a equipe FI durante todo o curso",
-      "Certificado reconhecido pelo mercado do futebol",
-      "Metodologia desenvolvida com profissionais de Atlético/MG, Santos e Leverkusen",
+      "Você termina dentro de um clube.|Experiência prática garantida em um dos +130 clubes parceiros. Não é promessa: é parte da formação.",
+      "Seus mentores estão no mercado agora.|Analistas que trabalham hoje em clubes da Série A e do futebol europeu, te ensinando o que usaram no último jogo.",
+      "Metodologia validada por quem contrata.|Construída com profissionais de Atlético-MG, Santos e Bayer Leverkusen.",
+      "Vagas reais, todos os dias.|Comunidade com oportunidades de mercado publicadas diariamente. Formação que não termina no certificado.",
     ],
 
     experienciaPratica: [
@@ -159,7 +179,7 @@ export const cursos: Curso[] = [
     checkoutUrl:     "https://alunos.futebolinterativo.com/pay/4027-2-especializacao-analise-de-desempenho-e-mercado-turma-11",
     hubspotPortalId: "46152446",
     hubspotFormId:   "612e2e5f-7d2f-4535-8d74-10195b0df33e",
-    garantiaTexto:   "Se você completar todas as aulas e a experiência prática e, depois de 12 meses, não estiver trabalhando no futebol, devolvemos 100% do seu investimento. Sem burocracia.",
+    garantiaTexto:   "Entre, assista às primeiras aulas e, se não for pra você, devolvemos 100% do valor em até 7 dias. Sem letra miúda.",
   },
 
   // ── demais cursos (somente campos básicos) ────────────────────────────

@@ -6,7 +6,6 @@ import Metodologia from "@/components/Metodologia";
 import NossaFormacao from "@/components/NossaFormacao";
 import Depoimentos from "@/components/Depoimentos";
 import NossaMissao from "@/components/NossaMissao";
-import PraticaInternacional from "@/components/PraticaInternacional";
 import CTAFinal from "@/components/CTAFinal";
 import Footer from "@/components/Footer";
 
@@ -22,7 +21,6 @@ export default function Home() {
         <NossaFormacao />
         <Depoimentos />
         <NossaMissao />
-        <PraticaInternacional />
         <CTAFinal />
       </main>
       <Footer />
