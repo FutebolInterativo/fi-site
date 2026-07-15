@@ -5,11 +5,20 @@ import Image from "next/image";
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
+/*
+  Alterações aplicadas (doc "Alterações site"):
+  - Texto de apoio trocado
+  - Stats reordenados: prática garantida primeiro; "+4.500" trocado de
+    "alunos formados" pra "em clubes parceiros" (consistente com o resto do site)
+  - Fonte do label "Clubes parceiros" aumentada
+  - Botão "Como funciona" removido (mobile + desktop)
+  - "Explorar formações" → "Conhecer formações"
+*/
 const stats = [
-  { num: "+25 mil", label: "Alunos formados" },
-  { num: "+130",    label: "Clubes parceiros" },
-  { num: "34",      label: "Formações" },
-  { num: "100%",    label: "Prática garantida" },
+  { num: "100%",   label: "Prática garantida" },
+  { num: "+130",   label: "Clubes parceiros", big: true },
+  { num: "+4.500", label: "Em clubes parceiros" },
+  { num: "34",     label: "Formações" },
 ];
 
 export default function Hero() {
@@ -36,20 +45,16 @@ export default function Hero() {
           </h1>
 
           <p style={{ fontFamily: M, fontSize: 14, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", marginBottom: 24 }}>
-            Escola de formação com cursos em todas as áreas do futebol. Aprenda online e conclui dentro de um dos nossos{" "}
-            <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>+130 clubes parceiros</strong>.
+            Você aprende com quem trabalha no futebol hoje e termina a formação dentro de um clube de verdade.{" "}
+            <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>É assim que se entra no mercado.</strong>
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
             <Link href="#areas" style={{ fontFamily: M, fontWeight: 700, fontSize: 15, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "14px 20px", borderRadius: 14, background: "linear-gradient(135deg,#08C27A,#05A567)", border: "1.4px solid rgba(8,194,122,0.9)", boxShadow: "0 0 24px rgba(8,194,122,0.45)", textDecoration: "none" }}>
-              Explorar formações
+              Conhecer formações
               <span style={{ width: 28, height: 28, borderRadius: 9, background: "rgba(3,38,63,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </span>
-            </Link>
-            <Link href="/experiencia-pratica" style={{ fontFamily: M, fontWeight: 600, fontSize: 14, color: "rgba(244,244,244,0.7)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 20px", borderRadius: 14, border: "1px solid rgba(140,200,245,0.2)", textDecoration: "none" }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
-              Como funciona
             </Link>
           </div>
 
@@ -63,7 +68,7 @@ export default function Hero() {
                 paddingTop:   i >= 2      ? 16 : 0,
               }}>
                 <div style={{ fontFamily: F, fontSize: "clamp(22px,6vw,28px)", lineHeight: 1, color: "#F4F4F4" }}>{s.num}</div>
-                <div style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
+                <div style={{ fontFamily: M, fontSize: s.big ? 12 : 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -98,20 +103,16 @@ export default function Hero() {
             </h1>
 
             <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", marginBottom: 28, maxWidth: 460 }}>
-              Escola de formação com cursos em todas as áreas do futebol. Você aprende online e conclui dentro de um dos nossos{" "}
-              <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>+130 clubes parceiros</strong>{" "}espalhados pelo Brasil.
+              Você aprende com quem trabalha no futebol hoje e termina a formação dentro de um clube de verdade.{" "}
+              <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>É assim que se entra no mercado.</strong>
             </p>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 44 }}>
               <Link href="#areas" style={{ fontFamily: M, fontWeight: 700, fontSize: 14, color: "#fff", display: "inline-flex", alignItems: "center", gap: 12, padding: "12px 20px", borderRadius: 14, background: "linear-gradient(135deg,#08C27A,#05A567)", border: "1.4px solid rgba(8,194,122,0.9)", boxShadow: "0 0 24px rgba(8,194,122,0.45)", textDecoration: "none" }}>
-                Explorar formações
+                Conhecer formações
                 <span style={{ width: 28, height: 28, borderRadius: 9, background: "rgba(3,38,63,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </span>
-              </Link>
-              <Link href="/experiencia-pratica" style={{ fontFamily: M, fontWeight: 600, fontSize: 14, color: "rgba(244,244,244,0.65)", display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 20px", borderRadius: 14, border: "1px solid rgba(140,200,245,0.2)", textDecoration: "none" }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
-                Como funciona
               </Link>
             </div>
 
@@ -119,7 +120,7 @@ export default function Hero() {
               {stats.map((s, i) => (
                 <div key={s.label} style={{ paddingRight: 12, borderRight: i < 3 ? "1px solid rgba(169,216,245,0.2)" : "none", paddingLeft: i > 0 ? 12 : 0 }}>
                   <div style={{ fontFamily: F, fontSize: "clamp(15px,1.6vw,22px)", lineHeight: 1, color: "#F4F4F4" }}>{s.num}</div>
-                  <div style={{ fontFamily: M, fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
+                  <div style={{ fontFamily: M, fontSize: s.big ? 10.5 : 9, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
                 </div>
               ))}
             </div>

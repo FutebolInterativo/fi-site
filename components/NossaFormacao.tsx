@@ -1,23 +1,34 @@
 "use client";
 import { useState, useRef, useCallback } from "react";
+import Link from "next/link";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
-const FOTOS = [
-  "/images/mentores/mauro-beting.webp",
-  "/images/mentores/thairo-arruda.webp",
-  "/images/mentores/leonardo-bertozzi.webp",
-  "/images/mentores/matheus-alvarez.webp",
-  "/images/mentores/katy-matias.webp",
+/*
+  IMPORTANTE: só existem fotos reais em /public/images/mentores/ para
+  mauro-beting, katy-matias e leonardo-bertozzi. As demais (precisaFoto: true)
+  precisam ser adicionadas nesse caminho — enquanto isso, o card cai no
+  fallback com a inicial do nome (a imagem quebrada é escondida via onError).
+*/
+const PROFESSORES = [
+  { foto: "/images/mentores/mauro-beting.webp",      nome: "Mauro Beting",      cargo: "Jornalista e Comentarista — SBT, Jovem Pan e outros veículos" },
+  { foto: "/images/mentores/katy-matias.webp",        nome: "Katy Matias",       cargo: "Nutricionista do Palmeiras" },
+  { foto: "/images/mentores/calza-neto.webp",         nome: "Calza Neto",        cargo: "DPO do Corinthians", precisaFoto: true },
+  { foto: "/images/mentores/henrique-almeida.webp",   nome: "Henrique Almeida",  cargo: "Diretor de Marketing e Negócios do Sport/PE", precisaFoto: true },
+  { foto: "/images/mentores/leonardo-bertozzi.webp",  nome: "Leonardo Bertozzi", cargo: "Jornalista e Comentarista na ESPN" },
+  { foto: "/images/mentores/eduardo-afonso.webp",     nome: "Eduardo Afonso",    cargo: "Jornalista e Repórter na ESPN", precisaFoto: true },
+  { foto: "/images/mentores/roberta-farias.webp",     nome: "Roberta Farias",    cargo: "Advogada do Cruzeiro", precisaFoto: true },
+  { foto: "/images/mentores/wilson-nakamura.webp",    nome: "Wilson Nakamura",   cargo: "Conselheiro e Diretor Estatutário do Palmeiras", precisaFoto: true },
+  { foto: "/images/mentores/rodrigo-salvador.webp",   nome: "Rodrigo Salvador",  cargo: "Coordenador de Analytics do Red Bull Bragantino", precisaFoto: true },
+  { foto: "/images/mentores/gabriel-gomes.webp",      nome: "Gabriel Gomes",     cargo: "Scout do Bayer Leverkusen", precisaFoto: true },
+  { foto: "/images/mentores/michelle-rios.webp",      nome: "Michelle Rios",     cargo: "Psicóloga do Atlético/MG", precisaFoto: true },
 ];
 
 const VISIBLE = 4;
-const N = FOTOS.length;
-
-// Triplicar para ter margem dos dois lados
-const TRACK = [...FOTOS, ...FOTOS, ...FOTOS];
-const ORIGIN = N; // índice onde começa o bloco do meio
+const N = PROFESSORES.length;
+const TRACK = [...PROFESSORES, ...PROFESSORES, ...PROFESSORES];
+const ORIGIN = N;
 
 export default function NossaFormacao() {
   const [offset, setOffset] = useState(ORIGIN);
@@ -30,15 +41,13 @@ export default function NossaFormacao() {
     setOffset(o => o + dir);
   }, []);
 
-  // Quando a transição termina, verifica se precisa reposicionar sem animação
   const onTransitionEnd = useCallback(() => {
     setOffset(o => {
-      const lo = ORIGIN;           // limite mínimo (início do bloco do meio)
-      const hi = ORIGIN + N - 1;   // limite máximo
+      const lo = ORIGIN;
+      const hi = ORIGIN + N - 1;
       if (o < lo || o > hi) {
         jumping.current = true;
         const normalized = ((o - ORIGIN) % N + N) % N + ORIGIN;
-        // Desliga transition, corrige posição
         setTransition(false);
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -63,24 +72,23 @@ export default function NossaFormacao() {
     transition: "border-color .2s, background .2s, transform .15s",
   };
 
-  // Largura de cada card como fração da janela visível
   const cardPct = 100 / VISIBLE;
 
   return (
     <section style={{ background: "linear-gradient(180deg,#020C18 0%,#03263F 55%,#020C18 100%)", padding: "clamp(64px,9vh,100px) 0", overflow: "hidden" }}>
 
       {/* Header */}
-      <div style={{ textAlign: "center", padding: "0 clamp(20px,4vw,48px)", marginBottom: "clamp(44px,6vh,64px)" }}>
+      <div style={{ textAlign: "center", padding: "0 clamp(20px,4vw,48px)", marginBottom: "clamp(28px,4vh,40px)" }}>
         <h2 style={{ fontFamily: F, fontSize: "clamp(28px,5vw,58px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 16 }}>
           NO FUTEBOL INTERATIVO,<br />SÓ ENSINA QUEM FAZ
         </h2>
         <p style={{ fontFamily: M, fontWeight: 500, fontSize: "clamp(14px,1.4vw,17px)", color: "rgba(169,216,245,0.5)", lineHeight: 1.6 }}>
-          Aprenda com quem vive o futebol todos os dias
+          +100 professores atuando hoje em clubes, seleções e imprensa esportiva
         </p>
       </div>
 
       {/* Carrossel */}
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(16px,3vw,40px)", display: "flex", alignItems: "center", gap: "clamp(10px,1.5vw,20px)" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(16px,3vw,40px)", display: "flex", alignItems: "center", gap: "clamp(10px,1.5vw,20px)", marginBottom: 40 }}>
 
         <button onClick={() => go(-1)} style={BtnStyle} aria-label="Anterior"
           onMouseEnter={e=>{const b=e.currentTarget;b.style.borderColor="rgba(12,152,252,0.6)";b.style.background="rgba(12,90,150,0.4)";b.style.transform="scale(1.08)";}}
@@ -88,31 +96,46 @@ export default function NossaFormacao() {
           <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#A9D8F5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
 
-        {/* Janela */}
         <div style={{ flex: 1, overflow: "hidden" }}>
           <div
             onTransitionEnd={onTransitionEnd}
             style={{
               display: "flex",
               gap: "clamp(10px,1.5vw,18px)",
-              // Cada card ocupa 1/VISIBLE da janela; desloca por quantos cards passamos
               transform: `translateX(calc(-${offset} * (${cardPct}% + clamp(10px,1.5vw,18px) / ${VISIBLE})))`,
               transition: transition ? "transform .45s cubic-bezier(.4,0,.2,1)" : "none",
               willChange: "transform",
             }}
           >
-            {TRACK.map((foto, i) => (
+            {TRACK.map((p, i) => (
               <div
                 key={i}
                 style={{
                   flex: `0 0 calc(${cardPct}% - clamp(10px,1.5vw,18px) * ${(VISIBLE - 1) / VISIBLE})`,
+                  position: "relative" as const,
                   borderRadius: 18,
                   overflow: "hidden",
-                  boxShadow: "none",
+                  aspectRatio: "3/4",
+                  background: "linear-gradient(155deg,#0A1E35,#0C5A9628)",
                 }}
               >
+                {/* fallback com inicial — fica visível até a imagem carregar por cima */}
+                <div style={{ position: "absolute" as const, inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: F, fontSize: 40, color: "rgba(169,216,245,0.35)" }}>
+                  {p.nome.charAt(0)}
+                </div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={foto} alt="" loading="lazy" style={{ width: "100%", height: "auto", display: "block" }} />
+                <img
+                  src={p.foto}
+                  alt={p.nome}
+                  loading="lazy"
+                  onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  style={{ position: "absolute" as const, inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
+                />
+                <div style={{ position: "absolute" as const, bottom: 0, left: 0, right: 0, height: "58%", background: "linear-gradient(to top, rgba(1,14,27,0.95), transparent)" }} />
+                <div style={{ position: "absolute" as const, bottom: 12, left: 12, right: 12 }}>
+                  <p style={{ fontFamily: F, fontSize: "clamp(12px,1.3vw,15px)", color: "#fff", lineHeight: 1.1, marginBottom: 4 }}>{p.nome}</p>
+                  <p style={{ fontFamily: M, fontSize: 10.5, fontWeight: 600, color: "rgba(169,216,245,0.75)", lineHeight: 1.3 }}>{p.cargo}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -126,13 +149,24 @@ export default function NossaFormacao() {
       </div>
 
       {/* Dots */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 28 }}>
-        {FOTOS.map((_, i) => (
+      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 48 }}>
+        {PROFESSORES.map((_, i) => (
           <button key={i}
             onClick={() => { setTransition(true); setOffset(ORIGIN + i); }}
             style={{ width: i === activeIndex ? 22 : 7, height: 7, borderRadius: 99, border: "none", padding: 0, cursor: "pointer", background: i === activeIndex ? "#0C98FC" : "rgba(169,216,245,0.25)", transition: "width .3s ease, background .3s ease" }}
             aria-label={`Professor ${i + 1}`} />
         ))}
+      </div>
+
+      {/* Fechamento — antes a seção não tinha um encerramento com CTA */}
+      <div style={{ textAlign: "center", padding: "0 20px" }}>
+        <p style={{ fontFamily: F, fontSize: "clamp(18px,2.4vw,28px)", color: "#F4F4F4", lineHeight: 1.2, marginBottom: 22, maxWidth: 620, margin: "0 auto 22px" }}>
+          São +100 profissionais do mercado.<br />Qual deles vai te ensinar primeiro?
+        </p>
+        <Link href="/cursos" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: 14, background: "linear-gradient(135deg,#08C27A,#059669)", boxShadow: "0 0 36px rgba(8,194,122,0.4)", fontFamily: M, fontWeight: 700, fontSize: 14, color: "#fff", textDecoration: "none" }}>
+          Conheça as formações
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </Link>
       </div>
 
     </section>
