@@ -67,7 +67,7 @@ export default function Depoimentos() {
                   display: "flex",
                   flexDirection: "column",
                   height: "100%",
-                  padding: "36px 30px 30px",
+                  padding: "26px 24px 24px",
                   borderRadius: 22,
                   border: "1px solid rgba(140,200,245,0.16)",
                   background: "linear-gradient(160deg, rgba(12,98,160,0.32), rgba(3,38,63,0.55))",
@@ -78,8 +78,8 @@ export default function Depoimentos() {
                 {/* aspas decorativas — assinatura visual do card */}
                 <span
                   style={{
-                    position: "absolute", top: -8, right: 20,
-                    fontFamily: F, fontSize: 112, lineHeight: 1,
+                    position: "absolute", top: -6, right: 16,
+                    fontFamily: F, fontSize: 84, lineHeight: 1,
                     color: "rgba(169,216,245,0.08)",
                     pointerEvents: "none",
                     userSelect: "none" as const,
@@ -89,24 +89,24 @@ export default function Depoimentos() {
                   &rdquo;
                 </span>
 
-                <p style={{ fontFamily: M, fontSize: 17, fontWeight: 500, color: "rgba(244,244,244,0.85)", lineHeight: 1.68, flex: 1, marginBottom: 28, position: "relative" }}>
+                <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.8)", lineHeight: 1.55, flex: 1, marginBottom: 22, position: "relative" }}>
                   &ldquo;{d.quote}&rdquo;
                 </p>
 
-                <div style={{ display: "flex", alignItems: "center", gap: 16, paddingTop: 22, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={d.foto}
                     alt={d.name}
                     style={{
-                      width: 84, height: 84, borderRadius: "50%", objectFit: "cover", flexShrink: 0,
+                      width: 112, height: 112, borderRadius: "50%", objectFit: "cover", flexShrink: 0,
                       border: `2.5px solid ${AZUL}55`,
                       boxShadow: "0 8px 22px rgba(0,0,0,0.35)",
                     }}
                   />
                   <div>
-                    <div style={{ fontFamily: F, fontSize: 18.5, lineHeight: 1.15, color: "#F4F4F4" }}>{d.name}</div>
-                    <div style={{ fontFamily: M, fontSize: 13.5, fontWeight: 600, color: AZUL_CLARO, marginTop: 6 }}>{d.role}</div>
+                    <div style={{ fontFamily: F, fontSize: 17, lineHeight: 1.15, color: "#F4F4F4" }}>{d.name}</div>
+                    <div style={{ fontFamily: M, fontSize: 13, fontWeight: 600, color: AZUL_CLARO, marginTop: 6 }}>{d.role}</div>
                   </div>
                 </div>
               </div>

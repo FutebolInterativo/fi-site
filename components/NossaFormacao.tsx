@@ -19,11 +19,19 @@ const PROFESSORES = [
   { foto: "/images/mentores/m-rios.png",      nome: "Michelle Rios",     cargo: "Psicóloga do Atlético/MG" },
 ];
 
-const VISIBLE = 4;
 const N = PROFESSORES.length;
 const TRACK = [...PROFESSORES, ...PROFESSORES, ...PROFESSORES];
 const ORIGIN = N;
 
+/*
+  Ajuste mobile: antes o carrossel sempre mostrava 4 cards por vez (VISIBLE
+  fixo), o que deixava cada card com ~80px de largura num celular — selo e
+  texto ilegíveis. Agora o número de cards visíveis é controlado por uma
+  custom property CSS (--nf-visible), trocada via media query:
+  celular ~1.15 card (1 cheio + uma "espiadinha" do próximo, convida a arrastar),
+  tablet ~2.3, desktop 4 (igual antes). O cálculo de flex/transform abaixo
+  usa var(--nf-visible) em vez do número fixo, então tudo se adapta sozinho.
+*/
 export default function NossaFormacao() {
   const [offset, setOffset] = useState(ORIGIN);
   const [transition, setTransition] = useState(true);
@@ -66,10 +74,15 @@ export default function NossaFormacao() {
     transition: "border-color .2s, background .2s, transform .15s",
   };
 
-  const cardPct = 100 / VISIBLE;
+  const css = `
+    .nf-track { --nf-visible: 4; }
+    @media (max-width: 640px) { .nf-track { --nf-visible: 1.15; } }
+    @media (min-width: 641px) and (max-width: 1023px) { .nf-track { --nf-visible: 2.3; } }
+  `;
 
   return (
     <section style={{ background: "linear-gradient(180deg,#020C18 0%,#03263F 55%,#020C18 100%)", padding: "clamp(64px,9vh,100px) 0", overflow: "hidden" }}>
+      <style dangerouslySetInnerHTML={{ __html: css }} />
 
       {/* Header */}
       <div style={{ textAlign: "center", padding: "0 clamp(20px,4vw,48px)", marginBottom: "clamp(28px,4vh,40px)" }}>
@@ -82,9 +95,9 @@ export default function NossaFormacao() {
       </div>
 
       {/* Carrossel */}
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(16px,3vw,40px)", display: "flex", alignItems: "center", gap: "clamp(10px,1.5vw,20px)", marginBottom: 40 }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(16px,3vw,40px)", display: "flex", alignItems: "center", gap: "clamp(8px,1.5vw,20px)", marginBottom: 40 }}>
 
-        <button onClick={() => go(-1)} style={BtnStyle} aria-label="Anterior"
+        <button onClick={() => go(-1)} style={{ ...BtnStyle, width: "clamp(36px,8vw,48px)", height: "clamp(36px,8vw,48px)" }} aria-label="Anterior"
           onMouseEnter={e=>{const b=e.currentTarget;b.style.borderColor="rgba(12,152,252,0.6)";b.style.background="rgba(12,90,150,0.4)";b.style.transform="scale(1.08)";}}
           onMouseLeave={e=>{const b=e.currentTarget;b.style.borderColor="rgba(169,216,245,0.25)";b.style.background="rgba(3,38,63,0.8)";b.style.transform="scale(1)";}}>
           <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#A9D8F5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -92,11 +105,12 @@ export default function NossaFormacao() {
 
         <div style={{ flex: 1, overflow: "hidden" }}>
           <div
+            className="nf-track"
             onTransitionEnd={onTransitionEnd}
             style={{
               display: "flex",
-              gap: "clamp(10px,1.5vw,18px)",
-              transform: `translateX(calc(-${offset} * (${cardPct}% + clamp(10px,1.5vw,18px) / ${VISIBLE})))`,
+              gap: "clamp(8px,1.5vw,18px)",
+              transform: `translateX(calc(-${offset} * (100% / var(--nf-visible) + clamp(8px,1.5vw,18px) / var(--nf-visible))))`,
               transition: transition ? "transform .45s cubic-bezier(.4,0,.2,1)" : "none",
               willChange: "transform",
             }}
@@ -105,7 +119,7 @@ export default function NossaFormacao() {
               <div
                 key={i}
                 style={{
-                  flex: `0 0 calc(${cardPct}% - clamp(10px,1.5vw,18px) * ${(VISIBLE - 1) / VISIBLE})`,
+                  flex: `0 0 calc(100% / var(--nf-visible) - clamp(8px,1.5vw,18px) * (var(--nf-visible) - 1) / var(--nf-visible))`,
                   position: "relative" as const,
                   borderRadius: 18,
                   overflow: "hidden",
@@ -127,15 +141,15 @@ export default function NossaFormacao() {
                 />
                 <div style={{ position: "absolute" as const, bottom: 0, left: 0, right: 0, height: "58%", background: "linear-gradient(to top, rgba(1,14,27,0.95), transparent)" }} />
                 <div style={{ position: "absolute" as const, bottom: 12, left: 12, right: 12 }}>
-                  <p style={{ fontFamily: F, fontSize: "clamp(12px,1.3vw,15px)", color: "#fff", lineHeight: 1.1, marginBottom: 4 }}>{p.nome}</p>
-                  <p style={{ fontFamily: M, fontSize: 10.5, fontWeight: 600, color: "rgba(169,216,245,0.75)", lineHeight: 1.3 }}>{p.cargo}</p>
+                  <p style={{ fontFamily: F, fontSize: "clamp(13px,3.2vw,15px)", color: "#fff", lineHeight: 1.1, marginBottom: 4 }}>{p.nome}</p>
+                  <p style={{ fontFamily: M, fontSize: "clamp(10.5px,2.6vw,11px)", fontWeight: 600, color: "rgba(169,216,245,0.75)", lineHeight: 1.3 }}>{p.cargo}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <button onClick={() => go(1)} style={BtnStyle} aria-label="Próximo"
+        <button onClick={() => go(1)} style={{ ...BtnStyle, width: "clamp(36px,8vw,48px)", height: "clamp(36px,8vw,48px)" }} aria-label="Próximo"
           onMouseEnter={e=>{const b=e.currentTarget;b.style.borderColor="rgba(12,152,252,0.6)";b.style.background="rgba(12,90,150,0.4)";b.style.transform="scale(1.08)";}}
           onMouseLeave={e=>{const b=e.currentTarget;b.style.borderColor="rgba(169,216,245,0.25)";b.style.background="rgba(3,38,63,0.8)";b.style.transform="scale(1)";}}>
           <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#A9D8F5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>

@@ -14,34 +14,16 @@ const passos = [
     num: "01",
     titulo: "APRENDA COM QUEM ESTÁ NO MERCADO",
     desc: "Aulas ao vivo com profissionais que trabalham hoje em clubes e instituições do futebol. Você aprende o que o mercado exige — direto de quem contrata e entrega.",
-    icon: (
-      <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-        <path d="M4 19.5V6a2 2 0 012-2h13a1 1 0 011 1v13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M6 22a2 2 0 01-2-2v-.5a1 1 0 011-1h15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M9 7.5h7M9 11h7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
-    ),
   },
   {
     num: "02",
     titulo: "VIVA O DIA A DIA DE UM CLUBE",
     desc: "Prática garantida em um dos +130 clubes parceiros. Não é estágio simbólico: é você dentro da operação, resolvendo problemas reais e construindo relacionamento com quem já está lá dentro.",
-    icon: (
-      <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-        <path d="M4 21V9.5L12 3l8 6.5V21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M9.5 21v-6a2.5 2.5 0 015 0v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
   },
   {
     num: "03",
     titulo: "ENTRE NO MERCADO COM HISTÓRIA PRA CONTAR",
     desc: "Você sai com repertório técnico, vivência de clube no currículo e uma rede de contatos que abre portas. Preparado não só para a primeira oportunidade, mas para crescer nela.",
-    icon: (
-      <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-        <path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
   },
 ];
 
@@ -72,8 +54,8 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   return <div ref={ref}>{children}</div>;
 }
 
-/* marcador da trilha — círculo opaco (evita transparência atravessando a linha) */
-function Marcador({ destaque, icon }: { destaque: boolean; icon: React.ReactNode }) {
+/* marcador da trilha — círculo opaco com a numeração do passo (evita transparência atravessando a linha) */
+function Marcador({ destaque, num }: { destaque: boolean; num: string }) {
   return (
     <div
       style={{
@@ -86,7 +68,7 @@ function Marcador({ destaque, icon }: { destaque: boolean; icon: React.ReactNode
         boxShadow: destaque ? "0 0 0 6px rgba(12,152,252,0.14)" : "none",
       }}
     >
-      {icon}
+      <span style={{ fontFamily: F, fontSize: 18, lineHeight: 1 }}>{num}</span>
     </div>
   );
 }
@@ -156,7 +138,7 @@ export default function Metodologia() {
           <div className="grid grid-cols-3">
             {passos.map((p, i) => (
               <div key={p.num} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
-                <Marcador destaque={i === passos.length - 1} icon={p.icon} />
+                <Marcador destaque={i === passos.length - 1} num={p.num} />
                 <span style={{ fontFamily: M, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)" }}>
                   Passo {p.num}
                 </span>
@@ -189,7 +171,7 @@ export default function Metodologia() {
               return (
                 <FadeIn key={p.num} delay={i * 90}>
                   <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                    <Marcador destaque={destaque} icon={p.icon} />
+                    <Marcador destaque={destaque} num={p.num} />
                     <div style={{ flex: 1, paddingTop: 2 }}>
                       <span style={{ fontFamily: M, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)", display: "block", marginBottom: 8 }}>
                         Passo {p.num}

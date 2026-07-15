@@ -5,6 +5,8 @@ const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 const ATUAL = 2100; // manter sincronizado com o número usado no resto do site
+const META = 10000;
+const PROGRESSO = Math.round((ATUAL / META) * 100);
 
 /* ── FadeIn ──────────────────────────────────────────────────────── */
 function FadeIn({ children, delay = 0, y = 18 }: { children: React.ReactNode; delay?: number; y?: number }) {
@@ -46,19 +48,53 @@ function Counter({ value }: { value: number }) {
   return <span ref={ref}>+0</span>;
 }
 
-/* ── Padrão de campo (linhas de futebol) ─────────────────────────── */
-function PitchPattern() {
+/* ── ProgressBar — animação de largura ao entrar na viewport ──────── */
+function ProgressBar({ pct }: { pct: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { el.style.width = pct + "%"; obs.disconnect(); }
+    }, { threshold: 0.4 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [pct]);
+  return (
+    <div style={{ width: "100%", maxWidth: 460, margin: "0 auto" }}>
+      <div style={{ height: 8, borderRadius: 99, background: "rgba(255,255,255,0.07)", overflow: "hidden", position: "relative" as const }}>
+        <div
+          ref={ref}
+          style={{
+            width: "0%", height: "100%", borderRadius: 99,
+            background: "linear-gradient(90deg,#0C98FC,#4FC3FF)",
+            boxShadow: "0 0 16px rgba(12,152,252,0.55)",
+            transition: "width 1.5s cubic-bezier(.22,.61,.36,1)",
+          }}
+        />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, fontFamily: M, fontSize: 12, fontWeight: 700, letterSpacing: "0.03em" }}>
+        <span style={{ color: "#4FC3FF" }}>{pct}% da meta atingida</span>
+        <span style={{ color: "rgba(169,216,245,0.5)" }}>Objetivo: 10.000 alunos</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Fundo — vinheta suave, sem padrão repetitivo ── */
+function BackdropPattern() {
   return (
     <svg
       viewBox="0 0 1000 600"
       preserveAspectRatio="xMidYMid slice"
       style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
     >
-      <line x1="0" y1="300" x2="1000" y2="300" stroke="rgba(169,216,245,0.14)" strokeWidth="1.5" />
-      <circle cx="500" cy="300" r="150" stroke="rgba(169,216,245,0.14)" strokeWidth="1.5" fill="none" />
-      <circle cx="500" cy="300" r="3.5" fill="rgba(169,216,245,0.22)" />
-      <path d="M -60 140 A 150 150 0 0 1 -60 460" stroke="rgba(169,216,245,0.1)" strokeWidth="1.5" fill="none" />
-      <path d="M 1060 140 A 150 150 0 0 0 1060 460" stroke="rgba(169,216,245,0.1)" strokeWidth="1.5" fill="none" />
+      <defs>
+        <radialGradient id="nm-fade" cx="50%" cy="38%" r="65%">
+          <stop offset="0%" stopColor="#000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.9" />
+        </radialGradient>
+      </defs>
+      <rect width="1000" height="600" fill="url(#nm-fade)" />
     </svg>
   );
 }
@@ -66,10 +102,11 @@ function PitchPattern() {
 /* ── Seção ───────────────────────────────────────────────────────── */
 export default function NossaMissao() {
   return (
-    <section style={{ background: "linear-gradient(180deg,#010E1B 0%,#03263F 55%,#010E1B 100%)", padding: "clamp(80px,11vh,120px) 0", position: "relative", overflow: "hidden" }}>
+    <section style={{ background: "radial-gradient(ellipse 90% 70% at 50% 0%, #0A2E4A 0%, #010E1B 55%, #010812 100%)", padding: "clamp(80px,11vh,120px) 0", position: "relative", overflow: "hidden" }}>
 
-      <PitchPattern />
-      <div style={{ position: "absolute", top: "-10%", left: "50%", transform: "translateX(-50%)", width: "70%", height: "60%", background: "radial-gradient(ellipse 60% 60% at 50% 40%, rgba(12,152,252,0.16) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <BackdropPattern />
+      <div style={{ position: "absolute", top: "-10%", left: "50%", transform: "translateX(-50%)", width: "70%", height: "60%", background: "radial-gradient(ellipse 60% 60% at 50% 40%, rgba(12,152,252,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(140,200,245,0.25),transparent)" }} />
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(140,200,245,0.25),transparent)" }} />
 
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", textAlign: "center" as const, position: "relative" }}>
@@ -91,7 +128,7 @@ export default function NossaMissao() {
         </FadeIn>
 
         <FadeIn delay={120}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 10, marginBottom: 44 }}>
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 10, marginBottom: 28 }}>
             <span style={{ fontFamily: F, fontSize: "clamp(56px,11vw,120px)", lineHeight: 0.85, color: "#0C98FC", letterSpacing: "-0.02em" }}>
               <Counter value={ATUAL} />
             </span>
@@ -101,7 +138,13 @@ export default function NossaMissao() {
           </div>
         </FadeIn>
 
-        <FadeIn delay={200}>
+        <FadeIn delay={160}>
+          <div style={{ marginBottom: 44 }}>
+            <ProgressBar pct={PROGRESSO} />
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={220}>
           <a
             href="#areas"
             style={{
