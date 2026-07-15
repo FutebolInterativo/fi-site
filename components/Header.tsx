@@ -12,14 +12,14 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
   - fonte branca sólida (era rgba(244,244,244,0.58) no estado padrão)
     com hover numa cor de destaque (azul #0C98FC) em vez de só um branco mais claro
   - "Formações" agora abre dropdown dinâmico com as áreas de lib/cursos.ts
-  - "Experiência Prática" renomeado para "PPI" — aponta para /ppi
+  - "Experiência Prática" renomeado (label "Intercâmbio", claro pra quem não conhece a sigla PPI) — aponta para /ppi
     (Programa de Prática Internacional, que saiu da home e ganhou página própria)
 */
 type NavLink = { href: string; label: string; external?: boolean };
 
 const LINKS: NavLink[] = [
   { href: "/cursos",  label: "Formações" },
-  { href: "/ppi",     label: "PPI" },
+  { href: "/ppi",     label: "Intercâmbio" },
   { href: "/sobre",   label: "Sobre" },
   { href: "/ebooks",  label: "E-books" },
   { href: "https://futebolinterativo.com/blog", label: "Blog", external: true },
@@ -173,9 +173,10 @@ export default function Header() {
                       ))}
                       <Link
                         href="/cursos"
-                        style={{ display: "block", marginTop: 4, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "9px 12px", fontFamily: M, fontSize: 13, fontWeight: 700, color: "#0C98FC", textDecoration: "none" }}
+                        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 4, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "9px 12px", fontFamily: M, fontSize: 13, fontWeight: 700, color: "#0C98FC", textDecoration: "none" }}
                       >
-                        Todos os cursos →
+                        Todos os cursos
+                        <svg width={13} height={13} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#0C98FC" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </Link>
                     </div>
                   </div>

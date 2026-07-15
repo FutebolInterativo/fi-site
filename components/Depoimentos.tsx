@@ -48,13 +48,16 @@ export default function Depoimentos() {
             <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: AZUL_CLARO, display: "block", marginBottom: 12 }}>
               Quem já passou pelo FI
             </span>
-            <h2 style={{ fontFamily: F, fontSize: "clamp(30px,5vw,56px)", lineHeight: 0.95, color: "#F4F4F4" }}>
-              +4.500 ALUNOS<br />FIZERAM PRÁTICA
+            <h2 style={{ fontFamily: F, fontSize: "clamp(30px,5vw,56px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 16 }}>
+              DA PRÁTICA À CONTRATAÇÃO
             </h2>
+            <p style={{ fontFamily: M, fontSize: "clamp(14px,1.5vw,17px)", fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.6, maxWidth: 560 }}>
+              +4.500 alunos passaram por clubes parceiros. Estes são alguns dos que foram contratados.
+            </p>
           </div>
         </FadeIn>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-5">
           {depos.map((d, i) => (
             <FadeIn key={d.name} delay={i * 100}>
               <div
@@ -64,8 +67,8 @@ export default function Depoimentos() {
                   display: "flex",
                   flexDirection: "column",
                   height: "100%",
-                  padding: "30px 26px 26px",
-                  borderRadius: 20,
+                  padding: "36px 30px 30px",
+                  borderRadius: 22,
                   border: "1px solid rgba(140,200,245,0.16)",
                   background: "linear-gradient(160deg, rgba(12,98,160,0.32), rgba(3,38,63,0.55))",
                   transition: "transform .22s ease, border-color .22s ease, box-shadow .22s ease",
@@ -75,8 +78,8 @@ export default function Depoimentos() {
                 {/* aspas decorativas — assinatura visual do card */}
                 <span
                   style={{
-                    position: "absolute", top: -6, right: 18,
-                    fontFamily: F, fontSize: 96, lineHeight: 1,
+                    position: "absolute", top: -8, right: 20,
+                    fontFamily: F, fontSize: 112, lineHeight: 1,
                     color: "rgba(169,216,245,0.08)",
                     pointerEvents: "none",
                     userSelect: "none" as const,
@@ -86,24 +89,24 @@ export default function Depoimentos() {
                   &rdquo;
                 </span>
 
-                <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.82)", lineHeight: 1.65, flex: 1, marginBottom: 24, position: "relative" }}>
+                <p style={{ fontFamily: M, fontSize: 17, fontWeight: 500, color: "rgba(244,244,244,0.85)", lineHeight: 1.68, flex: 1, marginBottom: 28, position: "relative" }}>
                   &ldquo;{d.quote}&rdquo;
                 </p>
 
-                <div style={{ display: "flex", alignItems: "center", gap: 14, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, paddingTop: 22, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={d.foto}
                     alt={d.name}
                     style={{
-                      width: 60, height: 60, borderRadius: "50%", objectFit: "cover", flexShrink: 0,
-                      border: `2px solid ${AZUL}55`,
-                      boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
+                      width: 84, height: 84, borderRadius: "50%", objectFit: "cover", flexShrink: 0,
+                      border: `2.5px solid ${AZUL}55`,
+                      boxShadow: "0 8px 22px rgba(0,0,0,0.35)",
                     }}
                   />
                   <div>
-                    <div style={{ fontFamily: F, fontSize: 16, lineHeight: 1.1, color: "#F4F4F4" }}>{d.name}</div>
-                    <div style={{ fontFamily: M, fontSize: 12.5, fontWeight: 600, color: AZUL_CLARO, marginTop: 5 }}>{d.role}</div>
+                    <div style={{ fontFamily: F, fontSize: 18.5, lineHeight: 1.15, color: "#F4F4F4" }}>{d.name}</div>
+                    <div style={{ fontFamily: M, fontSize: 13.5, fontWeight: 600, color: AZUL_CLARO, marginTop: 6 }}>{d.role}</div>
                   </div>
                 </div>
               </div>

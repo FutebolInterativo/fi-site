@@ -115,15 +115,6 @@ export default function Hero() {
                 </span>
               </Link>
             </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0 }}>
-              {stats.map((s, i) => (
-                <div key={s.label} style={{ paddingRight: 12, borderRight: i < 3 ? "1px solid rgba(169,216,245,0.2)" : "none", paddingLeft: i > 0 ? 12 : 0 }}>
-                  <div style={{ fontFamily: F, fontSize: "clamp(15px,1.6vw,22px)", lineHeight: 1, color: "#F4F4F4" }}>{s.num}</div>
-                  <div style={{ fontFamily: M, fontSize: s.big ? 10.5 : 9, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 4 }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* ── Coluna de imagem — fade orgânico na base, sem linha reta ── */}
@@ -141,6 +132,18 @@ export default function Hero() {
               background: "linear-gradient(to top, #03263F 0%, rgba(3,38,63,0.7) 35%, transparent 100%)",
               pointerEvents: "none",
             }} />
+          </div>
+        </div>
+
+        {/* ── Stats — linha única, ocupando toda a largura, abaixo da imagem ── */}
+        <div style={{ maxWidth: 1440, margin: "0 auto", padding: "clamp(28px,4vh,44px) clamp(32px,5vw,72px) clamp(48px,6vh,72px)" }}>
+          <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "space-between", gap: "20px 32px", borderTop: "1px solid rgba(169,216,245,0.2)", paddingTop: 28 }}>
+            {stats.map((s) => (
+              <div key={s.label} style={{ flex: "1 1 140px" }}>
+                <div style={{ fontFamily: F, fontSize: "clamp(22px,2.6vw,32px)", lineHeight: 1, color: "#F4F4F4" }}>{s.num}</div>
+                <div style={{ fontFamily: M, fontSize: s.big ? 12 : 10.5, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#A9D8F5", marginTop: 6 }}>{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
