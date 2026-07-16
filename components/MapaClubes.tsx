@@ -185,21 +185,7 @@ const ESTADOS: Record<string, Estado> = {
   ]},
 };
 
-const COR_REGIAO: Record<string, string> = {
-  norte:          "#0C98FC",
-  nordeste:       "#08C27A",
-  "centro-oeste": "#F59E0B",
-  sudeste:        "#4096F2",
-  sul:            "#818CF8",
-};
-
-const REGIAO: Record<string, string> = {
-  am:"norte", pa:"norte", ro:"norte", ac:"norte", rr:"norte", ap:"norte", to:"norte",
-  ma:"nordeste", pi:"nordeste", ce:"nordeste", rn:"nordeste", pb:"nordeste", pe:"nordeste", al:"nordeste", se:"nordeste", ba:"nordeste",
-  mt:"centro-oeste", ms:"centro-oeste", go:"centro-oeste", df:"centro-oeste",
-  mg:"sudeste", es:"sudeste", rj:"sudeste", sp:"sudeste",
-  pr:"sul", sc:"sul", rs:"sul",
-};
+const AZUL = "#0C98FC";
 
   const PATHS: Record<string, string> = {
     am: "m 85.966736,177.23229 c 1.199049,-0.9651 2.097067,-2.7261 3.353172,-3.17466 3.305207,-0.0661 7.758246,1.47554 11.389492,0.36112 3.70782,-1.13792 8.53877,-5.42599 9.4207,-6.82904 4.38755,-6.98014 5.02799,-8.65162 9.23711,-10.85562 2.40622,-1.25995 4.63756,-1.09996 8.10852,-0.80503 2.67991,0.22772 3.89841,4.02839 5.84072,5.56689 1.59248,1.2614 3.45147,2.25448 5.40357,2.81879 8.22025,2.37629 17.12739,2.07423 25.58727,2.10456 5.10856,-0.019 13.74027,-0.32558 15.28309,-1.3167 1.60111,-1.34103 3.56726,-16.80884 3.74129,-18.05051 -0.48584,-0.97818 -2.5308,-4.04833 -3.30135,-6.86727 -0.707,-2.58646 2.24806,-8.32967 3.57579,-10.88379 1.29514,-2.49141 4.30522,-8.71573 6.95306,-13.12034 1.62338,-3.54696 4.84872,-9.53017 7.39323,-15.2024 2.68904,-5.994415 5.46325,-9.236698 3.99576,-13.456964 -1.07366,-3.08766 -4.10398,-3.91473 -8.20282,-5.039217 -3.77151,-1.034686 -8.3815,-1.057561 -11.64202,-3.452932 -3.26066,-2.395478 -5.2466,-5.653555 -7.1127,-9.895583 -1.46623,-3.333053 -2.77581,-7.900294 -2.88061,-9.684285 -2.56762,-0.30482 -5.85484,-1.4376 -8.69084,0.01986 -3.88726,1.997714 -1.08178,7.288883 -5.92069,10.137036 -4.75349,2.797869 -6.74739,-1.219877 -9.87455,-0.190801 -3.12391,1.028009 -3.49067,5.763404 -7.82342,6.011231 -3.8635,0.220987 -6.34555,-2.519384 -8.06909,-4.99528 -5.45339,-7.833864 -1.11407,-18.971611 -5.45746,-27.469 -1.17847,-2.305564 -2.93591,-5.403241 -5.47072,-5.948141 -1.58797,-0.341362 -1.56698,0.39064 -3.79638,1.361051 l -4.03007,1.764383 0,1.411506 0,1.411507 -1.54343,1.323287 c -0.85747,0.705754 -3.42985,2.293698 -5.83074,3.352328 l -4.28731,2.029041 -3.172614,3.352328 c -3.515594,3.705205 -4.115818,3.969862 -4.115818,2.11726 0,-0.705754 -0.342984,-1.499726 -0.771715,-1.764383 l -0.771716,-0.529315 -3.344102,1.235068 -3.344102,1.235068 -3.344102,-2.558356 -3.344101,-2.558355 -1.543432,0 -1.543431,0 -0.514478,-3.616986 -0.514477,-3.616985 -1.543431,-1.940822 -1.543432,-1.940821 -2.572386,2.558356 -2.572386,2.558355 -1.114701,-0.970411 -1.1147,-0.97041 -1.629178,1.235068 -1.629178,1.235068 -7.974396,0 -7.974397,0 0,1.676164 c 0,0.970411 -0.257238,2.293698 -0.514477,3.087671 l -0.514477,1.411506 3.344102,0 c 3.432227,-0.287339 5.765931,1.085744 5.40201,4.499177 -0.449673,3.816457 -2.555383,2.831759 -4.801787,1.676164 -1.772088,0.705753 -3.544176,1.411507 -5.316264,2.11726 l 0,3.616985 0,3.616986 3.001117,2.999451 3.001117,2.999452 c -1.279263,1.388133 -0.381312,2.182174 0.428731,3.793424 l 1.286193,2.558355 c 1.796303,10.638115 -1.239304,30.646811 -6.430965,39.963281 -2.936421,-0.11653 -5.096036,-0.97162 -8.060143,-1.85261 -3.322682,3.82376 -8.668819,2.2321 -12.144213,3.53164 -1.750321,0.70001 -4.49055,3.43768 -4.49055,3.43768 -3.603215,1.45275 -5.181181,-1.38313 -6.919407,0.13356 -2.410594,2.10337 -1.48372,6.4061 -1.48372,9.48233 0.156812,3.08526 -1.019949,4.69688 -2.4008937,7.23397 0.5915266,5.53869 -3.8355555,6.47183 -5.2853015,11.76766 5.6456029,4.333 10.4135992,4.97732 16.6676682,5.99276 18.08602,2.93656 25.075134,6.33284 35.495774,10.50958 8.680602,3.47931 21.764427,9.54469 25.583782,11.51503 1.926577,-0.85389 3.289365,-2.05004 4.795403,-3.26223 z",
@@ -232,24 +218,32 @@ const REGIAO: Record<string, string> = {
   };
 
 
+function densityAlpha(n: number) {
+  if (n >= 7) return "70"; // ~44%
+  if (n >= 4) return "4D"; // ~30%
+  if (n >= 2) return "30"; // ~19%
+  return "1F"; // ~12% — 1 clube
+}
+
 export default function MapaClubes() {
   const [ativo, setAtivo] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [touched, setTouched] = useState(false);
   const svgWrapRef = useRef<HTMLDivElement>(null);
 
   const estado = ativo ? ESTADOS[ativo] : null;
-  const cor = ativo ? (COR_REGIAO[REGIAO[ativo]] ?? "#0C98FC") : "#0C98FC";
 
   const fillEstado = (id: string) => {
-    if (id === ativo) return COR_REGIAO[REGIAO[id]] ?? "#0C98FC";
-    if (id === hover) return (COR_REGIAO[REGIAO[id]] ?? "#0C98FC") + "aa";
-    return (COR_REGIAO[REGIAO[id]] ?? "#0C98FC") + "26";
+    if (id === ativo) return AZUL;
+    if (id === hover) return `${AZUL}99`;
+    const n = ESTADOS[id]?.clubes.length ?? 1;
+    return `${AZUL}${densityAlpha(n)}`;
   };
   const strokeEstado = (id: string) => {
-    if (id === ativo) return "#fff";
-    if (id === hover) return "rgba(255,255,255,0.7)";
-    return "rgba(169,216,245,0.18)";
+    if (id === ativo) return "#ffffff";
+    if (id === hover) return "rgba(255,255,255,0.65)";
+    return "rgba(169,216,245,0.16)";
   };
 
   function handleMouseMove(e: React.MouseEvent<SVGElement>) {
@@ -258,51 +252,92 @@ export default function MapaClubes() {
     setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }
 
+  function selectHover(id: string) {
+    setHover(id);
+    setTouched(true);
+  }
+
+  const mcCss = `
+    @keyframes mcPing { 0% { r: 7; opacity: .7; } 75%, 100% { r: 24; opacity: 0; } }
+    .mc-ping-ring { animation: mcPing 1.8s ease-out infinite; }
+    .mc-state-path { transition: fill .18s ease, stroke .18s ease, filter .18s ease; cursor: pointer; }
+    .mc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s cubic-bezier(.4,0,.2,1); }
+    .mc-panel.is-open { grid-template-rows: 1fr; }
+    .mc-panel-inner { overflow: hidden; }
+    .mc-club:hover { transform: translateY(-2px); border-color: rgba(12,152,252,0.4) !important; }
+  `;
+
   return (
-    <section style={{ background: "#03263F", padding: "80px 24px", position: "relative", overflow: "hidden" }}>
+    <section style={{ background: "#03263F", padding: "clamp(72px,10vh,104px) clamp(22px,5vw,64px)", position: "relative", overflow: "hidden" }}>
+      <style dangerouslySetInnerHTML={{ __html: mcCss }} />
       {/* Glow decorativo */}
       <div style={{ position: "absolute", top: "20%", left: "15%", width: 700, height: 500, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(12,152,252,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "10%", right: "10%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(8,194,122,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1080, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 1152, margin: "0 auto", position: "relative" }}>
 
         {/* Header */}
-        <div style={{ marginBottom: 40 }}>
-          <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#A9D8F5", display: "block", marginBottom: 12 }}>
-            Onde você pode viver essa experiência
-          </span>
-          <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4vw,44px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 14 }}>
-            +130 CLUBES PARCEIROS
-          </h2>
-          <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.65, maxWidth: 480 }}>
-            Selecione um estado no mapa para ver os clubes disponíveis na sua região.
-          </p>
+        <div style={{ marginBottom: 40, display: "flex", flexWrap: "wrap" as const, alignItems: "flex-end", justifyContent: "space-between", gap: 20 }}>
+          <div>
+            <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#A9D8F5", display: "block", marginBottom: 12 }}>
+              Onde você pode viver essa experiência
+            </span>
+            <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4vw,44px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 14 }}>
+              +130 CLUBES PARCEIROS
+            </h2>
+            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.65, maxWidth: 480 }}>
+              Toque em um estado do mapa abaixo para ver os clubes parceiros da região.
+            </p>
+          </div>
+
+          {/* selo — todo o território nacional coberto */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 9, flexShrink: 0,
+            padding: "8px 18px 8px 8px", borderRadius: 99,
+            border: "1px solid rgba(169,216,245,0.18)", background: "rgba(255,255,255,0.03)",
+          }}>
+            <span style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(12,152,252,0.14)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width={13} height={13} viewBox="0 0 24 24" fill="none">
+                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" stroke="#0C98FC" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx={12} cy={10} r={3} stroke="#0C98FC" strokeWidth={2} />
+              </svg>
+            </span>
+            <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", color: "rgba(169,216,245,0.7)" }}>27 ESTADOS COBERTOS</span>
+          </div>
         </div>
 
-        {/* Legenda de regiões */}
-        <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 22, marginBottom: 32 }}>
-          {Object.entries({ "Norte": "#0C98FC", "Nordeste": "#08C27A", "Centro-Oeste": "#F59E0B", "Sudeste": "#4096F2", "Sul": "#818CF8" }).map(([r, c]) => (
-            <div key={r} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 11, height: 11, borderRadius: 3.5, background: c, boxShadow: `0 0 8px ${c}90` }} />
-              <span style={{ fontFamily: M, fontSize: 12.5, fontWeight: 600, color: "rgba(244,244,244,0.7)", letterSpacing: "0.02em" }}>{r}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Layout mapa + painel */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.3fr 0.8fr", gap: 28, alignItems: "start" }}>
-
-          {/* MAPA */}
+        {/* MAPA — card único, centralizado e contido (não esticado na largura toda) */}
+        <div style={{ maxWidth: 620, margin: "0 auto" }}>
           <div
             ref={svgWrapRef}
             style={{
               position: "relative" as const,
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(140,200,245,0.1)",
-              borderRadius: 24,
-              padding: "clamp(16px,2.5vw,28px)",
+              background: "linear-gradient(155deg,#0A1E35,rgba(12,152,252,0.06))",
+              border: "1px solid rgba(140,200,245,0.14)",
+              borderRadius: 28,
+              padding: "clamp(20px,3vw,32px)",
+              boxShadow: "0 24px 64px -24px rgba(0,0,0,0.55)",
             }}
           >
+            {/* Banner de instrução — some depois da primeira interação */}
+            {!ativo && (
+              <div style={{
+                display: "flex", alignItems: "center", gap: 10, marginBottom: 18,
+                padding: "10px 16px", borderRadius: 12,
+                background: "rgba(12,152,252,0.1)", border: "1px solid rgba(12,152,252,0.28)",
+              }}>
+                <span style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(12,152,252,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width={13} height={13} viewBox="0 0 24 24" fill="none">
+                    <path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74" stroke="#A9D8F5" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M14 10.5V6a1.5 1.5 0 0 1 3 0v6.5c0 3.31-2.69 6-6 6h-1.5c-1.7 0-3.32-.74-4.43-2.03l-2.4-2.79a1.35 1.35 0 0 1 1.85-1.95l1.98 1.52V8a1.5 1.5 0 0 1 3 0v3.24" stroke="#A9D8F5" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                <span style={{ fontFamily: M, fontSize: 12.5, fontWeight: 700, color: "#F4F4F4", lineHeight: 1.3 }}>
+                  Toque em um estado para ver os clubes parceiros
+                </span>
+              </div>
+            )}
+
             <svg
               viewBox="0 0 460 465"
               style={{ width: "100%", height: "auto", display: "block", cursor: hover ? "pointer" : "default" }}
@@ -312,27 +347,44 @@ export default function MapaClubes() {
               {Object.entries(PATHS).map(([id, d]) => (
                 <path
                   key={id}
+                  className="mc-state-path"
                   d={d}
                   fill={fillEstado(id)}
                   stroke={strokeEstado(id)}
-                  strokeWidth={id === ativo ? 1.6 : 0.6}
+                  strokeWidth={id === ativo ? 1.8 : 0.6}
                   strokeLinejoin="round"
-                  style={{ cursor: "pointer", transition: "fill 0.15s ease, stroke 0.15s ease" }}
-                  onMouseEnter={() => setHover(id)}
+                  style={{ filter: id === ativo ? "drop-shadow(0 0 10px rgba(12,152,252,0.65))" : "none" }}
+                  onMouseEnter={() => selectHover(id)}
                   onClick={() => setAtivo(ativo === id ? null : id)}
                 />
               ))}
               {/* Distrito Federal como retângulo pequeno */}
               <rect
                 x={295} y={247} width={12} height={10}
+                className="mc-state-path"
                 fill={fillEstado("df")}
                 stroke={strokeEstado("df")}
-                strokeWidth={ativo === "df" ? 1.6 : 0.6}
-                style={{ cursor: "pointer", transition: "fill 0.15s ease, stroke 0.15s ease" }}
-                onMouseEnter={() => setHover("df")}
+                strokeWidth={ativo === "df" ? 1.8 : 0.6}
+                style={{ filter: ativo === "df" ? "drop-shadow(0 0 10px rgba(12,152,252,0.65))" : "none" }}
+                onMouseEnter={() => selectHover("df")}
                 onClick={() => setAtivo(ativo === "df" ? null : "df")}
               />
+
+              {/* Marcador "toque aqui" — some assim que o usuário interage com o mapa */}
+              {!touched && !ativo && (
+                <g style={{ pointerEvents: "none" }}>
+                  <circle cx={305.5} cy={356.2} r={7} fill="none" stroke={AZUL} strokeWidth={2} className="mc-ping-ring" />
+                  <circle cx={305.5} cy={356.2} r={5} fill={AZUL} />
+                </g>
+              )}
             </svg>
+
+            {/* Legenda de densidade — substitui a antiga legenda de 5 cores por região */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8, marginTop: 18 }}>
+              <span style={{ fontFamily: M, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)" }}>Menos clubes</span>
+              <div style={{ width: 64, height: 6, borderRadius: 99, background: `linear-gradient(90deg, ${AZUL}1F, ${AZUL})` }} />
+              <span style={{ fontFamily: M, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)" }}>Mais clubes</span>
+            </div>
 
             {/* Tooltip flutuante que segue o cursor */}
             {hover && !ativo && ESTADOS[hover] && (
@@ -342,11 +394,11 @@ export default function MapaClubes() {
                   left: mousePos.x,
                   top: mousePos.y,
                   transform: "translate(-50%, -130%)",
-                  padding: "8px 14px",
-                  borderRadius: 10,
-                  background: "rgba(2,15,28,0.95)",
+                  padding: "8px 16px",
+                  borderRadius: 99,
+                  background: "rgba(1,14,27,0.92)",
                   backdropFilter: "blur(10px)",
-                  border: `1px solid ${COR_REGIAO[REGIAO[hover]]}50`,
+                  border: `1px solid ${AZUL}70`,
                   boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
                   pointerEvents: "none" as const,
                   whiteSpace: "nowrap" as const,
@@ -354,84 +406,73 @@ export default function MapaClubes() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: COR_REGIAO[REGIAO[hover]], flexShrink: 0 }} />
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: AZUL, flexShrink: 0 }} />
                   <span style={{ fontFamily: M, fontWeight: 700, fontSize: 13, color: "#fff" }}>{ESTADOS[hover].label}</span>
+                  <span style={{ fontFamily: M, fontSize: 11, color: "rgba(169,216,245,0.55)" }}>
+                    · {ESTADOS[hover].clubes.length} clube{ESTADOS[hover].clubes.length !== 1 ? "s" : ""}
+                  </span>
                 </div>
-                <p style={{ fontFamily: M, fontSize: 10.5, color: "rgba(169,216,245,0.6)", marginTop: 2 }}>
-                  {ESTADOS[hover].clubes.length} clube{ESTADOS[hover].clubes.length !== 1 ? "s" : ""} parceiro{ESTADOS[hover].clubes.length !== 1 ? "s" : ""}
-                </p>
                 {/* seta do tooltip */}
-                <div style={{ position: "absolute" as const, bottom: -5, left: "50%", transform: "translateX(-50%) rotate(45deg)", width: 10, height: 10, background: "rgba(2,15,28,0.95)", borderRight: `1px solid ${COR_REGIAO[REGIAO[hover]]}50`, borderBottom: `1px solid ${COR_REGIAO[REGIAO[hover]]}50` }} />
+                <div style={{ position: "absolute" as const, bottom: -5, left: "50%", transform: "translateX(-50%) rotate(45deg)", width: 10, height: 10, background: "rgba(1,14,27,0.92)", borderRight: `1px solid ${AZUL}70`, borderBottom: `1px solid ${AZUL}70` }} />
               </div>
             )}
           </div>
 
-          {/* PAINEL */}
-          <div>
-            {!ativo ? (
-              <div style={{
-                padding: "36px 26px", borderRadius: 24,
-                border: "1px solid rgba(140,200,245,0.1)",
-                background: "linear-gradient(145deg, rgba(12,90,150,0.14), rgba(3,38,63,0.35))",
-                display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center",
-                minHeight: 320, textAlign: "center" as const, gap: 18,
-              }}>
-                <div style={{ width: 68, height: 68, borderRadius: 20, background: "rgba(12,152,252,0.1)", border: "1px solid rgba(140,200,245,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width={30} height={30} viewBox="0 0 24 24" fill="none">
-                    <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke="#A9D8F5" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <div>
-                  <p style={{ fontFamily: F, fontSize: "clamp(17px,2vw,21px)", color: "rgba(244,244,244,0.5)", lineHeight: 1.1, marginBottom: 10 }}>SELECIONE UM ESTADO</p>
-                  <p style={{ fontFamily: M, fontSize: 12.5, color: "rgba(169,216,245,0.35)", lineHeight: 1.65 }}>Clique em qualquer estado do mapa<br />para ver os clubes parceiros.</p>
-                </div>
-              </div>
-            ) : (
-              <div style={{ borderRadius: 24, border: `1px solid ${cor}35`, background: "linear-gradient(145deg, rgba(12,90,150,0.2), rgba(3,38,63,0.55))", overflow: "hidden", boxShadow: `0 12px 40px rgba(0,0,0,0.3)` }}>
+          {/* PAINEL DE DETALHES — expande logo abaixo do mapa quando um estado é selecionado
+              (mesma técnica de acordeão grid-template-rows já usada no restante do site) */}
+          <div className={`mc-panel${ativo ? " is-open" : ""}`}>
+            <div className="mc-panel-inner">
+              {estado && (
+                <div style={{ marginTop: 16, borderRadius: 20, border: `1px solid ${AZUL}40`, background: `linear-gradient(155deg,#0A1E35,${AZUL}16)`, overflow: "hidden", boxShadow: "0 16px 40px -16px rgba(0,0,0,0.4)" }}>
 
-                {/* Cabeçalho do estado */}
-                <div style={{ padding: "22px 24px", borderBottom: "1px solid rgba(140,200,245,0.1)", display: "flex", alignItems: "center", gap: 14, background: `linear-gradient(135deg, ${cor}18, transparent)` }}>
-                  <div style={{ width: 42, height: 42, borderRadius: 13, background: `${cor}22`, border: `1.5px solid ${cor}50`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" stroke={cor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                      <circle cx={12} cy={10} r={3} stroke={cor} strokeWidth={2} />
-                    </svg>
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: cor, marginBottom: 2 }}>
-                      {estado!.clubes.length} clube{estado!.clubes.length !== 1 ? "s" : ""} parceiro{estado!.clubes.length !== 1 ? "s" : ""}
-                    </p>
-                    <h3 style={{ fontFamily: F, fontSize: "clamp(18px,2.2vw,24px)", color: "#fff", lineHeight: 1 }}>{estado!.label.toUpperCase()}</h3>
-                  </div>
-                  <button
-                    onClick={() => setAtivo(null)}
-                    style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(140,200,245,0.18)", color: "rgba(169,216,245,0.55)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 17, lineHeight: 1 }}
-                    aria-label="Fechar"
-                  >×</button>
-                </div>
-
-                {/* Lista de clubes */}
-                <div style={{ padding: "16px 18px", display: "flex", flexDirection: "column" as const, gap: 8, maxHeight: 380, overflowY: "auto" as const }}>
-                  {estado!.clubes.map((clube, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 13, background: "rgba(255,255,255,0.035)", border: "1px solid rgba(140,200,245,0.07)" }}>
-                      <div style={{ width: 42, height: 42, borderRadius: 11, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: 4 }}>
-                        <img
-                          src={clube.logo}
-                          alt={clube.nome}
-                          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                          loading="lazy"
-                          onError={(e) => { (e.target as HTMLImageElement).style.visibility = "hidden"; }}
-                        />
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontFamily: M, fontWeight: 700, fontSize: 13, color: "#F4F4F4", lineHeight: 1.2, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.nome}</p>
-                        <p style={{ fontFamily: M, fontSize: 11, color: "rgba(169,216,245,0.45)", marginTop: 1 }}>{clube.cidade}</p>
-                      </div>
+                  {/* Cabeçalho do estado */}
+                  <div style={{ padding: "18px 22px", borderBottom: "1px solid rgba(140,200,245,0.1)", display: "flex", alignItems: "center", gap: 14, background: `linear-gradient(135deg, ${AZUL}18, transparent)` }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 12, background: `${AZUL}22`, border: `1.5px solid ${AZUL}50`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <svg width={17} height={17} viewBox="0 0 24 24" fill="none">
+                        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" stroke={AZUL} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                        <circle cx={12} cy={10} r={3} stroke={AZUL} strokeWidth={2} />
+                      </svg>
                     </div>
-                  ))}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: AZUL, marginBottom: 2 }}>
+                        {estado.clubes.length} clube{estado.clubes.length !== 1 ? "s" : ""} parceiro{estado.clubes.length !== 1 ? "s" : ""}
+                      </p>
+                      <h3 style={{ fontFamily: F, fontSize: "clamp(17px,2vw,22px)", color: "#fff", lineHeight: 1 }}>{estado.label.toUpperCase()}</h3>
+                    </div>
+                    <button
+                      onClick={() => setAtivo(null)}
+                      style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(140,200,245,0.18)", color: "rgba(169,216,245,0.55)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 17, lineHeight: 1 }}
+                      aria-label="Fechar"
+                    >×</button>
+                  </div>
+
+                  {/* Grid de clubes — usa toda a largura do card, sem lista espremida */}
+                  <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 8, maxHeight: 340, overflowY: "auto" as const }}>
+                    {estado.clubes.map((clube, i) => (
+                      <div
+                        key={i}
+                        className="mc-club"
+                        style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 10px", borderRadius: 12, background: "rgba(255,255,255,0.035)", border: "1px solid rgba(140,200,245,0.08)", transition: "transform .15s ease, border-color .15s ease" }}
+                      >
+                        <div style={{ width: 36, height: 36, borderRadius: 10, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: 4 }}>
+                          <img
+                            src={clube.logo}
+                            alt={clube.nome}
+                            style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                            loading="lazy"
+                            onError={(e) => { (e.target as HTMLImageElement).style.visibility = "hidden"; }}
+                          />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{ fontFamily: M, fontWeight: 700, fontSize: 12.5, color: "#F4F4F4", lineHeight: 1.2, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.nome}</p>
+                          <p style={{ fontFamily: M, fontSize: 10.5, color: "rgba(169,216,245,0.45)", marginTop: 1, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.cidade}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

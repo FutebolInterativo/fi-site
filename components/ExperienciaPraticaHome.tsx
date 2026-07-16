@@ -120,7 +120,7 @@ export default function ExperienciaPraticaHome() {
           <FadeIn delay={120}>
             <div style={{ position: "relative", maxWidth: 380, margin: "0 auto", marginTop: 4 }}>
               <Image
-                src="/images/cursos/experiencia-pratica---mobile.png"
+                src="/images/cursos/experiencia-pratica-mobile-v3.png"
                 alt="Alunos do Futebol Interativo em experiência prática dentro de clubes parceiros"
                 width={602}
                 height={684}
