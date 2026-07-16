@@ -112,7 +112,7 @@ function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       ref={overlayRef}
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
       style={{
-        position: "fixed", inset: 0, zIndex: 100,
+        position: "fixed", inset: 0, zIndex: 300,
         background: "rgba(1,14,27,0.75)",
         backdropFilter: "blur(6px)",
         display: "flex", alignItems: "center", justifyContent: "center",
@@ -164,11 +164,6 @@ function FormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         <p style={{ fontFamily: M, fontSize: 13.5, color: "rgba(169,216,245,0.4)", lineHeight: 1.6, marginBottom: 24 }}>
           Preencha seus dados e retornaremos o quanto antes.
         </p>
-
-        {/* CSS dark mode do formulário HubSpot */}
-        <style dangerouslySetInnerHTML={{ __html: `
-          .hs-form-frame iframe{ color-scheme: dark; }
-        `}} />
 
         <div style={{ position: "relative", minHeight: formReady ? 0 : 220 }}>
           {/* spinner enquanto o iframe não chegou */}
@@ -234,7 +229,7 @@ export default function CTAFinal() {
               <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#A9D8F5", display: "block", marginBottom: 12 }}>Sem compromisso</span>
               <h2 style={{ fontFamily: F, fontSize: "clamp(26px,3.8vw,42px)", lineHeight: 1.05, color: "#F4F4F4", marginBottom: 12 }}>SEU LUGAR NO FUTEBOL<br />JÁ EXISTE. FALTA O<br />CAMINHO ATÉ ELE.</h2>
               <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.65)", maxWidth: 440, marginBottom: 14 }}>
-                Fale com um consultor no WhatsApp. Ele entende seu momento e indica a formação certa pro seu perfil — em 5 minutos você sai com um plano.
+                Fale com um consultor no WhatsApp. Ele entende seu momento e indica a formação certa pro seu perfil, em 5 minutos você sai com um plano.
               </p>
               <p style={{ fontFamily: M, fontSize: 12.5, fontWeight: 600, color: "rgba(169,216,245,0.5)" }}>
                 +4.500 alunos começaram exatamente assim.
