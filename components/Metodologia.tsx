@@ -7,7 +7,6 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
 const AZUL = "#0C98FC";
 const AZUL_CLARO = "#A9D8F5";
 const NAVY = "#03263F";
-const MARCADOR_BG = "#0A3757"; // opaco — evita que a trilha "vaze" através do card, como antes
 
 const passos = [
   {
@@ -54,54 +53,9 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   return <div ref={ref}>{children}</div>;
 }
 
-/* marcador da trilha — círculo opaco com a numeração do passo (evita transparência atravessando a linha) */
-function Marcador({ destaque, num }: { destaque: boolean; num: string }) {
-  return (
-    <div
-      style={{
-        width: 52, height: 52, borderRadius: "50%", flexShrink: 0,
-        background: destaque ? AZUL : MARCADOR_BG,
-        border: destaque ? `1.5px solid ${AZUL}` : "1.5px solid rgba(169,216,245,0.35)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        color: destaque ? "#03263F" : AZUL_CLARO,
-        position: "relative", zIndex: 2,
-        boxShadow: destaque ? "0 0 0 6px rgba(12,152,252,0.14)" : "none",
-      }}
-    >
-      <span style={{ fontFamily: F, fontSize: 18, lineHeight: 1 }}>{num}</span>
-    </div>
-  );
-}
-
-/* card de conteúdo — mesmo gradiente/borda usado em Depoimentos.tsx, para harmonizar com o resto do site */
-function CardPasso({ destaque, titulo, desc }: { destaque: boolean; titulo: string; desc: string }) {
-  return (
-    <div
-      className="fi-metodologia-card"
-      style={{
-        padding: "20px 22px",
-        borderRadius: 16,
-        height: "100%",
-        border: destaque ? `1px solid rgba(12,152,252,0.35)` : "1px solid rgba(140,200,245,0.14)",
-        background: destaque
-          ? "linear-gradient(145deg, rgba(12,152,252,0.16), rgba(3,38,63,0.4))"
-          : "linear-gradient(145deg, rgba(12,90,150,0.25), rgba(3,38,63,0.4))",
-        transition: "transform .22s ease, border-color .22s ease, box-shadow .22s ease",
-      }}
-    >
-      <div style={{ fontFamily: F, fontSize: "clamp(16px,1.8vw,19px)", lineHeight: 1.1, color: "#F4F4F4", marginBottom: 10 }}>
-        {titulo}
-      </div>
-      <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.6 }}>
-        {desc}
-      </p>
-    </div>
-  );
-}
-
 export default function Metodologia() {
   return (
-    <section style={{ background: NAVY, padding: "clamp(72px,10vh,108px) 0", position: "relative", overflow: "hidden" }}>
+    <section style={{ background: NAVY, padding: "clamp(56px,8vh,84px) 0", position: "relative", overflow: "hidden" }}>
       {/* glow ambiente sutil, mesmo padrão usado no Hero */}
       <div
         style={{
@@ -113,7 +67,7 @@ export default function Metodologia() {
 
       <div className="max-w-6xl mx-auto px-6" style={{ position: "relative" }}>
         <FadeIn>
-          <div style={{ marginBottom: 56, maxWidth: 620 }}>
+          <div style={{ marginBottom: "clamp(20px,3.5vh,32px)", maxWidth: 620 }}>
             <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: AZUL_CLARO, display: "block", marginBottom: 12 }}>
               Metodologia
             </span>
@@ -126,72 +80,59 @@ export default function Metodologia() {
           </div>
         </FadeIn>
 
-        {/* ── TRILHA DESKTOP — linha tracejada conectando os 3 marcadores ── */}
-        <div className="hidden md:block" style={{ position: "relative", marginBottom: 20 }}>
-          <div
-            style={{
-              position: "absolute", top: 26, left: "16.5%", right: "16.5%", height: 2,
-              backgroundImage: `repeating-linear-gradient(90deg, ${AZUL_CLARO}55 0 7px, transparent 7px 15px)`,
-              zIndex: 1,
-            }}
-          />
-          <div className="grid grid-cols-3">
-            {passos.map((p, i) => (
-              <div key={p.num} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
-                <Marcador destaque={i === passos.length - 1} num={p.num} />
-                <span style={{ fontFamily: M, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)" }}>
-                  Passo {p.num}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── CARDS DESKTOP ── */}
-        <div className="hidden md:grid md:grid-cols-3 gap-3">
-          {passos.map((p, i) => (
-            <FadeIn key={p.num} delay={i * 110}>
-              <CardPasso destaque={i === passos.length - 1} titulo={p.titulo} desc={p.desc} />
-            </FadeIn>
-          ))}
-        </div>
-
-        {/* ── MOBILE — trilha vertical: linha contínua + marcador e card lado a lado ── */}
-        <div className="md:hidden" style={{ position: "relative" }}>
-          <div
-            style={{
-              position: "absolute", left: 25, top: 26, bottom: 26, width: 2,
-              backgroundImage: `repeating-linear-gradient(180deg, ${AZUL_CLARO}55 0 7px, transparent 7px 15px)`,
-              zIndex: 0,
-            }}
-          />
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {passos.map((p, i) => {
-              const destaque = i === passos.length - 1;
-              return (
-                <FadeIn key={p.num} delay={i * 90}>
-                  <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                    <Marcador destaque={destaque} num={p.num} />
-                    <div style={{ flex: 1, paddingTop: 2 }}>
-                      <span style={{ fontFamily: M, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)", display: "block", marginBottom: 8 }}>
-                        Passo {p.num}
-                      </span>
-                      <CardPasso destaque={destaque} titulo={p.titulo} desc={p.desc} />
-                    </div>
+        {/* ── Cards em 3 colunas — número fantasma embutido, sem trilha/círculos externos ── */}
+        <div className="grid md:grid-cols-3 gap-3">
+          {passos.map((p, i) => {
+            return (
+              <FadeIn key={p.num} delay={i * 110}>
+                <div
+                  className="fi-passo-card"
+                  style={{
+                    position: "relative",
+                    height: "100%",
+                    padding: "22px 22px 24px",
+                    borderRadius: 18,
+                    border: `1px solid rgba(12,152,252,0.35)`,
+                    background: "linear-gradient(145deg, rgba(12,152,252,0.14), rgba(3,38,63,0.4))",
+                    transition: "transform .22s ease, border-color .22s ease, box-shadow .22s ease",
+                  }}
+                >
+                  <span
+                    className="fi-passo-num"
+                    style={{
+                      display: "block",
+                      fontFamily: F,
+                      fontSize: 34,
+                      lineHeight: 1,
+                      color: AZUL,
+                      marginBottom: 12,
+                      transition: "transform .22s ease",
+                    }}
+                  >
+                    {p.num}
+                  </span>
+                  <div style={{ fontFamily: F, fontSize: "clamp(16px,1.9vw,19px)", lineHeight: 1.15, color: "#F4F4F4", marginBottom: 10, minHeight: "2.35em" }}>
+                    {p.titulo}
                   </div>
-                </FadeIn>
-              );
-            })}
-          </div>
+                  <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.55)", lineHeight: 1.6 }}>
+                    {p.desc}
+                  </p>
+                </div>
+              </FadeIn>
+            );
+          })}
         </div>
       </div>
 
       <style dangerouslySetInnerHTML={{
         __html: `
-          .fi-metodologia-card:hover {
+          .fi-passo-card:hover {
             transform: translateY(-4px);
             border-color: ${AZUL}70 !important;
             box-shadow: 0 20px 48px -16px rgba(12,152,252,0.28);
+          }
+          .fi-passo-card:hover .fi-passo-num {
+            transform: translateX(3px);
           }
         `,
       }} />

@@ -89,6 +89,7 @@ export const cursos: Curso[] = [
     externalUrl:      "https://eventos.futebolinterativo.com/especializacao-analise-de-desempenho-e-mercado/",
     featured:         true,
     capa:             "/images/cursos/analise-de-desempenho-e-mercado.webp",
+    capaSemTexto:     "/images/cursos/analise-de-desempenho-e-mercado-sem-texto.webp",
 
     // ── campos ricos ─────────────────────────────────────────────────────
     cargaHoraria: "150h",

@@ -32,6 +32,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [formacoesOpen, setFormacoesOpen] = useState(false);
+  const [formacoesMobileOpen, setFormacoesMobileOpen] = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24);
@@ -45,7 +46,7 @@ export default function Header() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  useEffect(() => { setOpen(false); }, [pathname]);
+  useEffect(() => { setOpen(false); setFormacoesMobileOpen(false); }, [pathname]);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname?.startsWith(href);
@@ -81,14 +82,13 @@ export default function Header() {
     .fi-header a:focus-visible, .fi-header button:focus-visible {
       outline: 2px solid #0C98FC; outline-offset: 3px; border-radius: 8px;
     }
-    .fi-cta-arrow { transition: transform .18s ease; }
-    .fi-cta:hover .fi-cta-arrow { transform: translate(2px,-2px); }
-    .fi-ghost:hover { background: rgba(255,255,255,0.06) !important; border-color: rgba(169,216,245,0.4) !important; }
+    .fi-ghost:hover { background: rgba(12,152,252,0.2) !important; border-color: rgba(12,152,252,0.65) !important; }
     .fi-burger-line { transition: transform .28s ease, opacity .2s ease; transform-origin: center; }
     .fi-drawer-link { transition: color .18s ease, transform .18s ease; }
     .fi-drawer-link:hover { color: #F4F4F4 !important; transform: translateX(4px); }
+    .fi-drawer-chevron { transition: transform .25s ease; }
     @media (prefers-reduced-motion: reduce) {
-      .fi-cta-arrow, .fi-burger-line, .fi-drawer-link { transition: none !important; }
+      .fi-burger-line, .fi-drawer-link { transition: none !important; }
     }
   `;
 
@@ -208,36 +208,17 @@ export default function Header() {
               href="https://alunos.futebolinterativo.com/" target="_blank" rel="noreferrer"
               className="fi-ghost"
               style={{
-                fontFamily: M, fontWeight: 600, fontSize: 13, color: "rgba(244,244,244,0.75)",
-                padding: "10px 18px", borderRadius: 99,
-                border: "1.5px solid rgba(169,216,245,0.22)",
+                display: "inline-flex", alignItems: "center", gap: 8,
+                fontFamily: M, fontWeight: 700, fontSize: 13, color: "#F4F4F4",
+                padding: "9px 18px", borderRadius: 99,
+                background: "rgba(12,152,252,0.12)",
+                border: "1.5px solid rgba(12,152,252,0.4)",
                 textDecoration: "none", transition: "background .18s ease, border-color .18s ease",
               }}
             >
+              <svg width={14} height={14} viewBox="0 0 24 24" fill="none"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z" stroke="#0C98FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6" stroke="#0C98FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               Área do aluno
             </a>
-            <Link
-              href="/cursos" className="fi-cta"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                fontFamily: M, fontWeight: 700, fontSize: 13.5, color: "#fff",
-                padding: "10px 8px 10px 18px", borderRadius: 99,
-                background: "linear-gradient(135deg,#08C27A,#05A567)",
-                border: "1.4px solid rgba(8,194,122,0.9)",
-                boxShadow: "0 0 22px rgba(8,194,122,0.4)",
-                textDecoration: "none",
-              }}
-            >
-              Ver formações
-              <span className="fi-cta-arrow" style={{
-                width: 24, height: 24, borderRadius: 8, background: "rgba(3,38,63,0.5)",
-                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-              }}>
-                <svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-            </Link>
           </div>
 
           {/* Botão hamburger — só existe abaixo do breakpoint lg (classe controla 100% da exibição) */}
@@ -286,11 +267,57 @@ export default function Header() {
               color: active ? "#0C98FC" : "rgba(244,244,244,0.72)",
               textDecoration: "none", display: "flex", alignItems: "center", gap: 12,
             };
+            const isFormacoes = l.href === "/cursos";
+            const rowStyle: React.CSSProperties = {
+              opacity: open ? 1 : 0, transform: open ? "translateY(0)" : "translateY(10px)",
+              transition: `opacity .3s ease ${i * 40}ms, transform .3s ease ${i * 40}ms`,
+            };
+
+            if (isFormacoes) {
+              return (
+                <div key={l.href} style={rowStyle}>
+                  <button
+                    onClick={() => setFormacoesMobileOpen((o) => !o)}
+                    aria-expanded={formacoesMobileOpen}
+                    style={{ ...linkStyle, width: "100%", justifyContent: "space-between", background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                  >
+                    {l.label}
+                    <svg className="fi-drawer-chevron" width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ transform: formacoesMobileOpen ? "rotate(180deg)" : "none", flexShrink: 0 }}>
+                      <path d="M6 9l6 6 6-6" stroke={active ? "#0C98FC" : "rgba(244,244,244,0.5)"} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                  <div style={{
+                    maxHeight: formacoesMobileOpen ? 320 : 0, overflow: "hidden",
+                    transition: "max-height .3s ease",
+                  }}>
+                    <div style={{ display: "flex", flexDirection: "column" as const, gap: 4, paddingTop: 14, paddingLeft: 4 }}>
+                      {areas.filter((a) => a.id !== "todas").map((a) => (
+                        <Link
+                          key={a.id}
+                          href={`/cursos?area=${a.id}`}
+                          className="fi-drawer-link"
+                          style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 8px", borderRadius: 9, fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.65)", textDecoration: "none" }}
+                        >
+                          <span style={{ width: 7, height: 7, borderRadius: "50%", background: a.color, flexShrink: 0 }} />
+                          {a.label}
+                        </Link>
+                      ))}
+                      <Link
+                        href="/cursos"
+                        className="fi-drawer-link"
+                        style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 8px", fontFamily: M, fontSize: 15, fontWeight: 700, color: "#0C98FC", textDecoration: "none" }}
+                      >
+                        Todos os cursos
+                        <svg width={12} height={12} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#0C98FC" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
-              <div key={l.href} style={{
-                opacity: open ? 1 : 0, transform: open ? "translateY(0)" : "translateY(10px)",
-                transition: `opacity .3s ease ${i * 40}ms, transform .3s ease ${i * 40}ms`,
-              }}>
+              <div key={l.href} style={rowStyle}>
                 {l.external ? (
                   <a href={l.href} target="_blank" rel="noreferrer" className="fi-drawer-link" style={linkStyle}>{l.label}</a>
                 ) : (
@@ -304,33 +331,20 @@ export default function Header() {
         <div style={{
           padding: "20px clamp(24px,6vw,56px) clamp(28px,6vh,44px)",
           borderTop: "1px solid rgba(140,200,245,0.14)",
-          display: "flex", flexDirection: "column" as const, gap: 12,
         }}>
           <a
             href="https://alunos.futebolinterativo.com/" target="_blank" rel="noreferrer"
             style={{
-              fontFamily: M, fontWeight: 600, fontSize: 14.5, color: "rgba(244,244,244,0.8)",
-              padding: "14px 20px", borderRadius: 14, textAlign: "center" as const,
-              border: "1.5px solid rgba(169,216,245,0.25)", textDecoration: "none",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              fontFamily: M, fontWeight: 700, fontSize: 14.5, color: "#F4F4F4",
+              padding: "15px 20px", borderRadius: 14, textAlign: "center" as const,
+              background: "rgba(12,152,252,0.12)",
+              border: "1.5px solid rgba(12,152,252,0.4)", textDecoration: "none",
             }}
           >
+            <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z" stroke="#0C98FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6" stroke="#0C98FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             Área do aluno
           </a>
-          <Link
-            href="/cursos"
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-              fontFamily: M, fontWeight: 700, fontSize: 15, color: "#fff",
-              padding: "15px 20px", borderRadius: 14,
-              background: "linear-gradient(135deg,#08C27A,#05A567)",
-              boxShadow: "0 0 24px rgba(8,194,122,0.45)", textDecoration: "none",
-            }}
-          >
-            Ver formações
-            <svg width={14} height={14} viewBox="0 0 24 24" fill="none">
-              <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
         </div>
       </div>
     </>

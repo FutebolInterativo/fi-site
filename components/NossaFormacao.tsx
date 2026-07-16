@@ -139,10 +139,13 @@ export default function NossaFormacao() {
                   onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
                   style={{ position: "absolute" as const, inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
                 />
-                <div style={{ position: "absolute" as const, bottom: 0, left: 0, right: 0, height: "58%", background: "linear-gradient(to top, rgba(1,14,27,0.95), transparent)" }} />
-                <div style={{ position: "absolute" as const, bottom: 12, left: 12, right: 12 }}>
-                  <p style={{ fontFamily: F, fontSize: "clamp(13px,3.2vw,15px)", color: "#fff", lineHeight: 1.1, marginBottom: 4 }}>{p.nome}</p>
-                  <p style={{ fontFamily: M, fontSize: "clamp(10.5px,2.6vw,11px)", fontWeight: 600, color: "rgba(169,216,245,0.75)", lineHeight: 1.3 }}>{p.cargo}</p>
+                <div style={{ position: "absolute" as const, bottom: 0, left: 0, right: 0, height: "68%", background: "linear-gradient(to top, rgba(1,10,20,0.98) 0%, rgba(1,10,20,0.75) 42%, transparent 100%)" }} />
+                <div style={{ position: "absolute" as const, bottom: 14, left: 14, right: 14 }}>
+                  <p style={{ fontFamily: F, fontSize: "clamp(14px,3.4vw,17px)", color: "#fff", lineHeight: 1.15, marginBottom: 6, textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>{p.nome}</p>
+                  <p style={{
+                    fontFamily: M, fontSize: "clamp(11px,2.7vw,12.5px)", fontWeight: 600, color: "rgba(255,255,255,0.85)", lineHeight: 1.4,
+                    display: "-webkit-box", WebkitBoxOrient: "vertical" as const, WebkitLineClamp: 2, overflow: "hidden",
+                  }}>{p.cargo}</p>
                 </div>
               </div>
             ))}
