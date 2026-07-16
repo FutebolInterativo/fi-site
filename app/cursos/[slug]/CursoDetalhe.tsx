@@ -14,8 +14,8 @@ const COR: Record<string,string> = {
   "saude":"#2DD4BF","gestao-e-operacao":"#F59E0B",
 };
 const LBL: Record<string,string> = {
-  "tecnica-e-tatica":"Técnica e Tática","comunicacao-marketing":"Comunicação",
-  "saude":"Saúde","gestao-e-operacao":"Gestão e Operação",
+  "tecnica-e-tatica":"Técnico / Tático","comunicacao-marketing":"Comunicação e Marketing",
+  "saude":"Saúde e Performance","gestao-e-operacao":"Gestão e Operação",
 };
 function ytId(u:string){ return u.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/)?.[1]??""; }
 

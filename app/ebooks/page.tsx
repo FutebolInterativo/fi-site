@@ -18,7 +18,7 @@ const areas = [
     ),
   },
   {
-    label: "Técnica e Tática",
+    label: "Técnico / Tático",
     href: "/ebooks/area-tecnica",
     color: "#0C98FC",
     icon: (
@@ -28,7 +28,7 @@ const areas = [
     ),
   },
   {
-    label: "Comunicação",
+    label: "Comunicação e Marketing",
     href: "/ebooks/comunicacao",
     color: "#818CF8",
     icon: (

@@ -38,10 +38,10 @@ const socials = [
 
 const cols = [
   { title: "Formações", links: [
-    { href: "/cursos?area=tecnica-e-tatica",      label: "Técnica e Tática" },
-    { href: "/cursos?area=comunicacao-marketing", label: "Comunicação" },
+    { href: "/cursos?area=tecnica-e-tatica",      label: "Técnico / Tático" },
+    { href: "/cursos?area=comunicacao-marketing", label: "Comunicação e Marketing" },
     { href: "/cursos?area=gestao-e-operacao",     label: "Gestão e Operação" },
-    { href: "/cursos?area=saude",                 label: "Saúde" },
+    { href: "/cursos?area=saude",                 label: "Saúde e Performance" },
     { href: "/cursos",                            label: "Todos os cursos" },
   ]},
   { title: "Institucional", links: [

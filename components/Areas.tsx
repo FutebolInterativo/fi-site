@@ -33,7 +33,7 @@ const N = cursos.length;
 const areas = [
   {
     href: "/cursos?area=saude",
-    label: "SAÚDE",
+    label: "SAÚDE E PERFORMANCE",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
         <circle cx="12" cy="12" r="9" /><path d="M12 8v8M8 12h8" />
@@ -51,7 +51,7 @@ const areas = [
   },
   {
     href: "/cursos?area=comunicacao-marketing",
-    label: "COMUNICAÇÃO",
+    label: "COMUNICAÇÃO E MARKETING",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
         <rect x="9" y="3" width="6" height="11" rx="3" /><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" />
@@ -60,7 +60,7 @@ const areas = [
   },
   {
     href: "/cursos?area=gestao-e-operacao",
-    label: "GESTÃO E ADMINISTRATIVO",
+    label: "GESTÃO E OPERAÇÃO",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
         <rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18" />
@@ -132,10 +132,12 @@ export default function Areas() {
         })}
       </div>
 
-      <div style={{ position: "relative", zIndex: 3, display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 14, maxWidth: 560, margin: "clamp(18px,3vh,30px) auto 0", padding: "0 22px" }}>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ position: "relative", zIndex: 3, maxWidth: 960, margin: "clamp(18px,3vh,30px) auto 0", padding: "0 22px" }}>
         {areas.map((a) => (
-          <Link key={a.href} href={a.href} style={{ textDecoration: "none", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, padding: "11px 13px", borderRadius: 40, border: "1px solid rgba(140,200,245,0.32)", background: "linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)", backdropFilter: "blur(10px)", minHeight: 50 }}>
-            <span style={{ fontFamily: M, fontWeight: 700, fontSize: "clamp(10px,2.9vw,13px)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#F4F4F4", lineHeight: 1.12 }}>{a.label}</span>
+          <Link key={a.href} href={a.href} style={{ textDecoration: "none", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, padding: "12px 14px", borderRadius: 40, border: "1px solid rgba(140,200,245,0.32)", background: "linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)", backdropFilter: "blur(10px)", minHeight: 54, transition: "border-color .2s ease, background .2s ease" }}
+            onMouseEnter={e=>{const l=e.currentTarget as HTMLAnchorElement;l.style.borderColor="rgba(43,180,255,0.6)";l.style.background="linear-gradient(90deg,rgba(12,90,150,0.6) 0%,rgba(10,46,78,0.5) 100%)";}}
+            onMouseLeave={e=>{const l=e.currentTarget as HTMLAnchorElement;l.style.borderColor="rgba(140,200,245,0.32)";l.style.background="linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)";}}>
+            <span style={{ fontFamily: M, fontWeight: 700, fontSize: "clamp(9.5px,1.35vw,12px)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#F4F4F4", lineHeight: 1.2 }}>{a.label}</span>
             <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", color: "#2BB4FF", filter: "drop-shadow(0 2px 6px rgba(12,154,255,0.45))" }}>{a.icon}</span>
           </Link>
         ))}

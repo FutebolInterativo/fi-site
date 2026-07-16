@@ -17,7 +17,7 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
 const stats = [
   { num: "100%",   label: "Prática garantida" },
   { num: "+130",   label: "Clubes parceiros", big: true },
-  { num: "+4.500", label: "Em clubes parceiros" },
+  { num: "+4.500", label: "Alunos em clubes parceiros" },
   { num: "34",     label: "Formações" },
 ];
 
