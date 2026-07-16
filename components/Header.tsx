@@ -12,17 +12,17 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
   - fonte branca sólida (era rgba(244,244,244,0.58) no estado padrão)
     com hover numa cor de destaque (azul #0C98FC) em vez de só um branco mais claro
   - "Formações" agora abre dropdown dinâmico com as áreas de lib/cursos.ts
-  - "Experiência Prática" renomeado (label "Intercâmbio", claro pra quem não conhece a sigla PPI) — aponta para /ppi
-    (Programa de Prática Internacional, que saiu da home e ganhou página própria)
+  - "Experiência Prática" renomeado (label "Intercâmbio", claro pra quem não conhece a sigla PPI) — aponta para
+    https://tonojogo.futebolinterativo.com/aniversario-fi-oportunidade-internacional (landing externa da campanha)
 */
 type NavLink = { href: string; label: string; external?: boolean };
 
 const LINKS: NavLink[] = [
   { href: "/cursos",  label: "Formações" },
-  { href: "/ppi",     label: "Intercâmbio" },
+  { href: "https://tonojogo.futebolinterativo.com/aniversario-fi-oportunidade-internacional", label: "Intercâmbio", external: true },
   { href: "/sobre",   label: "Sobre" },
   { href: "/ebooks",  label: "E-books" },
-  { href: "https://futebolinterativo.com/blog", label: "Blog", external: true },
+  { href: "https://blog.futebolinterativo.com/", label: "Blog", external: true },
 ];
 
 const LOGO_SRC = "https://futebolinterativo.com/novo-site/img/logo.png";
