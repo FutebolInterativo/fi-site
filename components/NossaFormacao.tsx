@@ -7,16 +7,16 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 const PROFESSORES = [
   { foto: "/images/mentores/m-beting.png",    nome: "Mauro Beting",      cargo: "Jornalista e Comentarista — SBT, Jovem Pan e outros veículos" },
-  { foto: "/images/mentores/k-matias.png",    nome: "Katy Matias",       cargo: "Nutricionista do Palmeiras" },
-  { foto: "/images/mentores/c-neto.png",      nome: "Calza Neto",        cargo: "DPO do Corinthians" },
-  { foto: "/images/mentores/h-aguiar.png",    nome: "Henrique Almeida",  cargo: "Diretor de Marketing e Negócios do Sport/PE" },
   { foto: "/images/mentores/l-bertozzi.png",  nome: "Leonardo Bertozzi", cargo: "Jornalista e Comentarista na ESPN" },
-  { foto: "/images/mentores/e-affonso.png",   nome: "Eduardo Afonso",    cargo: "Jornalista e Repórter na ESPN" },
-  { foto: "/images/mentores/r-farias.png",    nome: "Roberta Farias",    cargo: "Advogada do Cruzeiro" },
-  { foto: "/images/mentores/w-nakamura.png",  nome: "Wilson Nakamura",   cargo: "Conselheiro e Diretor Estatutário do Palmeiras" },
-  { foto: "/images/mentores/r-salvador.png",  nome: "Rodrigo Salvador",  cargo: "Coordenador de Analytics do Red Bull Bragantino" },
-  { foto: "/images/mentores/g-gomes.png",     nome: "Gabriel Gomes",     cargo: "Scout do Bayer Leverkusen" },
   { foto: "/images/mentores/m-rios.png",      nome: "Michelle Rios",     cargo: "Psicóloga do Atlético/MG" },
+  { foto: "/images/mentores/g-gomes.png",     nome: "Gabriel Gomes",     cargo: "Scout do Bayer Leverkusen" },
+  { foto: "/images/mentores/r-salvador.png",  nome: "Rodrigo Salvador",  cargo: "Coordenador de Analytics do Red Bull Bragantino" },
+  { foto: "/images/mentores/e-affonso.png",   nome: "Eduardo Afonso",    cargo: "Jornalista e Repórter na ESPN" },
+  { foto: "/images/mentores/c-neto.png",      nome: "Calza Neto",        cargo: "DPO do Corinthians" },
+  { foto: "/images/mentores/w-nakamura.png",  nome: "Wilson Nakamura",   cargo: "Conselheiro e Diretor Estatutário do Palmeiras" },
+  { foto: "/images/mentores/k-matias.png",    nome: "Katy Matias",       cargo: "Nutricionista do Palmeiras" },
+  { foto: "/images/mentores/h-aguiar.png",    nome: "Henrique Almeida",  cargo: "Diretor de Marketing e Negócios do Sport/PE" },
+  { foto: "/images/mentores/r-farias.png",    nome: "Roberta Farias",    cargo: "Advogada do Cruzeiro" },
 ];
 
 const N = PROFESSORES.length;

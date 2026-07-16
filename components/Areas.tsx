@@ -6,26 +6,16 @@ const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 const cursos = [
-  { src: "/images/cursos/inteligencia-artificial-no-futebol.webp",        alt: "Inteligência Artificial no Futebol" },
-  { src: "/images/cursos/treinamento-de-goleiros-avancado.webp",          alt: "Treinamento de Goleiros Avançado" },
-  { src: "/images/cursos/correspondente-internacional-no-futebol.webp",   alt: "Correspondente Internacional no Futebol" },
-  { src: "/images/cursos/massagista-no-futebol.webp",                     alt: "Massagista no Futebol" },
-  { src: "/images/cursos/patrocinio-e-licenciamento-no-futebol.webp",     alt: "Patrocínio e Licenciamento no Futebol" },
-  { src: "/images/cursos/preparatorio-agente-fifa.webp",                  alt: "Preparatório Agente FIFA" },
-  { src: "/images/cursos/narracao-no-futebol.webp",                       alt: "Narração no Futebol" },
-  { src: "/images/cursos/ciencia-de-dados.webp",                          alt: "Ciência de Dados" },
-  { src: "/images/cursos/fisioterapia-no-futebol.webp",                   alt: "Fisioterapia no Futebol" },
-  { src: "/images/cursos/gestao-executiva.webp",                          alt: "Gestão Executiva" },
-  { src: "/images/cursos/jornalismo-no-futebol.webp",                     alt: "Jornalismo no Futebol" },
-  { src: "/images/cursos/tatica-individual-e-coletiva.webp",              alt: "Tática Individual e Coletiva" },
-  { src: "/images/cursos/supervisor-no-futebol.webp",                     alt: "Supervisor no Futebol" },
-  { src: "/images/cursos/financas-no-futebol.webp",                       alt: "Finanças no Futebol" },
-  { src: "/images/cursos/psicologia-no-futebol.webp",                     alt: "Psicologia no Futebol" },
-  { src: "/images/cursos/medicina-no-futebol.webp",                       alt: "Medicina no Futebol" },
-  { src: "/images/cursos/analise-de-desempenho-e-mercado.webp",           alt: "Análise de Desempenho e Mercado" },
-  { src: "/images/cursos/nutricao-no-futebol.webp",                       alt: "Nutrição no Futebol" },
-  { src: "/images/cursos/direito-no-futebol.webp",                        alt: "Direito no Futebol" },
-  { src: "/images/cursos/preparacao-fisica-e-recovery.webp",              alt: "Preparação Física e Recovery" },
+  { src: "/images/cursos/analise-de-desempenho-e-mercado.webp", alt: "Análise de Desempenho e Mercado" },
+  { src: "/images/cursos/ciencia-de-dados.webp",                 alt: "Ciência de Dados" },
+  { src: "/images/cursos/direito-no-futebol.webp",                alt: "Direito no Futebol" },
+  { src: "/images/cursos/fotografia-no-futebol.webp",             alt: "Fotografia no Futebol" },
+  { src: "/images/cursos/gestao-executiva.webp",                  alt: "Gestão Executiva" },
+  { src: "/images/cursos/jornalismo-no-futebol.webp",             alt: "Jornalismo no Futebol" },
+  { src: "/images/cursos/marketing-no-futebol.webp",              alt: "Marketing no Futebol" },
+  { src: "/images/cursos/nutricao-no-futebol.webp",               alt: "Nutrição no Futebol" },
+  { src: "/images/cursos/preparacao-fisica-e-recovery.webp",      alt: "Preparação Física e Recovery" },
+  { src: "/images/cursos/psicologia-no-futebol.webp",             alt: "Psicologia no Futebol" },
 ];
 
 const N = cursos.length;
