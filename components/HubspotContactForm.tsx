@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
@@ -60,6 +60,23 @@ function formatPhone(value: string, countryCode: string) {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
 }
 
+// Lê os parâmetros utm_* da URL atual. Só entram no objeto os que realmente
+// vierem na URL — não sobrescreve o que já existe no contato com vazio.
+// Nomes internos padrão do HubSpot pra esse fim; ajuste aqui se a conta
+// usar outros nomes de propriedade.
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
+
+function getUtmParams(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  const params = new URLSearchParams(window.location.search);
+  const utm: Record<string, string> = {};
+  for (const key of UTM_KEYS) {
+    const value = params.get(key);
+    if (value) utm[key] = value;
+  }
+  return utm;
+}
+
 const fieldBase: React.CSSProperties = {
   width: "100%",
   background: "rgba(255,255,255,0.08)",
@@ -93,15 +110,27 @@ type StepKey = (typeof STEP_KEYS)[number];
 type Props = {
   pageName?: string;
   color?: string;
+  /** UTMs padrão dessa página/curso — só valem pra chave que a URL NÃO tiver */
+  defaultUtm?: Partial<Record<(typeof UTM_KEYS)[number], string>>;
   onSuccess?: () => void;
 };
 
-export default function HubspotContactForm({ pageName, color = "#08C27A", onSuccess }: Props) {
+export default function HubspotContactForm({ pageName, color = "#08C27A", defaultUtm, onSuccess }: Props) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>(EMPTY);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [utm, setUtm] = useState<Record<string, string>>({});
+
+  // Captura os UTMs uma vez, ao abrir o formulário — assim continuam
+  // disponíveis mesmo se a pessoa demorar pra terminar o wizard.
+  // Se a URL não tiver um UTM específico, usa o padrão da página (defaultUtm).
+  const defaultUtmKey = JSON.stringify(defaultUtm ?? {});
+  useEffect(() => {
+    setUtm({ ...defaultUtm, ...getUtmParams() });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultUtmKey]);
 
   const stepKey: StepKey = STEP_KEYS[step];
   const isLast = step === STEP_KEYS.length - 1;
@@ -126,45 +155,22 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", onSucc
     return "";
   }
 
-  function goNext() {
-    const err = validateStep(stepKey);
-    if (err) { setError(err); return; }
-    setError("");
-    if (isLast) { submit(); return; }
-    setStep((s) => s + 1);
-  }
-
-  function goBack() {
-    setError("");
-    setStep((s) => Math.max(0, s - 1));
-  }
-
-  function chooseAndAdvance<K extends keyof Answers>(key: K, value: Answers[K]) {
-    setAnswers((a) => ({ ...a, [key]: value }));
-    setError("");
-    if (isLast) { submit({ ...answers, [key]: value }); return; }
-    setStep((s) => s + 1);
-  }
-
-  async function submit(finalAnswers: Answers = answers) {
-    setStatus("loading");
-    setErrorMsg("");
-
-    const [firstname, ...rest] = finalAnswers.name.trim().split(" ");
-    const country = COUNTRIES.find((c) => c.code === finalAnswers.country) ?? COUNTRIES[0];
-
-    const properties: Record<string, string> = {
-      email: finalAnswers.email.trim(),
+  function contatoProperties(): Record<string, string> {
+    const [firstname, ...rest] = answers.name.trim().split(" ");
+    return {
+      email: answers.email.trim(),
       firstname,
       lastname: rest.join(" ") || firstname,
-      phone: `${country.dial}${finalAnswers.phone.replace(/\D/g, "")}`,
-      idade: finalAnswers.idade,
-      qual_area_voce_tem_interesse: finalAnswers.area,
-      qual_o_momento_da_carreira: finalAnswers.momento,
-      fi_investimento_educacao_12m: finalAnswers.investimento,
+      phone: `${selectedCountry.dial}${answers.phone.replace(/\D/g, "")}`,
+      ...utm,
     };
-    if (pageName) void pageName; // reservado pra uso futuro (ex: propriedade de origem, se criada no HubSpot)
+  }
 
+  // Faz a chamada de criar/atualizar no HubSpot. Reaproveitada tanto no
+  // envio parcial (logo depois da etapa de contato) quanto no envio final
+  // (última pergunta) — como é upsert por e-mail, chamar duas vezes só
+  // atualiza o mesmo contato, sem duplicar nada.
+  async function postProperties(properties: Record<string, string>): Promise<boolean> {
     try {
       const res = await fetch("/api/hubspot-submit", {
         method: "POST",
@@ -176,12 +182,59 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", onSucc
         console.error("Resposta de erro da API /api/hubspot-submit:", data);
         throw new Error(data.detail ? `${data.error} (${data.detail})` : data.error || "Algo deu errado. Tente novamente.");
       }
-      setStatus("success");
-      onSuccess?.();
+      return true;
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Não foi possível enviar. Tente novamente.");
+      return false;
     }
+  }
+
+  async function goNext() {
+    const err = validateStep(stepKey);
+    if (err) { setError(err); return; }
+    setError("");
+
+    if (stepKey === "contato") {
+      // Já cria/atualiza o contato com nome, e-mail, telefone e UTMs —
+      // não espera o wizard terminar pra registrar isso.
+      setStatus("loading");
+      const ok = await postProperties(contatoProperties());
+      setStatus("idle");
+      if (!ok) return;
+    }
+
+    setStep((s) => s + 1);
+  }
+
+  function goBack() {
+    setError("");
+    setStep((s) => Math.max(0, s - 1));
+  }
+
+  async function chooseAndAdvance<K extends keyof Answers>(key: K, value: Answers[K]) {
+    const updated = { ...answers, [key]: value };
+    setAnswers(updated);
+    setError("");
+    if (isLast) { await finalSubmit(updated); return; }
+    setStep((s) => s + 1);
+  }
+
+  async function finalSubmit(finalAnswers: Answers = answers) {
+    setStatus("loading");
+    setErrorMsg("");
+
+    const ok = await postProperties({
+      email: finalAnswers.email.trim(),
+      idade: finalAnswers.idade,
+      qual_area_voce_tem_interesse: finalAnswers.area,
+      qual_o_momento_da_carreira: finalAnswers.momento,
+      fi_investimento_educacao_12m: finalAnswers.investimento,
+    });
+
+    if (!ok) { setStatus("error"); return; }
+    setStatus("success");
+    onSuccess?.();
   }
 
   if (status === "success") {

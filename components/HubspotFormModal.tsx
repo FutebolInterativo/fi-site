@@ -10,11 +10,12 @@ type Props = {
   color?: string;
   title?: string;
   subtitle?: string;
+  defaultUtm?: Partial<Record<"utm_source" | "utm_medium" | "utm_campaign" | "utm_term" | "utm_content", string>>;
   /** o próprio botão/elemento que abre o modal — qualquer JSX, ex: um <a> já estilizado */
   trigger: React.ReactNode;
 };
 
-export default function HubspotFormModal({ pageName, color = "#08C27A", title = "Fale com a gente", subtitle, trigger }: Props) {
+export default function HubspotFormModal({ pageName, color = "#08C27A", title = "Fale com a gente", subtitle, defaultUtm, trigger }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -78,7 +79,7 @@ export default function HubspotFormModal({ pageName, color = "#08C27A", title = 
               </p>
             )}
 
-            <HubspotContactForm pageName={pageName} color={color} onSuccess={() => setTimeout(() => setOpen(false), 2500)} />
+            <HubspotContactForm pageName={pageName} color={color} defaultUtm={defaultUtm} onSuccess={() => setTimeout(() => setOpen(false), 2500)} />
           </div>
         </div>
       )}
