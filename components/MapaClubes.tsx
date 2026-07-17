@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
@@ -252,19 +252,59 @@ export default function MapaClubes() {
     setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }
 
+  const [userLoc, setUserLoc] = useState<{ x: number; y: number } | null>(null);
+  const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "denied" | "unsupported">("idle");
+
+  // Converte lat/lng real para as coordenadas do viewBox (0-460 x 0-465) do
+  // mapa estilizado. É uma projeção aproximada (bounding box do Brasil) —
+  // suficiente para um marcador decorativo, não para precisão cartográfica.
+  function requestLocation() {
+    if (userLoc) { setUserLoc(null); return; } // clique de novo esconde
+    if (!("geolocation" in navigator)) { setGeoStatus("unsupported"); return; }
+    setGeoStatus("loading");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const LAT_MAX = 5.3, LAT_MIN = -33.75, LNG_MIN = -73.99, LNG_MAX = -28.85;
+        const xRaw = ((longitude - LNG_MIN) / (LNG_MAX - LNG_MIN)) * 460;
+        const yRaw = ((LAT_MAX - latitude) / (LAT_MAX - LAT_MIN)) * 465;
+        setUserLoc({ x: Math.min(430, Math.max(30, xRaw)), y: Math.min(445, Math.max(20, yRaw)) });
+        setGeoStatus("idle");
+      },
+      () => setGeoStatus("denied"),
+      { timeout: 8000 }
+    );
+  }
+
   function selectHover(id: string) {
     setHover(id);
     setTouched(true);
   }
 
+  // fecha com Esc e trava o scroll da página enquanto o modal está aberto
+  useEffect(() => {
+    if (!ativo) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setAtivo(null);
+    }
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [ativo]);
+
   const mcCss = `
     @keyframes mcPing { 0% { r: 7; opacity: .7; } 75%, 100% { r: 24; opacity: 0; } }
     .mc-ping-ring { animation: mcPing 1.8s ease-out infinite; }
     .mc-state-path { transition: fill .18s ease, stroke .18s ease, filter .18s ease; cursor: pointer; }
-    .mc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s cubic-bezier(.4,0,.2,1); }
-    .mc-panel.is-open { grid-template-rows: 1fr; }
-    .mc-panel-inner { overflow: hidden; }
     .mc-club:hover { transform: translateY(-2px); border-color: rgba(12,152,252,0.4) !important; }
+    @keyframes mcFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes mcScaleIn { from { opacity: 0; transform: scale(.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .mc-modal-backdrop { animation: mcFadeIn .18s ease; }
+    .mc-modal { animation: mcScaleIn .22s cubic-bezier(.22,.61,.36,1); }
   `;
 
   return (
@@ -322,7 +362,7 @@ export default function MapaClubes() {
             {/* Banner de instrução — some depois da primeira interação */}
             {!ativo && (
               <div style={{
-                display: "flex", alignItems: "center", gap: 10, marginBottom: 18,
+                display: "flex", alignItems: "center", gap: 10, marginBottom: 12,
                 padding: "10px 16px", borderRadius: 12,
                 background: "rgba(12,152,252,0.1)", border: "1px solid rgba(12,152,252,0.28)",
               }}>
@@ -336,6 +376,37 @@ export default function MapaClubes() {
                   Toque em um estado para ver os clubes parceiros
                 </span>
               </div>
+            )}
+
+            {/* Botão opcional — só pede geolocalização se o usuário quiser */}
+            <button
+              onClick={requestLocation}
+              disabled={geoStatus === "loading"}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 7,
+                padding: "7px 14px 7px 10px", borderRadius: 99, marginBottom: 18,
+                border: `1px solid ${userLoc ? "rgba(245,158,11,0.5)" : "rgba(140,200,245,0.2)"}`,
+                background: userLoc ? "rgba(245,158,11,0.12)" : "rgba(255,255,255,0.03)",
+                cursor: geoStatus === "loading" ? "default" : "pointer",
+              }}
+            >
+              <svg width={13} height={13} viewBox="0 0 24 24" fill="none">
+                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" stroke={userLoc ? "#F59E0B" : "#A9D8F5"} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx={12} cy={10} r={3} stroke={userLoc ? "#F59E0B" : "#A9D8F5"} strokeWidth={2} />
+              </svg>
+              <span style={{ fontFamily: M, fontSize: 11.5, fontWeight: 700, color: userLoc ? "#F59E0B" : "rgba(169,216,245,0.7)" }}>
+                {geoStatus === "loading" ? "Localizando..." : userLoc ? "Ocultar minha localização" : "Ver minha localização no mapa"}
+              </span>
+            </button>
+            {geoStatus === "denied" && (
+              <p style={{ fontFamily: M, fontSize: 11.5, color: "rgba(244,244,244,0.4)", marginTop: -10, marginBottom: 14 }}>
+                Não conseguimos acessar sua localização. Verifique a permissão do navegador.
+              </p>
+            )}
+            {geoStatus === "unsupported" && (
+              <p style={{ fontFamily: M, fontSize: 11.5, color: "rgba(244,244,244,0.4)", marginTop: -10, marginBottom: 14 }}>
+                Seu navegador não suporta geolocalização.
+              </p>
             )}
 
             <svg
@@ -375,6 +446,17 @@ export default function MapaClubes() {
                 <g style={{ pointerEvents: "none" }}>
                   <circle cx={305.5} cy={356.2} r={7} fill="none" stroke={AZUL} strokeWidth={2} className="mc-ping-ring" />
                   <circle cx={305.5} cy={356.2} r={5} fill={AZUL} />
+                </g>
+              )}
+
+              {/* Localização real do usuário — só aparece se ele pedir (botão acima) */}
+              {userLoc && (
+                <g style={{ pointerEvents: "none" }}>
+                  <circle cx={userLoc.x} cy={userLoc.y} r={8} fill="none" stroke="#F59E0B" strokeWidth={2} className="mc-ping-ring" />
+                  <circle cx={userLoc.x} cy={userLoc.y} r={5.5} fill="#F59E0B" stroke="#fff" strokeWidth={1.5} />
+                  <text x={userLoc.x} y={Math.max(14, userLoc.y - 14)} textAnchor="middle" style={{ fontFamily: M, fontSize: 10, fontWeight: 700, fill: "#fff" }}>
+                    Você está aqui
+                  </text>
                 </g>
               )}
             </svg>
@@ -418,62 +500,80 @@ export default function MapaClubes() {
             )}
           </div>
 
-          {/* PAINEL DE DETALHES — expande logo abaixo do mapa quando um estado é selecionado
-              (mesma técnica de acordeão grid-template-rows já usada no restante do site) */}
-          <div className={`mc-panel${ativo ? " is-open" : ""}`}>
-            <div className="mc-panel-inner">
-              {estado && (
-                <div style={{ marginTop: 16, borderRadius: 20, border: `1px solid ${AZUL}40`, background: `linear-gradient(155deg,#0A1E35,${AZUL}16)`, overflow: "hidden", boxShadow: "0 16px 40px -16px rgba(0,0,0,0.4)" }}>
-
-                  {/* Cabeçalho do estado */}
-                  <div style={{ padding: "18px 22px", borderBottom: "1px solid rgba(140,200,245,0.1)", display: "flex", alignItems: "center", gap: 14, background: `linear-gradient(135deg, ${AZUL}18, transparent)` }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 12, background: `${AZUL}22`, border: `1.5px solid ${AZUL}50`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <svg width={17} height={17} viewBox="0 0 24 24" fill="none">
-                        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" stroke={AZUL} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                        <circle cx={12} cy={10} r={3} stroke={AZUL} strokeWidth={2} />
-                      </svg>
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: AZUL, marginBottom: 2 }}>
-                        {estado.clubes.length} clube{estado.clubes.length !== 1 ? "s" : ""} parceiro{estado.clubes.length !== 1 ? "s" : ""}
-                      </p>
-                      <h3 style={{ fontFamily: F, fontSize: "clamp(17px,2vw,22px)", color: "#fff", lineHeight: 1 }}>{estado.label.toUpperCase()}</h3>
-                    </div>
-                    <button
-                      onClick={() => setAtivo(null)}
-                      style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(140,200,245,0.18)", color: "rgba(169,216,245,0.55)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 17, lineHeight: 1 }}
-                      aria-label="Fechar"
-                    >×</button>
+          {/* MODAL — abre por cima da página em vez de empurrar o conteúdo */}
+          {ativo && estado && (
+            <div
+              className="mc-modal-backdrop"
+              onClick={() => setAtivo(null)}
+              style={{
+                position: "fixed", inset: 0, zIndex: 200,
+                background: "rgba(1,10,20,0.72)", backdropFilter: "blur(6px)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                padding: "20px",
+              }}
+            >
+              <div
+                className="mc-modal"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  width: "min(720px, 100%)",
+                  maxHeight: "82vh",
+                  display: "flex", flexDirection: "column" as const,
+                  borderRadius: 22,
+                  border: `1px solid ${AZUL}40`,
+                  background: `linear-gradient(155deg,#0A1E35,${AZUL}16)`,
+                  overflow: "hidden",
+                  boxShadow: "0 32px 80px -20px rgba(0,0,0,0.6)",
+                }}
+              >
+                {/* Cabeçalho do estado */}
+                <div style={{ padding: "18px 22px", borderBottom: "1px solid rgba(140,200,245,0.1)", display: "flex", alignItems: "center", gap: 14, background: `linear-gradient(135deg, ${AZUL}18, transparent)`, flexShrink: 0 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 12, background: `${AZUL}22`, border: `1.5px solid ${AZUL}50`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <svg width={17} height={17} viewBox="0 0 24 24" fill="none">
+                      <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" stroke={AZUL} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx={12} cy={10} r={3} stroke={AZUL} strokeWidth={2} />
+                    </svg>
                   </div>
-
-                  {/* Grid de clubes — usa toda a largura do card, sem lista espremida */}
-                  <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 8, maxHeight: 340, overflowY: "auto" as const }}>
-                    {estado.clubes.map((clube, i) => (
-                      <div
-                        key={i}
-                        className="mc-club"
-                        style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 10px", borderRadius: 12, background: "rgba(255,255,255,0.035)", border: "1px solid rgba(140,200,245,0.08)", transition: "transform .15s ease, border-color .15s ease" }}
-                      >
-                        <div style={{ width: 36, height: 36, borderRadius: 10, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: 4 }}>
-                          <img
-                            src={clube.logo}
-                            alt={clube.nome}
-                            style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                            loading="lazy"
-                            onError={(e) => { (e.target as HTMLImageElement).style.visibility = "hidden"; }}
-                          />
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <p style={{ fontFamily: M, fontWeight: 700, fontSize: 12.5, color: "#F4F4F4", lineHeight: 1.2, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.nome}</p>
-                          <p style={{ fontFamily: M, fontSize: 10.5, color: "rgba(169,216,245,0.45)", marginTop: 1, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.cidade}</p>
-                        </div>
-                      </div>
-                    ))}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: AZUL, marginBottom: 2 }}>
+                      {estado.clubes.length} clube{estado.clubes.length !== 1 ? "s" : ""} parceiro{estado.clubes.length !== 1 ? "s" : ""}
+                    </p>
+                    <h3 style={{ fontFamily: F, fontSize: "clamp(17px,2vw,22px)", color: "#fff", lineHeight: 1 }}>{estado.label.toUpperCase()}</h3>
                   </div>
+                  <button
+                    onClick={() => setAtivo(null)}
+                    style={{ width: 30, height: 30, borderRadius: 9, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(140,200,245,0.18)", color: "rgba(169,216,245,0.55)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 17, lineHeight: 1 }}
+                    aria-label="Fechar"
+                  >×</button>
                 </div>
-              )}
+
+                {/* Grid de clubes — rola dentro do modal, o resto da página fica intocado */}
+                <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 8, overflowY: "auto" as const }}>
+                  {estado.clubes.map((clube, i) => (
+                    <div
+                      key={i}
+                      className="mc-club"
+                      style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 10px", borderRadius: 12, background: "rgba(255,255,255,0.035)", border: "1px solid rgba(140,200,245,0.08)", transition: "transform .15s ease, border-color .15s ease" }}
+                    >
+                      <div style={{ width: 36, height: 36, borderRadius: 10, background: "#EDEDED", border: "1px solid rgba(0,0,0,0.08)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: 4 }}>
+                        <img
+                          src={clube.logo}
+                          alt={clube.nome}
+                          style={{ width: "100%", height: "100%", objectFit: "contain", filter: "drop-shadow(0 1px 0.5px rgba(0,0,0,0.45)) drop-shadow(0 -1px 0.5px rgba(0,0,0,0.45)) drop-shadow(1px 0 0.5px rgba(0,0,0,0.45)) drop-shadow(-1px 0 0.5px rgba(0,0,0,0.45))" }}
+                          loading="lazy"
+                          onError={(e) => { (e.target as HTMLImageElement).style.visibility = "hidden"; }}
+                        />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontFamily: M, fontWeight: 700, fontSize: 12.5, color: "#F4F4F4", lineHeight: 1.2, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.nome}</p>
+                        <p style={{ fontFamily: M, fontSize: 10.5, color: "rgba(169,216,245,0.45)", marginTop: 1, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.cidade}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

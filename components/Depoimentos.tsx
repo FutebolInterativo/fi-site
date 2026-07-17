@@ -91,7 +91,6 @@ export default function Depoimentos() {
 
                 <p style={{
                   fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.8)", lineHeight: 1.55, flex: 1, marginBottom: 18, position: "relative",
-                  display: "-webkit-box", WebkitBoxOrient: "vertical" as const, WebkitLineClamp: 5, overflow: "hidden",
                 }}>
                   &ldquo;{d.quote}&rdquo;
                 </p>

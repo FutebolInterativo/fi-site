@@ -67,7 +67,7 @@ function Counter({ raw }: { raw: string }) {
 
 export default function ExperienciaPraticaHome() {
   return (
-    <section style={{ background: DARK, padding: "clamp(88px,12vh,124px) 0 clamp(72px,10vh,108px)", position: "relative", overflow: "hidden" }}>
+    <section style={{ background: DARK, padding: "clamp(88px,12vh,124px) 0 clamp(48px,6vh,72px)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "-10%", right: "-10%", width: "45%", height: "70%", background: "radial-gradient(ellipse 60% 55% at 60% 40%, rgba(12,152,252,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
 
       <div className="max-w-6xl mx-auto px-6" style={{ position: "relative" }}>

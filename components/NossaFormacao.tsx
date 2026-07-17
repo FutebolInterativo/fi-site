@@ -81,7 +81,7 @@ export default function NossaFormacao() {
   `;
 
   return (
-    <section style={{ background: "linear-gradient(180deg,#020C18 0%,#03263F 55%,#020C18 100%)", padding: "clamp(64px,9vh,100px) 0", overflow: "hidden" }}>
+    <section style={{ background: "linear-gradient(180deg,#020C18 0%,#03263F 55%,#020C18 100%)", padding: "clamp(40px,6vh,64px) 0 clamp(64px,9vh,100px)", overflow: "hidden" }}>
       <style dangerouslySetInnerHTML={{ __html: css }} />
 
       {/* Header */}

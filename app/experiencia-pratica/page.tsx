@@ -46,7 +46,7 @@ const STATS = [
 
 const passos = [
   { num: "01", titulo: "Conclua a parte teórica",   desc: "Termine as aulas online da sua especialização no seu ritmo, com profissionais que atuam no mercado." },
-  { num: "02", titulo: "Escolha o clube parceiro",  desc: "Selecione um dos +130 clubes parceiros espalhados pelo Brasil para realizar sua experiência prática." },
+  { num: "02", titulo: "Indique suas opções de clube", desc: "Escolha até 3 opções entre os +130 clubes parceiros espalhados pelo Brasil. A prática é garantida em um deles, conforme a disponibilidade." },
   { num: "03", titulo: "Viva dentro de um clube",   desc: "Durante até 15 dias, você atua dentro do departamento da sua área, ao lado de profissionais reais." },
   { num: "04", titulo: "Construa sua rede no mercado", desc: "Você coloca em prática o que aprendeu lado a lado com quem já atua no futebol profissional, criando conexões reais que facilitam futuras oportunidades." },
 ];
@@ -96,51 +96,41 @@ function Counter({ raw }: { raw: string }) {
   return <span ref={ref}>{raw}</span>;
 }
 
-/* ── VideoCard — thumbnail clicável, abre iframe só ao clicar ───── */
-function VideoCard({ ytId, nome, texto, cor }: { ytId: string; nome: string; texto: string; cor: string }) {
-  const [playing, setPlaying] = useState(false);
+/* ── VideoCard — thumbnail clicável, avisa a página pra abrir o modal ───── */
+function VideoCard({ ytId, nome, texto, cor, onPlay }: { ytId: string; nome: string; texto: string; cor: string; onPlay: () => void }) {
   const thumb = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
 
   return (
-    <div style={{ borderRadius: 20, overflow: "hidden", border: `1px solid ${cor}35`, background: "#031525", transition: "transform .22s ease, box-shadow .22s ease" }}
+    <div style={{ height: "100%", display: "flex", flexDirection: "column" as const, borderRadius: 20, overflow: "hidden", border: `1px solid ${cor}35`, background: "#031525", transition: "transform .22s ease, box-shadow .22s ease" }}
       onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = `0 20px 48px rgba(0,0,0,.35)`; }}
       onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "none"; }}
     >
-      {/* thumbnail / iframe */}
-      <div style={{ position: "relative" as const, aspectRatio: "16/9", background: "#021829", cursor: "pointer" }} onClick={() => setPlaying(true)}>
-        {playing ? (
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&playsinline=1`}
-            title={nome}
-            style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        ) : (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={thumb} alt={nome} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            {/* overlay escuro */}
-            <div style={{ position: "absolute" as const, inset: 0, background: "rgba(0,0,0,0.38)" }} />
-            {/* botão play */}
-            <div style={{ position: "absolute" as const, inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{ width: 60, height: 60, borderRadius: "50%", background: cor, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 32px ${cor}80`, transition: "transform .2s ease" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1.12)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1)"; }}
-              >
-                <svg width={22} height={22} viewBox="0 0 24 24" fill="none"><polygon points="9,7 19,12 9,17" fill="#fff"/></svg>
-              </div>
-            </div>
-          </>
-        )}
+      {/* thumbnail — clicar abre o modal com o vídeo grande */}
+      <div style={{ position: "relative" as const, aspectRatio: "16/9", flexShrink: 0, background: "#021829", cursor: "pointer" }} onClick={onPlay}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={thumb} alt={nome} style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block" }} />
+        {/* overlay escuro */}
+        <div style={{ position: "absolute" as const, inset: 0, background: "rgba(0,0,0,0.38)" }} />
+        {/* botão play */}
+        <div style={{ position: "absolute" as const, inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 60, height: 60, borderRadius: "50%", background: cor, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 32px ${cor}80`, transition: "transform .2s ease" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1.12)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1)"; }}
+          >
+            <svg width={22} height={22} viewBox="0 0 24 24" fill="none"><polygon points="9,7 19,12 9,17" fill="#fff"/></svg>
+          </div>
+        </div>
       </div>
-      {/* rodapé do card */}
-      <div style={{ padding: "14px 18px 18px" }}>
+      {/* rodapé do card — cresce pra preencher o espaço, mantendo o texto sempre no topo */}
+      <div style={{ padding: "14px 18px 18px", flex: 1, display: "flex", flexDirection: "column" as const }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
           <span style={{ width: 4, height: 20, borderRadius: 2, background: cor, flexShrink: 0 }} />
           <p style={{ fontFamily: F, fontSize: "clamp(14px,1.6vw,17px)", color: "#F4F4F4", lineHeight: 1.1 }}>{nome}</p>
         </div>
-        <p style={{ fontFamily: M, fontSize: 12.5, fontWeight: 500, color: "rgba(244,244,244,0.5)", lineHeight: 1.55 }}>{texto}</p>
+        <p style={{
+          fontFamily: M, fontSize: 12.5, fontWeight: 500, color: "rgba(244,244,244,0.5)", lineHeight: 1.55,
+          display: "-webkit-box", WebkitBoxOrient: "vertical" as const, WebkitLineClamp: 3, overflow: "hidden",
+        }}>{texto}</p>
       </div>
     </div>
   );
@@ -149,6 +139,22 @@ function VideoCard({ ytId, nome, texto, cor }: { ytId: string; nome: string; tex
 /* ── página ──────────────────────────────────────────────────────── */
 export default function ExperienciaPraticaPage() {
   const [areaAtiva, setAreaAtiva] = useState<string>("Análise e Dados");
+  const [modalVideo, setModalVideo] = useState<{ id: string; nome: string } | null>(null);
+
+  // fecha o modal de vídeo com Esc e trava o scroll da página enquanto aberto
+  useEffect(() => {
+    if (!modalVideo) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setModalVideo(null);
+    }
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [modalVideo]);
 
   const css = `
     .ep-tab { transition: background .18s ease, color .18s ease, border-color .18s ease; }
@@ -288,16 +294,15 @@ export default function ExperienciaPraticaPage() {
               <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "#A9D8F5", marginBottom: 12 }}>O que você vive lá dentro</p>
               <h2 style={{ fontFamily: F, fontSize: "clamp(28px,5vw,52px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 16 }}>COMO É UM DIA DENTRO<br />DO CLUBE</h2>
               <p style={{ fontFamily: M, fontSize: 15, fontWeight: 400, color: "rgba(244,244,244,0.55)", lineHeight: 1.75, maxWidth: 620, marginBottom: 48 }}>
-                Cada área e cada clube têm sua própria rotina, mas alguns momentos costumam se repetir durante os dias de imersão.
+                A rotina exata varia de acordo com a sua área e o clube parceiro — quem faz a prática em Saúde não vive o mesmo dia a dia de quem faz em Comunicação ou Gestão, por exemplo. Alguns pontos, porém, são comuns a todas as experiências:
               </p>
             </FadeIn>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 14 }}>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { titulo: "Treinos e rotina técnica", desc: "Acompanha os treinos e a rotina técnica do dia a dia ao lado da comissão e dos profissionais do departamento.", icone: <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" /> },
-                { titulo: "Análise de adversários", desc: "Participa da análise de adversários, entendendo como o departamento se prepara para cada confronto.", icone: <path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.7a8.3 8.3 0 0 1-.9-3.8A8.4 8.4 0 0 1 12.5 3a8.4 8.4 0 0 1 8.4 8.4Z" /> },
-                { titulo: "Rotinas de vestiário e bastidores", desc: "Vive as rotinas de vestiário e o dia a dia por trás da estrutura do clube.", icone: <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1v18" /> },
-                { titulo: "Processos administrativos", desc: "Acompanha os processos administrativos do departamento, entendendo como o clube organiza o trabalho por trás dos resultados.", icone: <path d="M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1ZM6 6h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" /> },
+                { titulo: "Rotina real do departamento", desc: "Acompanha de perto a estrutura e os bastidores do departamento da sua área dentro do clube, do jeito que ele funciona de verdade.", icone: <path d="M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1ZM6 6h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" /> },
+                { titulo: "Lado a lado com profissionais", desc: "Trabalha próximo de quem já atua no mercado, aprendendo com a experiência de quem está no dia a dia do futebol.", icone: <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /> },
+                { titulo: "Prática do que aprendeu na teoria", desc: "Aplica no contexto real do clube o conteúdo estudado durante o curso, cada um dentro da sua especialização.", icone: <path d="M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5" /> },
                 { titulo: "Rede de contatos real", desc: "Constrói uma rede de contatos lado a lado com quem já atua no mercado da bola, o que facilita futuras oportunidades.", icone: <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM9 12l2 2 4-4" /> },
               ].map((m, i) => (
                 <FadeIn key={m.titulo} delay={i * 70}>
@@ -322,6 +327,79 @@ export default function ExperienciaPraticaPage() {
                 </FadeIn>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ════════════  INFORMAÇÕES IMPORTANTES  ════════════ */}
+        <section style={{ background: "#03263F", padding: "clamp(72px,10vh,104px) 0", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 50% 40% at 10% 90%,rgba(12,152,252,0.08),transparent 60%)", pointerEvents: "none" }} />
+          <div style={{ maxWidth: 1152, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", position: "relative" }}>
+            <FadeIn>
+              <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "#A9D8F5", marginBottom: 12 }}>Informações importantes</p>
+              <h2 style={{ fontFamily: F, fontSize: "clamp(28px,5vw,52px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 16 }}>O QUE VOCÊ PRECISA<br />SABER ANTES DE AGENDAR</h2>
+              <p style={{ fontFamily: M, fontSize: 15, fontWeight: 400, color: "rgba(244,244,244,0.55)", lineHeight: 1.75, maxWidth: 640, marginBottom: 44 }}>
+                A experiência prática não é um estágio formal nem remunerado — é uma vivência de curta duração, sem vínculo empregatício, para você aplicar na prática o que aprendeu na teoria.
+              </p>
+            </FadeIn>
+
+            {/* Modalidades */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 14, marginBottom: 20 }}>
+              <FadeIn>
+                <div style={{ height: "100%", padding: "26px 24px", borderRadius: 18, border: "1px solid rgba(140,200,245,0.12)", background: "linear-gradient(155deg,#0A1E35,rgba(12,152,252,0.07))" }}>
+                  <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: 99, background: "rgba(12,152,252,0.15)", fontFamily: M, fontSize: 11, fontWeight: 700, color: "#0C98FC", marginBottom: 14 }}>Modalidade Padrão</span>
+                  <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.7)", lineHeight: 1.65 }}>
+                    Acompanhamento presencial da rotina do clube por <strong style={{ color: "#F4F4F4" }}>até 15 dias corridos</strong>. Disponível para todas as áreas.
+                  </p>
+                </div>
+              </FadeIn>
+              <FadeIn delay={80}>
+                <div style={{ height: "100%", padding: "26px 24px", borderRadius: 18, border: "1px solid rgba(140,200,245,0.12)", background: "linear-gradient(155deg,#0A1E35,rgba(12,152,252,0.07))" }}>
+                  <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: 99, background: "rgba(12,152,252,0.15)", fontFamily: M, fontSize: 11, fontWeight: 700, color: "#0C98FC", marginBottom: 14 }}>Modalidade Online</span>
+                  <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.7)", lineHeight: 1.65 }}>
+                    Mentorias individuais e em grupo, com monitoramento remoto por <strong style={{ color: "#F4F4F4" }}>até 45 dias</strong>. Disponível para Comunicação e Marketing, Análise de Desempenho/Mercado e Gestão e Direito.
+                  </p>
+                </div>
+              </FadeIn>
+            </div>
+            <FadeIn>
+              <p style={{ fontFamily: M, fontSize: 12, fontWeight: 500, color: "rgba(169,216,245,0.4)", lineHeight: 1.6, marginBottom: 40 }}>
+                Saúde e Performance e Áreas Técnicas contam apenas com a modalidade Padrão.
+              </p>
+            </FadeIn>
+
+            {/* Requisitos + Prazos */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 14, marginBottom: 32 }}>
+              {[
+                { titulo: "Requisitos", itens: ["Ter ciência sobre o processo de prática", "Concluir o curso em 100% de integralização", "Possuir o certificado de conclusão do curso"] },
+                { titulo: "Prazos", itens: ["Até 2 anos após a compra para concluir o curso e realizar a prática", "Agendamento do embarque com até 30 dias de antecedência"] },
+              ].map((bloco) => (
+                <FadeIn key={bloco.titulo}>
+                  <div style={{ height: "100%", padding: "24px 22px", borderRadius: 16, border: "1px solid rgba(140,200,245,0.1)", background: "rgba(255,255,255,0.03)" }}>
+                    <p style={{ fontFamily: F, fontSize: 16, color: "#F4F4F4", marginBottom: 12 }}>{bloco.titulo}</p>
+                    <ul style={{ listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 8 }}>
+                      {bloco.itens.map((it) => (
+                        <li key={it} style={{ display: "flex", gap: 8, fontFamily: M, fontSize: 13, fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.55 }}>
+                          <svg width={14} height={14} viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0, marginTop: 3 }}><path d="M4 10l4 4 8-8" stroke="#0C98FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                          {it}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+
+            {/* Alerta */}
+            <FadeIn>
+              <div style={{ padding: "22px 24px", borderRadius: 16, border: "1px solid rgba(245,158,11,0.35)", background: "rgba(245,158,11,0.08)" }}>
+                <p style={{ fontFamily: M, fontSize: 13, fontWeight: 500, color: "rgba(244,244,244,0.75)", lineHeight: 1.65, marginBottom: 8 }}>
+                  <strong style={{ color: "#F59E0B" }}>Como funciona a escolha do clube:</strong> ao agendar, você indica até 3 opções de clube parceiro. A experiência prática é garantida — ela acontece em um desses clubes, de acordo com a disponibilidade de agenda no momento da solicitação.
+                </p>
+                <p style={{ fontFamily: M, fontSize: 13, fontWeight: 500, color: "rgba(244,244,244,0.75)", lineHeight: 1.65 }}>
+                  Despesas de transporte, hospedagem e alimentação são de responsabilidade do aluno, independente da localidade do clube.
+                </p>
+              </div>
+            </FadeIn>
           </div>
         </section>
 
@@ -368,7 +446,7 @@ export default function ExperienciaPraticaPage() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(250px,1fr))", gap: "clamp(14px,2vw,20px)" }}>
               {depsFiltrados.map((d, i) => (
                 <FadeIn key={d.nome} delay={i * 80}>
-                  <VideoCard ytId={d.ytId} nome={d.nome} texto={d.texto} cor={AREA_COR[d.area]} />
+                  <VideoCard ytId={d.ytId} nome={d.nome} texto={d.texto} cor={AREA_COR[d.area]} onPlay={() => setModalVideo({ id: d.ytId, nome: d.nome })} />
                 </FadeIn>
               ))}
             </div>
@@ -402,6 +480,49 @@ export default function ExperienciaPraticaPage() {
         </section>
 
       </main>
+
+      {/* ════════════  MODAL DE VÍDEO  ════════════ */}
+      {modalVideo && (
+        <div
+          onClick={() => setModalVideo(null)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 300,
+            background: "rgba(1,10,20,0.85)", backdropFilter: "blur(8px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "20px",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{ width: "min(880px, 100%)", position: "relative" }}
+          >
+            <button
+              onClick={() => setModalVideo(null)}
+              aria-label="Fechar"
+              style={{
+                position: "absolute", top: -44, right: 0,
+                width: 36, height: 36, borderRadius: 10,
+                background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)",
+                color: "#fff", cursor: "pointer", fontSize: 18, lineHeight: 1,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >×</button>
+            <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "16/9", background: "#000", boxShadow: "0 40px 100px -20px rgba(0,0,0,0.7)" }}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${modalVideo.id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&playsinline=1`}
+                title={modalVideo.nome}
+                style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <p style={{ fontFamily: M, fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)", textAlign: "center" as const, marginTop: 14 }}>
+              {modalVideo.nome}
+            </p>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );
