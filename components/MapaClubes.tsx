@@ -289,8 +289,17 @@ export default function MapaClubes() {
   const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "denied" | "unsupported">("idle");
 
   // Converte lat/lng real para as coordenadas do viewBox (0-460 x 0-465) do
-  // mapa estilizado. É uma projeção aproximada (bounding box do Brasil) —
-  // suficiente para um marcador decorativo, não para precisão cartográfica.
+  // mapa estilizado. Em vez de uma caixa delimitadora simples (que ficava
+  // bem imprecisa — testado e confirmado com Fortaleza/CE caindo entre PI e
+  // MA), os coeficientes abaixo vêm de um ajuste por mínimos quadrados entre
+  // o centro geográfico real de cada estado e o centro geométrico real do
+  // próprio desenho de cada estado no SVG (mesmo cálculo usado pra
+  // posicionar as siglas). Erro médio de ~5px num canvas de 460x465 —
+  // bem mais preciso, mas ainda uma aproximação (o mapa é uma ilustração
+  // estilizada, não uma projeção cartográfica exata).
+  const GEO_X = { lng: 11.7431, lat: 0.0925, c: 864.8591 };
+  const GEO_Y = { lng: 0.1490, lat: -11.9676, c: 68.5044 };
+
   function requestLocation() {
     if (userLoc) { setUserLoc(null); return; } // clique de novo esconde
     if (!("geolocation" in navigator)) { setGeoStatus("unsupported"); return; }
@@ -298,10 +307,9 @@ export default function MapaClubes() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
-        const LAT_MAX = 5.3, LAT_MIN = -33.75, LNG_MIN = -73.99, LNG_MAX = -28.85;
-        const xRaw = ((longitude - LNG_MIN) / (LNG_MAX - LNG_MIN)) * 460;
-        const yRaw = ((LAT_MAX - latitude) / (LAT_MAX - LAT_MIN)) * 465;
-        setUserLoc({ x: Math.min(430, Math.max(30, xRaw)), y: Math.min(445, Math.max(20, yRaw)) });
+        const xRaw = GEO_X.lng * longitude + GEO_X.lat * latitude + GEO_X.c;
+        const yRaw = GEO_Y.lng * longitude + GEO_Y.lat * latitude + GEO_Y.c;
+        setUserLoc({ x: Math.min(440, Math.max(20, xRaw)), y: Math.min(450, Math.max(15, yRaw)) });
         setGeoStatus("idle");
       },
       () => setGeoStatus("denied"),

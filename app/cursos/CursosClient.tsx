@@ -49,7 +49,7 @@ export default function CursosClient() {
 
       {/* Filtros */}
       <div style={{ borderBottom: "1px solid rgba(140,200,245,0.1)", background: "rgba(3,38,63,0.95)", position: "sticky", top: 64, zIndex: 40, backdropFilter: "blur(16px)" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", gap: 8, overflowX: "auto", padding: "12px 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8, padding: "12px 24px" }}>
           {areas.map((a) => {
             const ativo = areaAtiva === a.id;
             return (
