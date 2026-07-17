@@ -85,8 +85,9 @@ type Answers = {
 
 const EMPTY: Answers = { name: "", email: "", country: "BR", phone: "", idade: "", area: "", momento: "", investimento: "" };
 
-// Ordem das telas do wizard
-const STEP_KEYS = ["name", "email", "phone", "idade", "area", "momento", "investimento"] as const;
+// Ordem das telas do wizard — nome/email/telefone juntos na primeira tela,
+// depois uma pergunta de múltipla escolha por vez.
+const STEP_KEYS = ["contato", "idade", "area", "momento", "investimento"] as const;
 type StepKey = (typeof STEP_KEYS)[number];
 
 type Props = {
@@ -111,9 +112,9 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", onSucc
   }
 
   function validateStep(key: StepKey): string {
-    if (key === "name" && answers.name.trim().length < 3) return "Digite seu nome completo.";
-    if (key === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email.trim())) return "Digite um e-mail válido.";
-    if (key === "phone") {
+    if (key === "contato") {
+      if (answers.name.trim().length < 3) return "Digite seu nome completo.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email.trim())) return "Digite um e-mail válido.";
       const digits = answers.phone.replace(/\D/g, "");
       const minLen = answers.country === "BR" ? 10 : 8;
       if (digits.length < minLen) return "Digite um telefone válido.";
@@ -231,57 +232,55 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", onSucc
         <span style={{ fontFamily: M, fontSize: 11, color: "rgba(169,216,245,0.5)", flexShrink: 0 }}>{step + 1}/{STEP_KEYS.length}</span>
       </div>
 
-      {stepKey === "name" && (
-        <div>
-          <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual seu nome completo?</label>
-          <input
-            autoFocus
-            value={answers.name}
-            onChange={(e) => set("name", e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && goNext()}
-            placeholder="Digite seu nome"
-            style={fieldBase}
-          />
-        </div>
-      )}
+      {stepKey === "contato" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div>
+            <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Vamos começar — seus dados de contato</label>
+          </div>
 
-      {stepKey === "email" && (
-        <div>
-          <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual seu e-mail?</label>
-          <input
-            autoFocus
-            type="email"
-            value={answers.email}
-            onChange={(e) => set("email", e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && goNext()}
-            placeholder="Digite seu email"
-            style={fieldBase}
-          />
-        </div>
-      )}
-
-      {stepKey === "phone" && (
-        <div>
-          <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual seu telefone?</label>
-          <div style={{ display: "flex", gap: 8 }}>
-            <select
-              value={answers.country}
-              onChange={(e) => { set("country", e.target.value); set("phone", formatPhone(answers.phone, e.target.value)); }}
-              style={{ ...fieldBase, width: "auto", flexShrink: 0 }}
-            >
-              {COUNTRIES.map((c) => (
-                <option key={c.code} value={c.code} style={{ background: "#0A1E35" }}>{c.dial} {c.label}</option>
-              ))}
-            </select>
+          <div>
+            <label style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(169,216,245,0.6)", display: "block", marginBottom: 6 }}>Nome completo</label>
             <input
               autoFocus
-              value={answers.phone}
-              onChange={(e) => set("phone", formatPhone(e.target.value, answers.country))}
-              onKeyDown={(e) => e.key === "Enter" && goNext()}
-              placeholder={answers.country === "BR" ? "(00) 00000-0000" : "Número de telefone"}
-              inputMode="numeric"
-              style={{ ...fieldBase, flex: 1 }}
+              value={answers.name}
+              onChange={(e) => set("name", e.target.value)}
+              placeholder="Digite seu nome"
+              style={fieldBase}
             />
+          </div>
+
+          <div>
+            <label style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(169,216,245,0.6)", display: "block", marginBottom: 6 }}>Email</label>
+            <input
+              type="email"
+              value={answers.email}
+              onChange={(e) => set("email", e.target.value)}
+              placeholder="Digite seu email"
+              style={fieldBase}
+            />
+          </div>
+
+          <div>
+            <label style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(169,216,245,0.6)", display: "block", marginBottom: 6 }}>Telefone</label>
+            <div style={{ display: "flex", gap: 8 }}>
+              <select
+                value={answers.country}
+                onChange={(e) => { set("country", e.target.value); set("phone", formatPhone(answers.phone, e.target.value)); }}
+                style={{ ...fieldBase, width: "auto", flexShrink: 0 }}
+              >
+                {COUNTRIES.map((c) => (
+                  <option key={c.code} value={c.code} style={{ background: "#0A1E35" }}>{c.dial} {c.label}</option>
+                ))}
+              </select>
+              <input
+                value={answers.phone}
+                onChange={(e) => set("phone", formatPhone(e.target.value, answers.country))}
+                onKeyDown={(e) => e.key === "Enter" && goNext()}
+                placeholder={answers.country === "BR" ? "(00) 00000-0000" : "Número de telefone"}
+                inputMode="numeric"
+                style={{ ...fieldBase, flex: 1 }}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -335,9 +334,9 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", onSucc
       {error && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{error}</p>}
       {status === "error" && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{errorMsg}</p>}
 
-      {/* Perguntas de texto (nome/email/telefone) têm botão "Continuar" —
-          as de múltipla escolha avançam sozinhas ao clicar na opção. */}
-      {(stepKey === "name" || stepKey === "email" || stepKey === "phone") && (
+      {/* A etapa de contato (nome/email/telefone) tem botão "Continuar" —
+          as perguntas de múltipla escolha avançam sozinhas ao clicar na opção. */}
+      {stepKey === "contato" && (
         <button
           type="button"
           onClick={goNext}

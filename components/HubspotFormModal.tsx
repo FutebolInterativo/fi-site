@@ -33,7 +33,7 @@ export default function HubspotFormModal({ pageName, color = "#08C27A", title = 
 
   return (
     <>
-      <span onClick={() => setOpen(true)} style={{ display: "inline-block", cursor: "pointer" }}>
+      <span onClick={() => setOpen(true)} style={{ display: "block", cursor: "pointer" }}>
         {trigger}
       </span>
 
