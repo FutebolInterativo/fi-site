@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { Curso } from "@/lib/cursos";
 import CursoCTA from "./CursoCTA";
+import CursoForm from "./CursoForm";
 
 /* ─── tokens de marca (Anton + Montserrat são a identidade visual do
    projeto — usados via arbitrary property do Tailwind, não via `style`,
@@ -585,7 +586,23 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               <p className={`${FB} text-[15px] text-white/45 max-w-lg`}>Matricule-se agora ou tire suas dúvidas com um consultor antes de decidir.</p>
             </FI>
 
-            <CursoCTA curso={curso} cor={cor}/>
+            <div className="grid lg:grid-cols-2 gap-6 items-start">
+              <CursoCTA curso={curso} cor={cor}/>
+
+              <div style={{
+                borderRadius: 24, border: `1px solid ${cor}30`,
+                background: "linear-gradient(155deg,#0F2744,#0A1E35)",
+                padding: "clamp(24px,3vw,34px)",
+              }}>
+                <p style={{ fontFamily: "var(--font-anton), Anton, sans-serif", fontSize: "clamp(19px,2.2vw,23px)", color: "#F4F4F4", marginBottom: 6 }}>
+                  FALE COM UM CONSULTOR
+                </p>
+                <p style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontSize: 13.5, color: "rgba(169,216,245,0.5)", marginBottom: 22, lineHeight: 1.6 }}>
+                  Tire suas dúvidas antes de se matricular — alguém da equipe te chama.
+                </p>
+                <CursoForm curso={curso} />
+              </div>
+            </div>
           </div>
         </section>
       )}
