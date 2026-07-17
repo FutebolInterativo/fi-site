@@ -1,61 +1,56 @@
 "use client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Script from "next/script";
 import Link from "next/link";
+import EbookSignupForm from "./EbookSignupForm";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 type Props = {
   area: string;
-  formId: string;
+  tagId: string;       // ID da tag da área no ActiveCampaign (Contatos → Tags)
   communityUrl: string;
   color: string;
 };
 
-export default function EbookPage({ area, formId, communityUrl, color }: Props) {
+export default function EbookPage({ area, tagId, communityUrl, color }: Props) {
   return (
     <>
       <Header />
       <main style={{ background: "#03263F", minHeight: "100vh" }}>
 
-        <div style={{ background: "linear-gradient(180deg,#021829 0%,#03263F 100%)", paddingTop: 120, paddingBottom: 64, borderBottom: "1px solid rgba(140,200,245,0.1)", textAlign: "center" }}>
+        <div style={{ background: "linear-gradient(180deg,#021829 0%,#03263F 100%)", paddingTop: 100, paddingBottom: 36, borderBottom: "1px solid rgba(140,200,245,0.1)", textAlign: "center" }}>
           <div className="max-w-3xl mx-auto px-6">
-            <Link href="/ebooks" style={{ fontFamily: M, fontSize: 13, fontWeight: 600, color: "rgba(244,244,244,0.45)", display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 24, textDecoration: "none" }}>
-              Todos os e-books
+            <Link href="/ebooks" style={{ fontFamily: M, fontSize: 13, fontWeight: 600, color: "rgba(244,244,244,0.45)", display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16, textDecoration: "none" }}>
+              ← Todos os e-books
             </Link>
-            <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#A9D8F5", display: "block", marginBottom: 16 }}>
+            <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#A9D8F5", display: "block", marginBottom: 12 }}>
               E-book Gratuito
             </span>
-            <h1 style={{ fontFamily: F, fontSize: "clamp(32px,5vw,56px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 16 }}>
+            <h1 style={{ fontFamily: F, fontSize: "clamp(30px,4.5vw,50px)", lineHeight: 0.98, color: "#F4F4F4", marginBottom: 12 }}>
               PREENCHA E RECEBA SEU E-BOOK DE <span style={{ color }}>{area.toUpperCase()}</span>
             </h1>
-            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, lineHeight: 1.7, color: "rgba(244,244,244,0.65)" }}>
+            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, lineHeight: 1.6, color: "rgba(244,244,244,0.6)" }}>
               Preencha os dados abaixo e receba o material gratuito no seu e-mail.
             </p>
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto px-6" style={{ padding: "64px 24px" }}>
+        <div className="max-w-3xl mx-auto px-6" style={{ padding: "32px 24px" }}>
 
-          <div style={{ borderRadius: 20, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.1)", padding: "32px", marginBottom: 24 }}>
-            <div className={`_form_${formId}`} />
-            <Script
-              src={`https://futebolinterativo-mkt.activehosted.com/f/embed.php?id=${formId}`}
-              strategy="afterInteractive"
-              charSet="utf-8"
-            />
+          <div style={{ borderRadius: 20, border: `1px solid ${color}30`, background: `linear-gradient(155deg,#0A1E35,${color}10)`, padding: "30px clamp(20px,4vw,34px)", marginBottom: 18 }}>
+            <EbookSignupForm tagId={tagId} color={color} />
           </div>
 
-          <div style={{ borderRadius: 20, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.1)", padding: "28px", marginBottom: 40 }}>
-            <h2 style={{ fontFamily: F, fontSize: 20, lineHeight: 1, color: "#F4F4F4", marginBottom: 8 }}>
+          <div style={{ borderRadius: 20, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.1)", padding: "24px 26px", marginBottom: 20 }}>
+            <h2 style={{ fontFamily: F, fontSize: 18, lineHeight: 1, color: "#F4F4F4", marginBottom: 6 }}>
               ENTRE NA NOSSA COMUNIDADE
             </h2>
-            <p style={{ fontFamily: M, fontSize: 14, fontWeight: 500, color: "rgba(244,244,244,0.65)", marginBottom: 20 }}>
+            <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.6)", marginBottom: 16 }}>
               Receba 2 vezes por semana conteúdo gratuito sobre {area}.
             </p>
-            <a href={communityUrl} target="_blank" rel="noreferrer" style={{ fontFamily: M, fontWeight: 700, fontSize: 14, color: "#fff", display: "inline-flex", alignItems: "center", gap: 10, padding: "12px 24px", borderRadius: 12, background: "#25d366", textDecoration: "none" }}>
+            <a href={communityUrl} target="_blank" rel="noreferrer" style={{ fontFamily: M, fontWeight: 700, fontSize: 13.5, color: "#fff", display: "inline-flex", alignItems: "center", gap: 10, padding: "11px 22px", borderRadius: 12, background: "#25d366", textDecoration: "none" }}>
               Entrar na comunidade
             </a>
           </div>

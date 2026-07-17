@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -11,103 +12,162 @@ const areas = [
     label: "Análise",
     href: "/ebooks/analise",
     color: "#4096F2",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4096F2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-      </svg>
-    ),
+    capa: "/images/cursos/analise-de-desempenho-e-mercado-sem-texto.webp",
+    iconPath: "M18 20V10M12 20V4M6 20v-6",
   },
   {
     label: "Técnico / Tático",
     href: "/ebooks/area-tecnica",
     color: "#0C98FC",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0C98FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
-      </svg>
-    ),
+    capa: "/images/cursos/ciencia-de-dados-sem-texto.webp",
+    iconPath: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20ZM12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20ZM2 12h20",
   },
   {
     label: "Comunicação e Marketing",
     href: "/ebooks/comunicacao",
     color: "#818CF8",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818CF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    ),
+    capa: "/images/cursos/marketing-no-futebol-sem-texto.webp",
+    iconPath: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
   },
   {
     label: "Direito",
     href: "/ebooks/direito",
     color: "#F59E0B",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-    ),
+    capa: "/images/cursos/direito-no-futebol-sem-texto.webp",
+    iconPath: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
   },
   {
     label: "Fisioterapia",
     href: "/ebooks/fisioterapia",
     color: "#2DD4BF",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2DD4BF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-      </svg>
-    ),
+    capa: "/images/cursos/fisioterapia-no-futebol-sem-texto.webp",
+    iconPath: "M22 12h-4l-3 9L9 3l-3 9H2",
   },
   {
     label: "Gestão",
     href: "/ebooks/gestao",
     color: "#F59E0B",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/>
-      </svg>
-    ),
+    capa: "/images/cursos/gestao-executiva-sem-texto.webp",
+    iconPath: "M3 7h18v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7ZM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18",
   },
   {
     label: "Medicina",
     href: "/ebooks/medicina",
     color: "#F87171",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-      </svg>
-    ),
+    capa: undefined, // sem capa "sem texto" disponível — usa painel genérico
+    iconPath: "M22 12h-4l-3 9L9 3l-3 9H2",
   },
   {
     label: "Nutrição",
     href: "/ebooks/nutricao",
     color: "#34D399",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34D399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
-      </svg>
-    ),
+    capa: "/images/cursos/nutricao-no-futebol-sem-texto.webp",
+    iconPath: "M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z",
   },
   {
     label: "Preparação Física",
     href: "/ebooks/preparacao-fisica",
     color: "#FB923C",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FB923C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
-      </svg>
-    ),
+    capa: "/images/cursos/preparacao-fisica-e-recovery-sem-texto.webp",
+    iconPath: "M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8ZM6 1v3M10 1v3M14 1v3",
   },
   {
     label: "Psicologia",
     href: "/ebooks/psicologia",
     color: "#C084FC",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C084FC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
-    ),
+    capa: "/images/cursos/psicologia-no-futebol-sem-texto.webp",
+    iconPath: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM12 17h.01",
   },
 ];
+
+/* ── Card do e-book — mesmo padrão visual do CursoCard (/cursos) ──── */
+function EbookCard({ label, href, color, capa, iconPath }: (typeof areas)[number]) {
+  const [hover, setHover] = useState(false);
+  return (
+    <Link
+      href={href}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ textDecoration: "none", display: "block", height: "100%" }}
+    >
+      <div style={{
+        display: "flex", flexDirection: "column" as const, height: "100%",
+        borderRadius: 20, overflow: "hidden",
+        border: `1px solid ${hover ? `${color}55` : "rgba(140,200,245,0.14)"}`,
+        background: "#0A1E35",
+        boxShadow: hover ? "0 20px 44px -16px rgba(0,0,0,0.5)" : "none",
+        transform: hover ? "translateY(-5px)" : "translateY(0)",
+        transition: "transform .2s ease, border-color .2s ease, box-shadow .2s ease",
+      }}>
+
+        {/* Capa — 1:1, mesma proporção das imagens "sem texto" dos cursos */}
+        <div style={{ width: "100%", aspectRatio: "1/1", position: "relative" as const, flexShrink: 0, overflow: "hidden" }}>
+          {capa ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={capa} alt="" loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+          ) : (
+            <div style={{
+              position: "absolute" as const, inset: 0,
+              background: `linear-gradient(150deg, ${color}30 0%, #0A1E35 65%)`,
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <svg width="62%" height="62%" viewBox="0 0 24 24" fill="none" style={{ opacity: 0.16 }}>
+                <path d={iconPath} stroke={color} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          )}
+
+          {/* Gradiente inferior — legibilidade garantida em qualquer imagem */}
+          <div style={{
+            position: "absolute" as const, inset: 0,
+            background: "linear-gradient(to top, rgba(1,10,20,0.95) 0%, rgba(1,10,20,0.62) 38%, transparent 68%)",
+          }} />
+
+          {/* Tipo + área + título, sobrepostos na base */}
+          <div style={{ position: "absolute" as const, left: 14, right: 14, bottom: 12 }}>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 4, marginBottom: 8 }}>
+              <span style={{ fontFamily: M, fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(255,255,255,0.55)" }}>
+                E-book Gratuito
+              </span>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 5, minWidth: 0 }}>
+                <span style={{ width: 14, height: 14, borderRadius: "50%", background: `${color}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width={8} height={8} viewBox="0 0 24 24" fill="none">
+                    <path d={iconPath} stroke={color} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                <span style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" as const, color, lineHeight: 1.3 }}>
+                  {label}
+                </span>
+              </div>
+            </div>
+            <p style={{
+              fontFamily: F, fontSize: 16, lineHeight: 1.18, color: "#fff", margin: 0,
+              textShadow: "0 2px 10px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.6)",
+              display: "-webkit-box", WebkitBoxOrient: "vertical" as const, WebkitLineClamp: 2, overflow: "hidden",
+            }}>
+              Guia gratuito de {label}
+            </p>
+          </div>
+        </div>
+
+        {/* Rodapé */}
+        <div style={{ padding: "12px 16px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontFamily: M, fontSize: 12.5, fontWeight: 700, color }}>Receber e-book</span>
+          <span style={{
+            width: 28, height: 28, borderRadius: 8, background: `${color}16`, border: `1px solid ${color}30`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transform: hover ? "translateX(2px)" : "translateX(0)",
+            transition: "transform .18s ease",
+          }}>
+            <svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+              <path d="M7 17L17 7M17 7H8M17 7V16" stroke={color} strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function EbooksPage() {
   return (
@@ -130,54 +190,11 @@ export default function EbooksPage() {
           </div>
         </div>
 
-        {/* Grid de áreas */}
-        <div className="max-w-5xl mx-auto px-6" style={{ padding: "64px 24px" }}>
+        {/* Grid de e-books */}
+        <div className="max-w-6xl mx-auto px-6" style={{ padding: "64px 24px" }}>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {areas.map((a) => (
-              <Link
-                key={a.href}
-                href={a.href}
-                style={{
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "20px 24px",
-                  borderRadius: 16,
-                  border: "1px solid rgba(140,200,245,0.14)",
-                  background: "rgba(12,90,150,0.15)",
-                  transition: "transform 0.2s, border-color 0.2s, background 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(-3px)";
-                  el.style.borderColor = a.color;
-                  el.style.background = `${a.color}12`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(0)";
-                  el.style.borderColor = "rgba(140,200,245,0.14)";
-                  el.style.background = "rgba(12,90,150,0.15)";
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 12, border: `1px solid ${a.color}30`, background: `${a.color}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    {a.icon}
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: F, fontSize: 18, lineHeight: 1, color: "#F4F4F4", marginBottom: 4 }}>
-                      {a.label}
-                    </div>
-                    <div style={{ fontFamily: M, fontSize: 12, fontWeight: 600, color: "rgba(244,244,244,0.45)" }}>
-                      Receber e-book
-                    </div>
-                  </div>
-                </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={a.color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </Link>
+              <EbookCard key={a.href} {...a} />
             ))}
           </div>
         </div>
