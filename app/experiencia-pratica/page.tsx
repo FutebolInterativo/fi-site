@@ -40,7 +40,7 @@ const AREA_COR: Record<string, string> = {
 const STATS = [
   { raw: "100%",   label: "Prática garantida" },
   { raw: "+130",   label: "Clubes parceiros" },
-  { raw: "+4.500", label: "Alunos em clubes parceiros" },
+  { raw: "+4.500", label: "Alunos contratados" },
   { raw: "34",     label: "Formações" },
 ];
 

@@ -7,21 +7,18 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
 type Status = "idle" | "loading" | "success" | "error";
 
 const COUNTRIES = [
-  { code: "BR", label: "Brasil", dial: "+55" },
-  { code: "PT", label: "Portugal", dial: "+351" },
-  { code: "ES", label: "Espanha", dial: "+34" },
-  { code: "US", label: "Estados Unidos", dial: "+1" },
-  { code: "AR", label: "Argentina", dial: "+54" },
-  { code: "MX", label: "México", dial: "+52" },
-  { code: "CO", label: "Colômbia", dial: "+57" },
-  { code: "CL", label: "Chile", dial: "+56" },
-  { code: "UY", label: "Uruguai", dial: "+598" },
-  { code: "PY", label: "Paraguai", dial: "+595" },
+  { code: "BR", label: "Brasil", dial: "+55", flag: "🇧🇷" },
+  { code: "PT", label: "Portugal", dial: "+351", flag: "🇵🇹" },
+  { code: "ES", label: "Espanha", dial: "+34", flag: "🇪🇸" },
+  { code: "US", label: "Estados Unidos", dial: "+1", flag: "🇺🇸" },
+  { code: "AR", label: "Argentina", dial: "+54", flag: "🇦🇷" },
+  { code: "MX", label: "México", dial: "+52", flag: "🇲🇽" },
+  { code: "CO", label: "Colômbia", dial: "+57", flag: "🇨🇴" },
+  { code: "CL", label: "Chile", dial: "+56", flag: "🇨🇱" },
+  { code: "UY", label: "Uruguai", dial: "+598", flag: "🇺🇾" },
+  { code: "PY", label: "Paraguai", dial: "+595", flag: "🇵🇾" },
 ] as const;
 
-// Perguntas de múltipla escolha — rótulo (o que a pessoa vê) e valor (o que
-// vai pro HubSpot, no nome interno da propriedade). Pra adicionar uma opção
-// nova, só empurrar mais um item no array certo.
 const IDADE_OPCOES = [
   { label: "Menor de 18 anos", value: "Menor de 18 anos" },
   { label: "Maior ou igual 18 anos", value: "Maior ou igual 18 anos" },
@@ -33,6 +30,15 @@ const AREA_OPCOES = [
   { label: "Saúde (Medicina, Fisioterapia, Nutrição, Psicologia, Preparação Física…)", value: "Saúde (Medicina, Fisioterapia, Nutrição, Psicologia, Preparação Física…)" },
   { label: "Gestão (Gestão Executiva, Direito, Finanças…)", value: "Gestão (Gestão Executiva, Direito, Finanças…)" },
 ];
+
+// Mapeia o id de área usado em lib/cursos.ts (curso.area) pro valor exato
+// dessa pergunta — quem usa presetArea não precisa repetir o texto da opção.
+export const AREA_BY_CURSO_AREA: Record<string, string> = {
+  "tecnica-e-tatica": AREA_OPCOES[0].value,
+  "comunicacao-marketing": AREA_OPCOES[1].value,
+  "saude": AREA_OPCOES[2].value,
+  "gestao-e-operacao": AREA_OPCOES[3].value,
+};
 
 const MOMENTO_OPCOES = [
   { label: "Já trabalho no futebol", value: "Já trabalho no futebol" },
@@ -60,10 +66,8 @@ function formatPhone(value: string, countryCode: string) {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
 }
 
-// Lê os parâmetros utm_* da URL atual. Só entram no objeto os que realmente
-// vierem na URL — não sobrescreve o que já existe no contato com vazio.
-// Nomes internos padrão do HubSpot pra esse fim; ajuste aqui se a conta
-// usar outros nomes de propriedade.
+// Lê os parâmetros utm_* da URL atual — só entram no objeto os que
+// realmente vierem na URL (não sobrescreve o padrão da página com vazio).
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
 
 function getUtmParams(): Record<string, string> {
@@ -103,19 +107,41 @@ type Answers = {
 const EMPTY: Answers = { name: "", email: "", country: "BR", phone: "", idade: "", area: "", momento: "", investimento: "" };
 
 // Ordem das telas do wizard — nome/email/telefone juntos na primeira tela,
-// depois uma pergunta de múltipla escolha por vez.
-const STEP_KEYS = ["contato", "idade", "area", "momento", "investimento"] as const;
-type StepKey = (typeof STEP_KEYS)[number];
+// depois uma pergunta de múltipla escolha por vez. "area" só entra quando
+// não houver um presetArea (ou seja, quando a página não já sabe a área).
+const ALL_STEP_KEYS = ["contato", "idade", "area", "momento", "investimento"] as const;
+type StepKey = (typeof ALL_STEP_KEYS)[number];
 
 type Props = {
   pageName?: string;
   color?: string;
   /** UTMs padrão dessa página/curso — só valem pra chave que a URL NÃO tiver */
   defaultUtm?: Partial<Record<(typeof UTM_KEYS)[number], string>>;
+  /**
+   * Quando informado, pula a pergunta "Qual área você tem interesse?" e usa
+   * esse valor direto (ex: na página de um curso específico, onde a área já
+   * é conhecida). Deixe undefined pra perguntar normalmente.
+   */
+  presetArea?: string;
+  /**
+   * Disparado assim que nome/e-mail/telefone são confirmados no HubSpot
+   * (logo na 1ª etapa, antes do resto do wizard) — usado por quem embrulha
+   * este componente pra espelhar os mesmos dados em outro sistema (ex: o
+   * e-book manda isso pro ActiveCampaign também).
+   */
+  onContactCaptured?: (contact: { name: string; email: string; phone: string; country: string }) => void;
   onSuccess?: () => void;
+  successTitle?: string;
+  successSubtitle?: string;
 };
 
-export default function HubspotContactForm({ pageName, color = "#08C27A", defaultUtm, onSuccess }: Props) {
+export default function HubspotContactForm({
+  pageName, color = "#08C27A", defaultUtm, presetArea, onContactCaptured, onSuccess,
+  successTitle = "Recebemos seus dados!",
+  successSubtitle = "Em breve alguém da nossa equipe entra em contato.",
+}: Props) {
+  const STEP_KEYS = presetArea ? ALL_STEP_KEYS.filter((k) => k !== "area") : ALL_STEP_KEYS;
+
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>(EMPTY);
   const [error, setError] = useState("");
@@ -123,9 +149,6 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
   const [errorMsg, setErrorMsg] = useState("");
   const [utm, setUtm] = useState<Record<string, string>>({});
 
-  // Captura os UTMs uma vez, ao abrir o formulário — assim continuam
-  // disponíveis mesmo se a pessoa demorar pra terminar o wizard.
-  // Se a URL não tiver um UTM específico, usa o padrão da página (defaultUtm).
   const defaultUtmKey = JSON.stringify(defaultUtm ?? {});
   useEffect(() => {
     setUtm({ ...defaultUtm, ...getUtmParams() });
@@ -166,10 +189,6 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
     };
   }
 
-  // Faz a chamada de criar/atualizar no HubSpot. Reaproveitada tanto no
-  // envio parcial (logo depois da etapa de contato) quanto no envio final
-  // (última pergunta) — como é upsert por e-mail, chamar duas vezes só
-  // atualiza o mesmo contato, sem duplicar nada.
   async function postProperties(properties: Record<string, string>): Promise<boolean> {
     try {
       const res = await fetch("/api/hubspot-submit", {
@@ -196,12 +215,11 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
     setError("");
 
     if (stepKey === "contato") {
-      // Já cria/atualiza o contato com nome, e-mail, telefone e UTMs —
-      // não espera o wizard terminar pra registrar isso.
       setStatus("loading");
       const ok = await postProperties(contatoProperties());
       setStatus("idle");
       if (!ok) return;
+      onContactCaptured?.({ name: answers.name.trim(), email: answers.email.trim(), phone: answers.phone.replace(/\D/g, ""), country: answers.country });
     }
 
     setStep((s) => s + 1);
@@ -227,7 +245,7 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
     const ok = await postProperties({
       email: finalAnswers.email.trim(),
       idade: finalAnswers.idade,
-      qual_area_voce_tem_interesse: finalAnswers.area,
+      qual_area_voce_tem_interesse: presetArea ?? finalAnswers.area,
       qual_o_momento_da_carreira: finalAnswers.momento,
       fi_investimento_educacao_12m: finalAnswers.investimento,
     });
@@ -245,13 +263,12 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
             <path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <p style={{ fontFamily: F, fontSize: 20, color: "#F4F4F4", marginBottom: 8 }}>Recebemos seus dados!</p>
-        <p style={{ fontFamily: M, fontSize: 14, color: "rgba(244,244,244,0.6)" }}>Em breve alguém da nossa equipe entra em contato.</p>
+        <p style={{ fontFamily: F, fontSize: 20, color: "#F4F4F4", marginBottom: 8 }}>{successTitle}</p>
+        <p style={{ fontFamily: M, fontSize: 14, color: "rgba(244,244,244,0.6)" }}>{successSubtitle}</p>
       </div>
     );
   }
 
-  // Botão grande estilo "opção de múltipla escolha"
   function OptionButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
     return (
       <button
@@ -272,7 +289,6 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
 
   return (
     <div>
-      {/* Barra de progresso */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
         {step > 0 && (
           <button type="button" onClick={goBack} aria-label="Voltar" style={{ background: "none", border: "none", color: "rgba(169,216,245,0.6)", cursor: "pointer", padding: 0, display: "flex" }}>
@@ -293,45 +309,40 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
 
           <div>
             <label style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(169,216,245,0.6)", display: "block", marginBottom: 6 }}>Nome completo</label>
-            <input
-              autoFocus
-              value={answers.name}
-              onChange={(e) => set("name", e.target.value)}
-              placeholder="Digite seu nome"
-              style={fieldBase}
-            />
+            <input autoFocus value={answers.name} onChange={(e) => set("name", e.target.value)} placeholder="Digite seu nome" style={fieldBase} />
           </div>
 
           <div>
             <label style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(169,216,245,0.6)", display: "block", marginBottom: 6 }}>Email</label>
-            <input
-              type="email"
-              value={answers.email}
-              onChange={(e) => set("email", e.target.value)}
-              placeholder="Digite seu email"
-              style={fieldBase}
-            />
+            <input type="email" value={answers.email} onChange={(e) => set("email", e.target.value)} placeholder="Digite seu email" style={fieldBase} />
           </div>
 
           <div>
             <label style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(169,216,245,0.6)", display: "block", marginBottom: 6 }}>Telefone</label>
-            <div style={{ display: "flex", gap: 8 }}>
-              <select
-                value={answers.country}
-                onChange={(e) => { set("country", e.target.value); set("phone", formatPhone(answers.phone, e.target.value)); }}
-                style={{ ...fieldBase, width: "auto", flexShrink: 0 }}
-              >
-                {COUNTRIES.map((c) => (
-                  <option key={c.code} value={c.code} style={{ background: "#0A1E35" }}>{c.dial} {c.label}</option>
-                ))}
-              </select>
+            <div style={{ display: "flex", alignItems: "stretch", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 10, overflow: "hidden" }}>
+              <div style={{ position: "relative", display: "flex", alignItems: "center", flexShrink: 0 }}>
+                <select
+                  value={answers.country}
+                  onChange={(e) => { set("country", e.target.value); set("phone", formatPhone(answers.phone, e.target.value)); }}
+                  aria-label="País"
+                  style={{ appearance: "none", WebkitAppearance: "none", MozAppearance: "none", background: "transparent", border: "none", color: "#F4F4F4", padding: "13px 26px 13px 14px", fontSize: 15, fontFamily: M, outline: "none", cursor: "pointer" }}
+                >
+                  {COUNTRIES.map((c) => (
+                    <option key={c.code} value={c.code} style={{ background: "#0A1E35", color: "#F4F4F4" }}>{c.flag} {c.dial}</option>
+                  ))}
+                </select>
+                <svg width={10} height={10} viewBox="0 0 24 24" fill="none" style={{ position: "absolute", right: 10, pointerEvents: "none" }}>
+                  <path d="M6 9l6 6 6-6" stroke="rgba(169,216,245,0.6)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div style={{ width: 1, alignSelf: "stretch", margin: "9px 0", background: "rgba(255,255,255,0.16)", flexShrink: 0 }} />
               <input
                 value={answers.phone}
                 onChange={(e) => set("phone", formatPhone(e.target.value, answers.country))}
                 onKeyDown={(e) => e.key === "Enter" && goNext()}
                 placeholder={answers.country === "BR" ? "(00) 00000-0000" : "Número de telefone"}
                 inputMode="numeric"
-                style={{ ...fieldBase, flex: 1 }}
+                style={{ flex: 1, minWidth: 0, background: "transparent", border: "none", color: "#F4F4F4", padding: "13px 14px", fontSize: 15, fontFamily: M, outline: "none" }}
               />
             </div>
           </div>
@@ -387,8 +398,6 @@ export default function HubspotContactForm({ pageName, color = "#08C27A", defaul
       {error && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{error}</p>}
       {status === "error" && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{errorMsg}</p>}
 
-      {/* A etapa de contato (nome/email/telefone) tem botão "Continuar" —
-          as perguntas de múltipla escolha avançam sozinhas ao clicar na opção. */}
       {stepKey === "contato" && (
         <button
           type="button"

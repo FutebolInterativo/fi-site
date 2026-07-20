@@ -7,17 +7,32 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
 type Status = "idle" | "loading" | "success" | "error";
 type FieldErrors = { name?: string; email?: string; phone?: string };
 
-/* Máscara de telefone BR — formata enquanto digita, aceita fixo (4 díg.)
-   e celular (5 díg.) progressivamente */
-function formatPhone(value: string) {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  if (digits.length <= 2) return digits;
-  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+const COUNTRIES = [
+  { code: "BR", label: "Brasil", dial: "+55", flag: "🇧🇷" },
+  { code: "PT", label: "Portugal", dial: "+351", flag: "🇵🇹" },
+  { code: "ES", label: "Espanha", dial: "+34", flag: "🇪🇸" },
+  { code: "US", label: "Estados Unidos", dial: "+1", flag: "🇺🇸" },
+  { code: "AR", label: "Argentina", dial: "+54", flag: "🇦🇷" },
+  { code: "MX", label: "México", dial: "+52", flag: "🇲🇽" },
+  { code: "CO", label: "Colômbia", dial: "+57", flag: "🇨🇴" },
+  { code: "CL", label: "Chile", dial: "+56", flag: "🇨🇱" },
+  { code: "UY", label: "Uruguai", dial: "+598", flag: "🇺🇾" },
+  { code: "PY", label: "Paraguai", dial: "+595", flag: "🇵🇾" },
+] as const;
+
+/* Máscara de telefone — só aplica o formato BR (XX) XXXXX-XXXX quando o
+   país selecionado é Brasil. Pros demais países, mantém só os dígitos. */
+function formatPhone(value: string, countryCode: string) {
+  const digits = value.replace(/\D/g, "");
+  if (countryCode !== "BR") return digits.slice(0, 15);
+  const d = digits.slice(0, 11);
+  if (d.length <= 2) return d;
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
 }
 
-function validate(name: string, email: string, phone: string): FieldErrors {
+function validate(name: string, email: string, phone: string, countryCode: string): FieldErrors {
   const errors: FieldErrors = {};
   if (name.trim().length < 3) {
     errors.name = "Digite seu nome completo.";
@@ -26,8 +41,9 @@ function validate(name: string, email: string, phone: string): FieldErrors {
     errors.email = "Digite um e-mail válido.";
   }
   const phoneDigits = phone.replace(/\D/g, "");
-  if (phoneDigits.length < 10) {
-    errors.phone = "Digite um telefone válido, com DDD.";
+  const minLen = countryCode === "BR" ? 10 : 8;
+  if (phoneDigits.length < minLen) {
+    errors.phone = "Digite um telefone válido.";
   }
   return errors;
 }
@@ -58,12 +74,14 @@ const labelStyle: React.CSSProperties = {
 export default function EbookSignupForm({ tagId, color }: { tagId: string; color: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [country, setCountry] = useState("BR");
   const [phone, setPhone] = useState("");
   const [touched, setTouched] = useState<{ name?: boolean; email?: boolean; phone?: boolean }>({});
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const errors = validate(name, email, phone);
+  const errors = validate(name, email, phone, country);
+  const selectedCountry = COUNTRIES.find((c) => c.code === country) ?? COUNTRIES[0];
 
   function fieldStyle(field: keyof FieldErrors): React.CSSProperties {
     const hasError = touched[field] && errors[field];
@@ -76,7 +94,7 @@ export default function EbookSignupForm({ tagId, color }: { tagId: string; color
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setTouched({ name: true, email: true, phone: true });
-    if (Object.keys(validate(name, email, phone)).length > 0) return;
+    if (Object.keys(validate(name, email, phone, country)).length > 0) return;
 
     setStatus("loading");
     setErrorMsg("");
@@ -84,7 +102,12 @@ export default function EbookSignupForm({ tagId, color }: { tagId: string; color
       const res = await fetch("/api/ebook-signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), phone: phone.replace(/\D/g, ""), tagId }),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: `${selectedCountry.dial}${phone.replace(/\D/g, "")}`,
+          tagId,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -145,14 +168,49 @@ export default function EbookSignupForm({ tagId, color }: { tagId: string; color
 
       <div>
         <label style={labelStyle}>Telefone <span style={{ color: "#08C27A" }}>*</span></label>
-        <input
-          value={phone}
-          onChange={(e) => setPhone(formatPhone(e.target.value))}
-          onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
-          placeholder="(00) 00000-0000"
-          inputMode="numeric"
-          style={fieldStyle("phone")}
-        />
+        <div style={{
+          display: "flex", alignItems: "stretch",
+          background: "rgba(255,255,255,0.08)",
+          border: `1px solid ${touched.phone && errors.phone ? "#ff6b6b" : "rgba(255,255,255,0.18)"}`,
+          borderRadius: 10, overflow: "hidden",
+        }}>
+          <div style={{ position: "relative", display: "flex", alignItems: "center", flexShrink: 0 }}>
+            <select
+              value={country}
+              onChange={(e) => { setCountry(e.target.value); setPhone((p) => formatPhone(p, e.target.value)); }}
+              aria-label="País"
+              style={{
+                appearance: "none", WebkitAppearance: "none", MozAppearance: "none",
+                background: "transparent", border: "none", color: "#F4F4F4",
+                padding: "12px 26px 12px 14px", fontSize: 14, fontFamily: M,
+                outline: "none", cursor: "pointer",
+              }}
+            >
+              {COUNTRIES.map((c) => (
+                <option key={c.code} value={c.code} style={{ background: "#0A1E35", color: "#F4F4F4" }}>
+                  {c.flag} {c.dial}
+                </option>
+              ))}
+            </select>
+            <svg width={10} height={10} viewBox="0 0 24 24" fill="none" style={{ position: "absolute", right: 10, pointerEvents: "none" }}>
+              <path d="M6 9l6 6 6-6" stroke="rgba(169,216,245,0.6)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          <div style={{ width: 1, alignSelf: "stretch", margin: "8px 0", background: "rgba(255,255,255,0.16)", flexShrink: 0 }} />
+
+          <input
+            value={phone}
+            onChange={(e) => setPhone(formatPhone(e.target.value, country))}
+            onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
+            placeholder={country === "BR" ? "(00) 00000-0000" : "Número de telefone"}
+            inputMode="numeric"
+            style={{
+              flex: 1, minWidth: 0, background: "transparent", border: "none",
+              color: "#F4F4F4", padding: "12px 14px", fontSize: 14, fontFamily: M, outline: "none",
+            }}
+          />
+        </div>
         {touched.phone && errors.phone && (
           <p style={{ fontFamily: M, fontSize: 12, color: "#ff6b6b", marginTop: 5 }}>{errors.phone}</p>
         )}

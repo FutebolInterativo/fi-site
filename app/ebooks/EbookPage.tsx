@@ -2,7 +2,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import EbookSignupForm from "./EbookSignupForm";
+import HubspotContactForm from "@/components/HubspotContactForm";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
@@ -14,7 +14,33 @@ type Props = {
   color: string;
 };
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export default function EbookPage({ area, tagId, communityUrl, color }: Props) {
+  const areaSlug = slugify(area);
+
+  async function syncActiveCampaign(contact: { name: string; email: string; phone: string }) {
+    try {
+      const res = await fetch("/api/ebook-signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: contact.name, email: contact.email, phone: contact.phone, tagId }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        console.error("Erro ao sincronizar com o ActiveCampaign:", data);
+      }
+    } catch (err) {
+      console.error("Erro inesperado ao sincronizar com o ActiveCampaign:", err);
+    }
+  }
+
   return (
     <>
       <Header />
@@ -40,7 +66,20 @@ export default function EbookPage({ area, tagId, communityUrl, color }: Props) {
         <div className="max-w-3xl mx-auto px-6" style={{ padding: "32px 24px" }}>
 
           <div style={{ borderRadius: 20, border: `1px solid ${color}30`, background: `linear-gradient(155deg,#0A1E35,${color}10)`, padding: "30px clamp(20px,4vw,34px)", marginBottom: 18 }}>
-            <EbookSignupForm tagId={tagId} color={color} />
+            <HubspotContactForm
+              color={color}
+              pageName={`E-book ${area}`}
+              defaultUtm={{
+                utm_source: "trafego",
+                utm_medium: "site",
+                utm_campaign: `ebook-${areaSlug}`,
+                utm_content: `baixou-ebook-${areaSlug}`,
+                utm_term: "geral",
+              }}
+              onContactCaptured={syncActiveCampaign}
+              successTitle="Recebemos sua inscrição!"
+              successSubtitle="O e-book chega no seu e-mail em poucos minutos."
+            />
           </div>
 
           <div style={{ borderRadius: 20, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(12,90,150,0.1)", padding: "24px 26px", marginBottom: 20 }}>

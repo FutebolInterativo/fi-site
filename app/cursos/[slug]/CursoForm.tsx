@@ -1,6 +1,7 @@
 "use client";
 import type { Curso } from "@/lib/cursos";
 import HubspotFormModal from "@/components/HubspotFormModal";
+import { AREA_BY_CURSO_AREA } from "@/components/HubspotContactForm";
 
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
@@ -10,8 +11,9 @@ export default function CursoForm({ curso }: { curso: Curso }) {
       pageName={curso.title}
       color="#08C27A"
       title="Fale com um consultor"
-      subtitle="Responda 7 perguntas rápidas e alguém da equipe te chama."
+      subtitle="Responda 6 perguntas rápidas e alguém da equipe te chama."
       defaultUtm={{ utm_source: "trafego", utm_medium: "site", utm_campaign: curso.id }}
+      presetArea={AREA_BY_CURSO_AREA[curso.area]}
       trigger={
         <span
           style={{

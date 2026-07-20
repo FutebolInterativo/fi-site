@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
+import HubspotFormModal from "@/components/HubspotFormModal";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
-const ATUAL = 2100; // manter sincronizado com o número usado no resto do site
+const ATUAL = 4500; // manter sincronizado com o número usado no resto do site
 const META = 10000;
 const PROGRESSO = Math.round((ATUAL / META) * 100);
 
@@ -109,57 +110,72 @@ export default function NossaMissao() {
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(140,200,245,0.25),transparent)" }} />
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(140,200,245,0.25),transparent)" }} />
 
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", textAlign: "center" as const, position: "relative" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", textAlign: "center" as const, position: "relative" }}>
 
         <FadeIn>
           {/* eyebrow */}
-          <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.5)", marginBottom: 18 }}>
+          <p style={{ fontFamily: M, fontSize: 10, fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.5)", marginBottom: 20 }}>
             Nossa missão
           </p>
 
-          {/* headline em destaque — antes era um texto pequeno de apoio; agora é o centro da seção */}
-          <h2 style={{ fontFamily: F, fontSize: "clamp(30px,5.5vw,58px)", lineHeight: 1.05, color: "#F4F4F4", marginBottom: 22 }}>
-            TORNAR O FUTEBOL BRASILEIRO,<br />NOVAMENTE, O MELHOR DO MUNDO.
+          {/* headline — largura livre, sem <br/> forçado; o navegador quebra
+              naturalmente e fica equilibrado em qualquer tamanho de tela */}
+          <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4.6vw,50px)", lineHeight: 1.12, color: "#F4F4F4", marginBottom: 22, maxWidth: 880, marginLeft: "auto", marginRight: "auto" }}>
+            TORNAR O FUTEBOL BRASILEIRO, NOVAMENTE, O MELHOR DO MUNDO.
           </h2>
 
-          <p style={{ fontFamily: M, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, color: "rgba(244,244,244,0.68)", lineHeight: 1.7, maxWidth: 540, margin: "0 auto 44px" }}>
+          <p style={{ fontFamily: M, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, color: "rgba(244,244,244,0.68)", lineHeight: 1.7, maxWidth: 540, margin: "0 auto 48px" }}>
             E isso começa por quem trabalha nele: a nova geração de profissionais que estamos formando.
           </p>
         </FadeIn>
 
+        {/* ── Card do contador — dá peso visual ao número, em vez de texto solto ── */}
         <FadeIn delay={120}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 10, marginBottom: 28 }}>
-            <span style={{ fontFamily: F, fontSize: "clamp(56px,11vw,120px)", lineHeight: 0.85, color: "#0C98FC", letterSpacing: "-0.02em" }}>
-              <Counter value={ATUAL} />
-            </span>
-            <span style={{ fontFamily: M, fontSize: "clamp(14px,1.8vw,18px)", fontWeight: 600, color: "rgba(244,244,244,0.5)", paddingBottom: "clamp(10px,2vw,18px)" }}>
-              alunos já contratados
-            </span>
-          </div>
-        </FadeIn>
-
-        <FadeIn delay={160}>
-          <div style={{ marginBottom: 44 }}>
+          <div style={{
+            maxWidth: 520, margin: "0 auto 32px", padding: "clamp(32px,4.5vw,44px) clamp(24px,4vw,40px)",
+            borderRadius: 24, border: "1px solid rgba(140,200,245,0.16)",
+            background: "linear-gradient(155deg,rgba(12,90,150,0.18),rgba(3,38,63,0.35))",
+            boxShadow: "0 24px 60px -24px rgba(0,10,30,0.6)",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 10, marginBottom: 20, flexWrap: "wrap" as const }}>
+              <span style={{ fontFamily: F, fontSize: "clamp(48px,9vw,88px)", lineHeight: 0.85, color: "#0C98FC", letterSpacing: "-0.02em" }}>
+                <Counter value={ATUAL} />
+              </span>
+              <span style={{ fontFamily: M, fontSize: "clamp(14px,1.6vw,17px)", fontWeight: 600, color: "rgba(244,244,244,0.55)", paddingBottom: "clamp(8px,1.6vw,14px)" }}>
+                alunos já contratados
+              </span>
+            </div>
             <ProgressBar pct={PROGRESSO} />
           </div>
         </FadeIn>
 
         <FadeIn delay={220}>
-          <a
-            href="#areas"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 12,
-              padding: "15px 30px", borderRadius: 14,
-              background: "linear-gradient(135deg,#08C27A,#059669)",
-              border: "1.5px solid rgba(8,194,122,0.75)",
-              boxShadow: "0 0 40px rgba(8,194,122,0.4)",
-              fontFamily: M, fontWeight: 700, fontSize: 14.5, color: "#fff",
-              textDecoration: "none",
+          <HubspotFormModal
+            title="Fale com um consultor"
+            subtitle="Responda 6 perguntas rápidas e alguém da equipe te chama."
+            defaultUtm={{
+              utm_source: "trafego",
+              utm_medium: "site",
+              utm_campaign: "site-institucional-nossa-missao",
+              utm_content: "cta-quero-ser-um-dos-10000",
+              utm_term: "geral",
             }}
-          >
-            Quero ser um dos 10.000
-            <svg width={14} height={14} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </a>
+            trigger={
+              <span
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 12,
+                  padding: "15px 30px", borderRadius: 14,
+                  background: "linear-gradient(135deg,#08C27A,#059669)",
+                  border: "1.5px solid rgba(8,194,122,0.75)",
+                  boxShadow: "0 0 40px rgba(8,194,122,0.4)",
+                  fontFamily: M, fontWeight: 700, fontSize: 14.5, color: "#fff",
+                }}
+              >
+                Quero ser um dos 10.000
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </span>
+            }
+          />
         </FadeIn>
 
       </div>
