@@ -204,8 +204,10 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                           em vez de cada um ocupar uma altura diferente */}
                       <div className="h-9 flex items-end">
                         {s.valor==="✓"?(
-                          <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ background:"rgba(8,194,122,0.14)" }}>
-                            <svg width={17} height={17} viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          // usa a cor da área (não verde — verde é reservado a botões)
+                          // com um badge mais robusto pra ficar no mesmo peso visual do número
+                          <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 border" style={{ background:`${cor}1c`, borderColor:`${cor}45` }}>
+                            <svg width={16} height={16} viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
                           </div>
                         ):(
                           <div className={`${FD} text-[28px] lg:text-[32px] text-white leading-none`}>{s.valor}</div>
@@ -309,11 +311,15 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                       className={`group h-full rounded-[28px] border p-7 lg:p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${destaque?"":"border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16] hover:bg-white/[0.04]"}`}
                       style={destaque?{ borderColor:`${cor}45`, background:`linear-gradient(155deg,${cor}22,rgba(255,255,255,0.02))` }:undefined}
                     >
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="flex items-center justify-center w-11 h-11 rounded-xl border-2 flex-shrink-0" style={{ borderColor:cor, background:"#030712" }}>
-                          <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={cor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        </div>
-                        <span className={`${FB} text-[11px] font-bold tracking-[0.14em]`} style={{ color:`${cor}90` }}>{String(i+1).padStart(2,"0")}</span>
+                      {/* o mesmo ícone de escudo repetido nos 4 cards não agregava nada —
+                          só a numeração, maior e mais evidente, já comunica a ordem */}
+                      <div className="flex items-center gap-3 mb-5">
+                        <span
+                          className={`${FD} flex items-center justify-center w-10 h-10 rounded-xl border-2 text-[15px] flex-shrink-0`}
+                          style={{ borderColor:`${cor}55`, background:"#030712", color:cor }}
+                        >
+                          {String(i+1).padStart(2,"0")}
+                        </span>
                       </div>
                       <p className={`${FB} text-[15px] lg:text-[16px] leading-relaxed flex-1`}>
                         <strong className="text-white font-bold">{lead}</strong>{restoTxt?<span className="text-white/60"> {restoTxt}</span>:null}
@@ -413,9 +419,14 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[48px] leading-[1.02] tracking-tight text-white mt-6 mb-6`}>
                   SUA ÚLTIMA AULA É DENTRO<br/>DE UM CLUBE PROFISSIONAL
                 </h2>
-                <p className={`${FB} text-[15.5px] text-white/50 leading-relaxed max-w-md mb-8`}>
+                <p className={`${FB} text-[15.5px] text-white/50 leading-relaxed max-w-md mb-2`}>
                   Não termina o curso em casa: são até 2 semanas de imersão no dia a dia do departamento, dentro de um dos nossos{" "}
                   <strong className="text-white/85 font-bold">+130 clubes parceiros</strong> espalhados pelo Brasil.
+                </p>
+                {/* nota discreta — a lista ao lado é o leque de possibilidades da imersão,
+                    não uma checklist obrigatória; não precisa de um bloco de destaque próprio */}
+                <p className={`${FB} text-[12px] text-white/30 leading-relaxed mb-8`}>
+                  Atividades possíveis — o dia a dia varia por clube, nem todas acontecem na sua turma.
                 </p>
                 <a href="#oferta" className="inline-flex items-center gap-2.5 rounded-2xl px-7 py-4 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor, boxShadow:`0 12px 36px ${cor}55` }}>
                   <span className={`${FB} text-[14.5px] font-bold`}>Quero essa experiência</span>
@@ -434,12 +445,6 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                     </div>
                   ))}
                 </div>
-                {/* deixa claro que a lista é o leque de possibilidades da imersão,
-                    não uma checklist obrigatória — cada aluno vive uma combinação
-                    diferente dependendo do clube e do momento do departamento */}
-                <p className={`${FB} text-[12px] font-medium text-white/35 leading-relaxed pt-5 mt-5 border-t border-white/[0.07]`}>
-                  Atividades possíveis durante a imersão — o dia a dia varia por clube, e você não vai necessariamente passar por todas elas.
-                </p>
               </FI>
             </div>
           </div>
@@ -535,7 +540,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
         const restoComFoto = curso.mentores.filter(m => m.foto);
         const restoSemFoto = curso.mentores.filter(m => !m.foto);
         return(
-        <section className="relative py-20 md:py-28 overflow-hidden">
+        <section className="relative pt-20 md:pt-28 pb-14 md:pb-16 overflow-hidden">
           <div className="absolute top-0 left-0 w-[460px] h-[460px] rounded-full blur-[130px] opacity-[0.1] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
             <FI className="mb-12 lg:mb-16">
@@ -547,15 +552,16 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             </FI>
 
             {restoComFoto.length>0&&(
-              <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5 mb-4">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-5 mb-4">
                 {restoComFoto.map((m,i)=>(
                   <FI key={i} d={i*55} className="group rounded-[22px] overflow-hidden border border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16] transition-colors duration-300">
-                    {/* object-contain pra mostrar a foto inteira (sem cortar escudo/uniforme)
-                        e sem texto sobreposto — nome/cargo ficam numa legenda abaixo */}
+                    {/* object-contain pra mostrar a foto inteira (sem cortar escudo/uniforme),
+                        e object-bottom pra "colar" a pessoa na base do quadro — encosta
+                        direto na legenda, sem aquele vão vazio entre a foto e o texto */}
                     <div className="relative aspect-[4/5]" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
-                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"/>
+                        className="absolute inset-0 w-full h-full object-contain object-bottom transition-transform duration-500 group-hover:scale-105"/>
                     </div>
                     <div className="p-4">
                       <p className={`${FD} text-[14px] text-white leading-tight mb-1`}>{m.nome}</p>
@@ -584,7 +590,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             )}
 
             {/* fechamento — contagem + CTA, reforça "só ensina quem faz" */}
-            <FI className="mt-10 pt-7 border-t border-white/[0.07] flex flex-wrap items-center justify-between gap-4">
+            <FI className="mt-8 pt-6 border-t border-white/[0.07] flex flex-wrap items-center justify-between gap-4">
               <p className={`${FB} text-[13.5px] font-semibold text-white/50`}>{curso.mentores.length} mentores · todos atuando em clubes profissionais hoje</p>
               <a href="#ementa" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor }}>
                 <span className={`${FB} text-[13px] font-bold`}>Aprenda com eles</span>
@@ -600,7 +606,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §5 DEPOIMENTOS — masonry
          ══════════════════════════════════════════════════════ */}
       {curso.depoimentos&&curso.depoimentos.length>0&&(
-        <section className="relative py-16 md:py-20">
+        <section className="relative pt-8 md:pt-10 pb-16 md:pb-20">
           <div className="max-w-6xl mx-auto px-6 lg:px-10">
             <FI className="mb-10 lg:mb-14">
               <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-3`}>Resultados reais</p>
@@ -622,12 +628,13 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
          ══════════════════════════════════════════════════════ */}
       {curso.stats&&curso.stats.length>0&&(
         <section className="relative py-16 md:py-20 overflow-hidden" style={{ background:cor }}>
-          <div className="absolute inset-0 opacity-[0.08] pointer-events-none" style={{ backgroundImage:"repeating-linear-gradient(-45deg, #000 0, #000 1px, transparent 1px, transparent 22px)" }}/>
+          {/* removi a textura diagonal de fundo — ela só deixava a faixa poluída;
+              agora o número grande é o próprio elemento decorativo */}
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10 grid grid-cols-2 sm:grid-cols-4 text-center">
             {curso.stats.map((s,i)=>(
-              <FI key={i} d={i*70} className={`px-2 ${i>0?"border-l border-black/15":""}`}>
-                <div className={`${FD} text-4xl sm:text-5xl lg:text-6xl tracking-tight`} style={{ color:"#03151F" }}><Cnt v={s.valor}/></div>
-                <div className={`${FB} text-[9.5px] font-bold tracking-[0.18em] uppercase mt-3.5`} style={{ color:"rgba(3,21,31,0.65)" }}>{s.label}</div>
+              <FI key={i} d={i*70} className="px-2">
+                <div className={`${FD} text-5xl sm:text-6xl lg:text-7xl tracking-tight`} style={{ color:"#03151F" }}><Cnt v={s.valor}/></div>
+                <div className={`${FB} text-[9.5px] font-bold tracking-[0.18em] uppercase mt-4`} style={{ color:"rgba(3,21,31,0.65)" }}>{s.label}</div>
               </FI>
             ))}
           </div>
@@ -662,9 +669,11 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
          ══════════════════════════════════════════════════════ */}
       {curso.garantiaTexto&&(
         <section className="px-6 lg:px-10 pb-20 md:pb-28">
-          <div className="max-w-6xl mx-auto">
+          {/* largura reduzida (4xl em vez de 6xl) — o card ficava largo demais pro
+              conteúdo, deixando um vão vazio entre o texto e o botão */}
+          <div className="max-w-4xl mx-auto">
             <FI>
-              <div className="relative overflow-hidden rounded-[28px] border p-8 sm:p-12" style={{ borderColor:`${cor}35`, background:"linear-gradient(145deg,#030712,#021629)" }}>
+              <div className="relative overflow-hidden rounded-[28px] border p-8 sm:p-10" style={{ borderColor:`${cor}35`, background:"linear-gradient(145deg,#030712,#021629)" }}>
                 <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[70px] opacity-25 pointer-events-none" style={{ background:cor }}/>
                 {/* texto e CTA na mesma faixa — antes o botão ficava jogado sozinho embaixo,
                     desalinhado do resto do card; agora ele acompanha o bloco de texto,
@@ -680,7 +689,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                     <div className="flex-1">
                       <p className={`${FB} text-[10px] font-bold tracking-[0.22em] uppercase mb-2.5`} style={{ color:cor }}>Garantia Futebol Interativo</p>
                       <h3 className={`${FD} text-2xl sm:text-4xl text-white leading-tight mb-3`}>SE NÃO FUNCIONAR,<br/>DEVOLVEMOS TUDO</h3>
-                      <p className={`${FB} text-[14px] text-white/50 leading-relaxed max-w-lg`}>{curso.garantiaTexto}</p>
+                      <p className={`${FB} text-[14px] text-white/50 leading-relaxed`}>{curso.garantiaTexto}</p>
                     </div>
                   </div>
                   <a href="#oferta" className="flex-shrink-0 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-7 py-3.5 transition-transform hover:-translate-y-0.5 w-full lg:w-auto">
