@@ -157,13 +157,13 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
       {/* ══════════════════════════════════════════════════════
           §1 HERO — mesh gradient dinâmico + bento cover
          ══════════════════════════════════════════════════════ */}
-      <section className="relative pt-28 md:pt-36 pb-16 md:pb-20 overflow-hidden">
+      <section className="relative pt-24 md:pt-32 pb-12 md:pb-16 overflow-hidden">
         {/* mesh gradients — cor é runtime, exige style */}
         <div className="absolute -top-40 right-0 w-[640px] h-[640px] rounded-full blur-[130px] opacity-40 pointer-events-none" style={{ background:cor }}/>
         <div className="absolute top-1/3 -left-40 w-[460px] h-[460px] rounded-full blur-[130px] opacity-[0.14] pointer-events-none bg-white"/>
         <div className="absolute inset-0 opacity-[0.35] pointer-events-none" style={{ backgroundImage:"radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize:"28px 28px" }}/>
 
-        <div className={`relative max-w-6xl mx-auto px-6 lg:px-10 grid ${(curso.heroImage||curso.capa)?"lg:grid-cols-[1.1fr_0.9fr]":"grid-cols-1"} gap-12 lg:gap-14 items-center`}>
+        <div className={`relative max-w-6xl mx-auto px-6 lg:px-10 grid ${(curso.heroImage||curso.capa)?"lg:grid-cols-[1.1fr_0.9fr]":"grid-cols-1"} gap-12 lg:gap-14 items-start`}>
           <div className="flex flex-col justify-center">
             <FI>
               {/* breadcrumb */}
@@ -195,29 +195,42 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 </a>
               </div>
 
-              {/* stats — usa heroStats (com itens de check quando valor="✓") ou cai no fallback antigo */}
-              {curso.heroStats&&curso.heroStats.length>0?(
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-7 gap-y-6 border-t border-white/10 pt-8">
-                  {curso.heroStats.map((s,i)=>(
-                    <div key={i} className="flex flex-col min-h-[52px]">
-                      {/* wrapper de altura fixa: alinha o número e o check no mesmo eixo,
-                          em vez de cada um ocupar uma altura diferente */}
-                      <div className="h-9 flex items-end">
-                        {s.valor==="✓"?(
-                          // usa a cor da área (não verde — verde é reservado a botões)
-                          // com um badge mais robusto pra ficar no mesmo peso visual do número
-                          <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 border" style={{ background:`${cor}1c`, borderColor:`${cor}45` }}>
-                            <svg width={16} height={16} viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              {/* stats — os itens numéricos (150h, 15 aulas) formam a barra de números;
+                  os itens de check ("Prática garantida", "Certificado") viram badges/pills
+                  à parte — misturados na mesma grade, ficavam com peso visual desigual */}
+              {curso.heroStats&&curso.heroStats.length>0?(() => {
+                const checks = curso.heroStats.filter(s=>s.valor==="✓");
+                const numericos = curso.heroStats.filter(s=>s.valor!=="✓");
+                return(
+                  <>
+                    {numericos.length>0&&(
+                      // flex compacto em vez de grid esticado — com só 2 itens, o grid
+                      // (auto-fit/1fr) espalhava "150h" e "15" nas pontas, criando um vão
+                      // enorme e desalinhado da linha de badges logo abaixo
+                      <div className="flex flex-wrap items-end border-t border-white/10 pt-8 mb-7" style={{ gap:"40px" }}>
+                        {numericos.map((s,i)=>(
+                          <div key={i} className="flex flex-col">
+                            <div className={`${FD} text-[28px] lg:text-[32px] text-white leading-none`}>{s.valor}</div>
+                            <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
                           </div>
-                        ):(
-                          <div className={`${FD} text-[28px] lg:text-[32px] text-white leading-none`}>{s.valor}</div>
-                        )}
+                        ))}
                       </div>
-                      <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-              ):(curso.cargaHoraria||curso.numAulas||curso.formato)&&(
+                    )}
+                    {checks.length>0&&(
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        {checks.map((s,i)=>(
+                          <span key={i} className="inline-flex items-center gap-2 rounded-full pl-2 pr-3.5 py-1.5 border" style={{ borderColor:`${cor}40`, background:`${cor}14` }}>
+                            <span className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background:`${cor}28` }}>
+                              <svg width={11} height={11} viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </span>
+                            <span className={`${FB} text-[11.5px] font-bold text-white/80`}>{s.label}</span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                );
+              })():(curso.cargaHoraria||curso.numAulas||curso.formato)&&(
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-7 gap-y-6 border-t border-white/10 pt-8">
                   {[
                     curso.cargaHoraria&&{v:curso.cargaHoraria,l:"Carga horária"},
@@ -240,7 +253,11 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               foto já mostra quem são os mentores e os clubes, o selo ficaria redundante. */}
           {(curso.heroImage||curso.capa)&&(
             <FI d={100} className="hidden lg:block relative">
-              <div className="relative rounded-[32px] overflow-hidden border min-h-[400px] lg:min-h-[440px] shadow-2xl" style={{ borderColor:`${cor}35`, boxShadow:`0 40px 90px -30px rgba(0,0,0,0.7), 0 0 0 1px ${cor}20` }}>
+              {/* imagem 100% visível (sem cortar nada) — container um pouco mais "alto"
+                  que a proporção exata do arquivo (1091x849), só pra sobrar um respiro
+                  pequeno no topo. object-bottom empurra a imagem pra base, deixando
+                  esse respiro em cima em vez de espalhado nos 4 lados */}
+              <div className={`relative rounded-[32px] overflow-hidden border shadow-2xl ${curso.heroImage?"aspect-[1091/885]":"min-h-[460px] lg:min-h-[540px]"}`} style={{ borderColor:`${cor}35`, boxShadow:`0 40px 90px -30px rgba(0,0,0,0.7), 0 0 0 1px ${cor}20` }}>
                 {curso.heroImage ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -284,10 +301,10 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §2A DIFERENCIAIS — grid numerado, full-width, própria seção
          ══════════════════════════════════════════════════════ */}
       {curso.diferenciais&&curso.diferenciais.length>0&&(
-        <section className="relative py-20 md:py-28 overflow-hidden">
+        <section className="relative py-14 md:py-20 overflow-hidden">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[130px] opacity-[0.12] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
-            <FI className="mb-14 lg:mb-20 max-w-2xl">
+            <FI className="mb-10 lg:mb-14 max-w-2xl">
               <Tag cor={cor}>O que só existe aqui</Tag>
               <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[52px] leading-[1.02] tracking-tight text-white mt-6`}>
                 POR QUE ESTA FORMAÇÃO NÃO EXISTE EM NENHUM OUTRO LUGAR
@@ -322,7 +339,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                         </span>
                       </div>
                       <p className={`${FB} text-[15px] lg:text-[16px] leading-relaxed flex-1`}>
-                        <strong className="text-white font-bold">{lead}</strong>{restoTxt?<span className="text-white/60"> {restoTxt}</span>:null}
+                        <strong className="text-white font-bold">{lead}</strong>{restoTxt?<><br/><span className="text-white/60 inline-block mt-1.5">{restoTxt}</span></>:null}
                       </p>
 
                       {/* clubes parceiros passando em destaque — só no card 01, prova visual */}
@@ -351,9 +368,9 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §2B PARA QUEM — layout assimétrico texto + checklist
          ══════════════════════════════════════════════════════ */}
       {curso.paraQuem&&curso.paraQuem.length>0&&(
-        <section className="relative py-20 md:py-28 border-t border-white/[0.05]">
+        <section className="relative py-14 md:py-20 border-t border-white/[0.05]">
           <div className="max-w-6xl mx-auto px-6 lg:px-10">
-            <FI className="mb-14 lg:mb-16 max-w-2xl">
+            <FI className="mb-10 lg:mb-12 max-w-2xl">
               <Tag cor={cor}>Pra quem é</Tag>
               <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white mt-6`}>
                 ESTA FORMAÇÃO É PRA VOCÊ SE...
@@ -410,10 +427,10 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §2C EXPERIÊNCIA PRÁTICA — banner de destaque + marquee
          ══════════════════════════════════════════════════════ */}
       {curso.experienciaPratica&&curso.experienciaPratica.length>0&&(
-        <section className="relative py-20 md:py-28 overflow-hidden" style={{ background:`radial-gradient(ellipse 70% 60% at 75% 20%,${cor}18,transparent 65%)` }}>
+        <section className="relative py-14 md:py-20 overflow-hidden" style={{ background:`radial-gradient(ellipse 70% 60% at 75% 20%,${cor}18,transparent 65%)` }}>
           <div className="absolute top-0 left-0 right-0 h-px" style={{ background:`linear-gradient(90deg,transparent,${cor}80,transparent)` }}/>
           <div className="max-w-6xl mx-auto px-6 lg:px-10">
-            <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-start mb-16">
+            <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-start mb-10">
               <FI>
                 <Tag cor={cor}>Exclusivo Futebol Interativo</Tag>
                 <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[48px] leading-[1.02] tracking-tight text-white mt-6 mb-6`}>
@@ -426,7 +443,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 {/* nota discreta — a lista ao lado é o leque de possibilidades da imersão,
                     não uma checklist obrigatória; não precisa de um bloco de destaque próprio */}
                 <p className={`${FB} text-[12px] text-white/30 leading-relaxed mb-8`}>
-                  Atividades possíveis — o dia a dia varia por clube, nem todas acontecem na sua turma.
+                  Atividades possíveis, o dia a dia varia por clube.
                 </p>
                 <a href="#oferta" className="inline-flex items-center gap-2.5 rounded-2xl px-7 py-4 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor, boxShadow:`0 12px 36px ${cor}55` }}>
                   <span className={`${FB} text-[14.5px] font-bold`}>Quero essa experiência</span>
@@ -464,9 +481,9 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §3 EMENTA — timeline interativa
          ══════════════════════════════════════════════════════ */}
       {curso.ementa&&curso.ementa.length>0&&(
-        <section id="ementa" className="relative py-20 md:py-28">
+        <section id="ementa" className="relative py-14 md:py-20">
           <div className="max-w-5xl mx-auto px-6 lg:px-10">
-            <FI className="flex items-end justify-between flex-wrap gap-3 mb-16">
+            <FI className="flex items-end justify-between flex-wrap gap-3 mb-10">
               <div>
                 <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-4`}>Conteúdo</p>
                 <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white`}>O QUE VOCÊ VAI APRENDER</h2>
@@ -540,10 +557,10 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
         const restoComFoto = curso.mentores.filter(m => m.foto);
         const restoSemFoto = curso.mentores.filter(m => !m.foto);
         return(
-        <section className="relative pt-20 md:pt-28 pb-14 md:pb-16 overflow-hidden">
+        <section className="relative pt-14 md:pt-20 pb-10 md:pb-12 overflow-hidden">
           <div className="absolute top-0 left-0 w-[460px] h-[460px] rounded-full blur-[130px] opacity-[0.1] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
-            <FI className="mb-12 lg:mb-16">
+            <FI className="mb-8 lg:mb-10">
               <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-3`}>Quem vai te ensinar</p>
               <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white mb-4`}>MENTORES QUE ESTÃO NOS CLUBES AGORA</h2>
               {curso.mentores.length>0&&(
@@ -554,20 +571,27 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             {restoComFoto.length>0&&(
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-5 mb-4">
                 {restoComFoto.map((m,i)=>(
-                  <FI key={i} d={i*55} className="group rounded-[22px] overflow-hidden border border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16] transition-colors duration-300">
-                    {/* object-contain pra mostrar a foto inteira (sem cortar escudo/uniforme),
-                        e object-bottom pra "colar" a pessoa na base do quadro — encosta
-                        direto na legenda, sem aquele vão vazio entre a foto e o texto */}
-                    <div className="relative aspect-[4/5]" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
-                        className="absolute inset-0 w-full h-full object-contain object-bottom transition-transform duration-500 group-hover:scale-105"/>
-                    </div>
-                    <div className="p-4">
-                      <p className={`${FD} text-[14px] text-white leading-tight mb-1`}>{m.nome}</p>
-                      <p className={`${FB} text-[10.5px] font-semibold leading-snug`} style={{ color:cor }}>
-                        {m.bio}
-                      </p>
+                  <FI key={i} d={i*55}>
+                    {/* hover no wrapper INTERNO — o FI seta transform inline pra animar a
+                        entrada e sobrescreveria qualquer classe hover:-translate-y aplicada
+                        no mesmo nó (mesmo caso já visto nos cards de diferenciais) */}
+                    <div className="group rounded-[22px] overflow-hidden border border-white/[0.08] bg-white/[0.02] hover:border-white/[0.22] hover:-translate-y-1.5 transition-all duration-300 shadow-[0_16px_36px_-18px_rgba(0,0,0,0.7)]">
+                      {/* object-contain: mostra 100% da foto, sem cortar nada (escudo,
+                          uniforme, etc.) — o preço disso é que fotos com proporções
+                          diferentes aparecem em tamanhos distintos dentro do card */}
+                      <div className="relative aspect-[4/5] overflow-hidden" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
+                          className="absolute inset-0 w-full h-full object-contain object-bottom transition-transform duration-500 group-hover:scale-[1.06]"/>
+                        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#030712]/70 to-transparent pointer-events-none"/>
+                      </div>
+                      <div className="p-4 pt-3.5">
+                        <div className="h-[3px] w-7 rounded-full mb-2.5" style={{ background:cor }}/>
+                        <p className={`${FD} text-[15.5px] text-white leading-tight mb-1`}>{m.nome}</p>
+                        <p className={`${FB} text-[10.5px] font-semibold leading-snug`} style={{ color:cor }}>
+                          {m.bio}
+                        </p>
+                      </div>
                     </div>
                   </FI>
                 ))}
@@ -606,13 +630,20 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §5 DEPOIMENTOS — masonry
          ══════════════════════════════════════════════════════ */}
       {curso.depoimentos&&curso.depoimentos.length>0&&(
-        <section className="relative pt-8 md:pt-10 pb-16 md:pb-20">
+        <section className="relative pt-6 md:pt-8 pb-12 md:pb-16">
           <div className="max-w-6xl mx-auto px-6 lg:px-10">
-            <FI className="mb-10 lg:mb-14">
+            <FI className="mb-8 lg:mb-10">
               <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-3`}>Resultados reais</p>
               <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white`}>QUEM JÁ CURSOU E FOI CONTRATADO</h2>
             </FI>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-5 lg:gap-6">
+            {/* nº de colunas acompanha a contagem real de depoimentos — evita sobrar
+                uma coluna vazia quando o curso tem menos de 3 vídeos. Classes estáticas
+                (não geradas dinamicamente) pra garantir que o Tailwind as compile. */}
+            <div className={`grid items-stretch gap-5 lg:gap-6 ${
+              curso.depoimentos.length===1 ? "grid-cols-1 max-w-sm mx-auto" :
+              curso.depoimentos.length===2 ? "grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto" :
+              "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            }`}>
               {curso.depoimentos.map((d,i)=>(
                 <FI key={i} d={i*70} className="h-full">
                   <VideoCard id={d.videoUrl?ytId(d.videoUrl):""} nome={d.nome} papel={d.papel} cor={cor} onPlay={()=>setModalVideo({id:d.videoUrl?ytId(d.videoUrl):"",nome:d.nome})}/>
@@ -627,7 +658,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §6 STATS
          ══════════════════════════════════════════════════════ */}
       {curso.stats&&curso.stats.length>0&&(
-        <section className="relative py-16 md:py-20 overflow-hidden" style={{ background:cor }}>
+        <section className="relative py-12 md:py-16 overflow-hidden" style={{ background:cor }}>
           {/* removi a textura diagonal de fundo — ela só deixava a faixa poluída;
               agora o número grande é o próprio elemento decorativo */}
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10 grid grid-cols-2 sm:grid-cols-4 text-center">
@@ -645,7 +676,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §7 OFERTA — painel VIP
          ══════════════════════════════════════════════════════ */}
       {(curso.preco||url||curso.hubspotFormId)&&(
-        <section id="oferta" className="relative py-24 md:py-32 overflow-hidden">
+        <section id="oferta" className="relative py-16 md:py-20 overflow-hidden">
           <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-[0.1] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
             <FI className="mb-10">
@@ -668,7 +699,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §8 GARANTIA
          ══════════════════════════════════════════════════════ */}
       {curso.garantiaTexto&&(
-        <section className="px-6 lg:px-10 pb-20 md:pb-28">
+        <section className="px-6 lg:px-10 pb-14 md:pb-20">
           {/* largura reduzida (4xl em vez de 6xl) — o card ficava largo demais pro
               conteúdo, deixando um vão vazio entre o texto e o botão */}
           <div className="max-w-4xl mx-auto">
@@ -703,8 +734,12 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
         </section>
       )}
 
-      {/* sticky mobile */}
-      <div className={`fixed bottom-0 left-0 right-0 z-50 md:hidden flex items-center justify-between gap-3 px-5 py-3 border-t border-white/[0.08] bg-black/90 backdrop-blur-xl transition-transform duration-300 ${sticky?"translate-y-0":"translate-y-full"}`}>
+      {/* sticky mobile — padding extra de safe-area pro home indicator do iPhone
+          (sem isso, o botão fica meio colado na borda física em modelos com notch) */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 md:hidden flex items-center justify-between gap-3 px-5 pt-3 border-t border-white/[0.08] bg-black/90 backdrop-blur-xl shadow-[0_-8px_24px_rgba(0,0,0,0.35)] transition-transform duration-300 ${sticky?"translate-y-0":"translate-y-full"}`}
+        style={{ paddingBottom:"max(12px, env(safe-area-inset-bottom))" }}
+      >
         <div>
           <p className={`${FD} text-[13px] text-white leading-none`}>
             {curso.preco?.match(/R\$\s*[\d.,]+/)?.[0]}

@@ -140,8 +140,8 @@ export const cursos: Curso[] = [
 
     mentores: [
       { nome: "Matheus Alvarez", bio: "Coord. do Centro de Inteligência da Base do Santos",                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Matheus-Alvarez.png", clube: "Santos FC", clubeTag: "SFC", ancora: true, quote: "Você vai aprender o processo que eu uso pra analisar a base do Santos — do vídeo bruto ao relatório na mesa da comissão." },
-      { nome: "André Velloso",   bio: "Head Scout do Atlético/MG",                                                         foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Andre-Velloso.png", clube: "Atlético-MG", clubeTag: "CAM" },
       { nome: "Gabriel Gomes",   bio: "Scout do Bayer Leverkusen",                                                          foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/04/Gabriel-Gomes-Scout-do-Bayer-Leverkusen.png", clube: "Bayer Leverkusen", clubeTag: "B04" },
+      { nome: "André Velloso",   bio: "Head Scout do Atlético/MG",                                                         foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/11/Andre-Velloso.png", clube: "Atlético-MG", clubeTag: "CAM" },
       { nome: "Caio Freitas",    bio: "Analista de Desempenho do Boavista S.C.",                                            foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2025/04/Caio-Freitas-1.png", clube: "Boavista S.C.", clubeTag: "BOA" },
       { nome: "Leonardo Maciel", bio: "Analista de Desempenho do Sub-20 da Seleção dos Emirados Árabes Unidos",             foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Leonardo-Maciel-analista-de-desempenho-da-selecao-dos-Emirados-Arabes-U20.png", clube: "Seleção EAU", clubeTag: "UAE" },
       { nome: "Otávio Hoffmann", bio: "Analista de Desempenho do Anápolis",                                                 foto: "https://eventos.futebolinterativo.com/wp-content/uploads/2026/01/Otavio-Hoffmann-Analista-de-Desempenho-do-Anapolis.png", clube: "Anápolis/GO", clubeTag: "ANA" },
@@ -168,7 +168,6 @@ export const cursos: Curso[] = [
     depoimentos: [
       { nome: "Rafael Mantovani", papel: "Prática no Ituano → Contratado pelo Noroeste/SP",           videoUrl: "https://www.youtube.com/watch?v=KEZ8JXbGvl4",  texto: "Depoimento sobre a jornada até a contratação no Noroeste/SP." },
       { nome: "Otávio Hoffmann",  papel: "Prática no Bahia → Analista do Anápolis/GO", videoUrl: "https://www.youtube.com/watch?v=OYYnYM1fhVg",   texto: "Da experiência prática no Bahia ao cargo de analista de desempenho no Anápolis/GO." },
-      { nome: "Ralff Frederico",  papel: "Experiência Prática no América/RJ",                           videoUrl: "https://www.youtube.com/watch?v=xlayC4Pn0RM",   texto: "Experiência prática no departamento de análise de desempenho do América/RJ." },
     ],
 
     stats: [

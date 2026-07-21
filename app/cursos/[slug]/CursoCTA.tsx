@@ -70,23 +70,23 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
       </div>
 
       {/* ── Investimento ──────────────────────────────── */}
-      <div style={{ borderRadius: 28, border: "1px solid rgba(64,150,242,0.2)", background: "linear-gradient(160deg, #0F2744 0%, #0A1E35 100%)", boxShadow: "0 32px 64px -24px rgba(0,10,30,0.6)", padding: "32px 28px", display: "flex", flexDirection: "column" as const, gap: 20, height: "100%" }}>
-        <p style={{ fontFamily: M, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.5)", textAlign: "center" as const }}>
+      <div style={{ borderRadius: 28, border: "1px solid rgba(64,150,242,0.35)", background: "linear-gradient(160deg, #123863 0%, #0C2A48 100%)", boxShadow: "0 32px 64px -24px rgba(0,10,30,0.6)", padding: "32px 28px", display: "flex", flexDirection: "column" as const, gap: 20, height: "100%" }}>
+        <p style={{ fontFamily: M, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase" as const, color: "#A9D8F5", textAlign: "center" as const }}>
           Investimento
         </p>
 
         <div style={{ textAlign: "center" as const }}>
           {match ? (
             <>
-              <p style={{ fontFamily: M, fontSize: 12.5, color: "rgba(169,216,245,0.45)", marginBottom: 8 }}>{parcelas}x no cartão de crédito</p>
-              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 4, lineHeight: 1 }}>
-                <span style={{ fontFamily: F, fontSize: 20, color: "rgba(255,255,255,0.7)", paddingBottom: 13 }}>R$</span>
-                <span style={{ fontFamily: F, fontSize: 76, color: "#fff", lineHeight: 0.88, letterSpacing: "-0.02em" }}>{inteiro}</span>
-                <span style={{ fontFamily: F, fontSize: 28, color: "rgba(255,255,255,0.7)", paddingBottom: 10 }}>,{cents}</span>
+              <p style={{ fontFamily: M, fontSize: 14, fontWeight: 700, color: "rgba(169,216,245,0.9)", marginBottom: 10 }}>{parcelas}x no cartão de crédito</p>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 5, lineHeight: 1 }}>
+                <span style={{ fontFamily: F, fontSize: 24, color: "rgba(255,255,255,0.9)", paddingBottom: 16 }}>R$</span>
+                <span style={{ fontFamily: F, fontSize: 92, color: "#fff", lineHeight: 0.85, letterSpacing: "-0.02em" }}>{inteiro}</span>
+                <span style={{ fontFamily: F, fontSize: 34, color: "rgba(255,255,255,0.9)", paddingBottom: 12 }}>,{cents}</span>
               </div>
               {avista && (
-                <p style={{ marginTop: 12 }}>
-                  <span style={{ display: "inline-block", fontFamily: M, fontSize: 12.5, fontWeight: 700, color: "rgba(169,216,245,0.75)", padding: "5px 14px", borderRadius: 99, border: "1px solid rgba(169,216,245,0.25)" }}>
+                <p style={{ marginTop: 14 }}>
+                  <span style={{ display: "inline-block", fontFamily: M, fontSize: 13.5, fontWeight: 700, color: "#A9D8F5", padding: "6px 16px", borderRadius: 99, border: "1px solid rgba(169,216,245,0.4)", background: "rgba(169,216,245,0.08)" }}>
                     ou R$ {avista} à vista
                   </span>
                 </p>
@@ -99,14 +99,15 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
 
         {/* resumo rápido — preenche o vão que sobrava entre o preço e o botão,
             em vez de deixar o espaço vazio por causa do marginTop:auto do CTA */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18, padding: "14px 10px", borderRadius: 14, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18, padding: "14px 10px", borderRadius: 14, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}>
           {[
             { label: "Acesso imediato" },
             { label: "Certificado incluso" },
           ].map((f, i) => (
-            <span key={i} style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: M, fontSize: 11.5, fontWeight: 600, color: "rgba(244,244,244,0.7)" }}>
+            <span key={i} style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: M, fontSize: 11.5, fontWeight: 700, color: "rgba(244,244,244,0.9)" }}>
+              {/* ícone decorativo — cor da área, não verde (verde é só de botão) */}
               <svg width={13} height={13} viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
-                <path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               {f.label}
             </span>
@@ -126,8 +127,8 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
 
           <CursoForm curso={curso} variant="secondary" />
 
-          <p style={{ textAlign: "center" as const, fontFamily: M, fontSize: 11, fontWeight: 600, color: "rgba(169,216,245,0.4)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, flexWrap: "wrap" as const }}>
-            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M6 10V7a6 6 0 1112 0v3M5 10h14v10H5V10z" stroke="rgba(169,216,245,0.5)" strokeWidth="1.8" strokeLinejoin="round"/></svg>
+          <p style={{ textAlign: "center" as const, fontFamily: M, fontSize: 11, fontWeight: 700, color: "rgba(169,216,245,0.75)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, flexWrap: "wrap" as const }}>
+            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M6 10V7a6 6 0 1112 0v3M5 10h14v10H5V10z" stroke="rgba(169,216,245,0.85)" strokeWidth="1.8" strokeLinejoin="round"/></svg>
             Compra 100% segura · Garantia de 7 dias · +4.500 alunos
           </p>
         </div>
