@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { Curso } from "@/lib/cursos";
 import CursoCTA from "./CursoCTA";
-import CursoForm from "./CursoForm";
+import MapaClubes from "@/components/MapaClubes";
 
 /* ─── tokens de marca (Anton + Montserrat são a identidade visual do
    projeto — usados via arbitrary property do Tailwind, não via `style`,
@@ -69,23 +69,6 @@ function Cnt({v}:{v:string}){
   return <span ref={r}>{v}</span>;
 }
 
-/* ─── Marquee de clubes ──────────────────────────────────────────── */
-function Marquee(){
-  const ids=Array.from({length:24},(_,i)=>i+1);
-  return(
-    <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-      <ul className="flex items-center animate-marquee gap-11 w-max">
-        {[...ids,...ids].map((n,i)=>(
-          <li key={i} className="flex-shrink-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`/images/clubes/clube-${n}.webp`} alt="" loading="lazy" className="h-9 w-auto opacity-60 hover:opacity-90 transition-opacity"/>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 /* ─── Bandeira de status (badge pequeno com cor dinâmica) ───────────
    cor é runtime → Tailwind JIT não gera a classe, então isso É style
    inline por necessidade técnica, não por escolha estética. */
@@ -134,9 +117,9 @@ function VideoCard({id,nome,papel,cor}:{id:string;nome:string;papel?:string;cor:
           </>
         )}
       </div>
-      <div className="p-4">
-        <div className="h-[3px] w-8 rounded-full mb-2.5" style={{ background:cor }}/>
-        <p className={`${FD} text-base text-white leading-tight`}>{nome}</p>
+      <div className="p-5">
+        <div className="h-[3px] w-8 rounded-full mb-3" style={{ background:cor }}/>
+        <p className={`${FD} text-lg text-white leading-tight`}>{nome}</p>
       </div>
     </div>
   );
@@ -166,70 +149,71 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
          ══════════════════════════════════════════════════════ */}
       <section className="relative pt-28 md:pt-36 pb-16 md:pb-20 overflow-hidden">
         {/* mesh gradients — cor é runtime, exige style */}
-        <div className="absolute -top-40 right-0 w-[560px] h-[560px] rounded-full blur-[120px] opacity-30 pointer-events-none" style={{ background:cor }}/>
-        <div className="absolute top-1/3 -left-40 w-[420px] h-[420px] rounded-full blur-[120px] opacity-[0.12] pointer-events-none bg-white"/>
+        <div className="absolute -top-40 right-0 w-[640px] h-[640px] rounded-full blur-[130px] opacity-40 pointer-events-none" style={{ background:cor }}/>
+        <div className="absolute top-1/3 -left-40 w-[460px] h-[460px] rounded-full blur-[130px] opacity-[0.14] pointer-events-none bg-white"/>
+        <div className="absolute inset-0 opacity-[0.35] pointer-events-none" style={{ backgroundImage:"radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize:"28px 28px" }}/>
 
-        <div className={`relative max-w-6xl mx-auto px-6 lg:px-10 grid ${curso.capa?"lg:grid-cols-[1.15fr_0.85fr]":"grid-cols-1"} gap-10 lg:gap-16 items-stretch`}>
+        <div className={`relative max-w-6xl mx-auto px-6 lg:px-10 grid ${(curso.heroImage||curso.capa)?"lg:grid-cols-[1.1fr_0.9fr]":"grid-cols-1"} gap-12 lg:gap-14 items-center`}>
           <div className="flex flex-col justify-center">
             <FI>
               {/* breadcrumb */}
-              <nav className={`${FB} flex items-center gap-2 mb-6 text-[11.5px]`}>
+              <nav className={`${FB} flex items-center gap-2 mb-7 text-[11.5px]`}>
                 <a href="/cursos" className="text-white/35 hover:text-white/60 transition-colors font-medium">Formações</a>
                 <span className="text-white/15">›</span>
                 <Tag cor={cor}>{label} · {curso.type}</Tag>
               </nav>
 
               {/* título — tipografia agressiva, tracking apertado */}
-              <h1 className={`${FD} text-[38px] sm:text-5xl lg:text-6xl leading-tight tracking-tight text-white mb-5`}>
+              <h1 className={`${FD} text-[40px] sm:text-6xl lg:text-[68px] leading-[0.98] tracking-tight text-white mb-6`}>
                 {curso.heroTitle ?? curso.title}
               </h1>
 
               {curso.subheadline&&(
-                <p className={`${FB} text-[15px] lg:text-[17px] font-normal leading-relaxed text-white/45 max-w-lg mb-10`}>
+                <p className={`${FB} text-[16px] lg:text-[18px] font-normal leading-relaxed text-white/50 max-w-lg mb-10`}>
                   {curso.subheadline}
                 </p>
               )}
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-3.5 mb-12">
-                <a href="#oferta" className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-8 py-4 shadow-[0_0_44px_rgba(16,185,129,0.35)] transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]">
-                  <span className={`${FB} text-[15px] font-bold text-white`}>Garantir minha vaga</span>
+              <div className="flex flex-wrap items-center gap-4 mb-12">
+                <a href="#oferta" className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-9 py-4.5 shadow-[0_0_50px_rgba(16,185,129,0.4)] transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]">
+                  <span className={`${FB} text-[15.5px] font-bold text-white`}>Garantir minha vaga</span>
                   <svg width={15} height={15} viewBox="0 0 24 24" fill="none" className="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </a>
-                <a href="#ementa" className={`${FB} text-[13px] font-semibold text-white/40 hover:text-white/70 transition-colors`}>
+                <a href="#ementa" className={`${FB} inline-flex items-center py-2.5 px-1 text-[13.5px] font-semibold text-white/40 hover:text-white/70 transition-colors`}>
                   Ver o conteúdo ↓
                 </a>
               </div>
 
               {/* stats — usa heroStats (com itens de check quando valor="✓") ou cai no fallback antigo */}
               {curso.heroStats&&curso.heroStats.length>0?(
-                <div className="flex flex-wrap gap-x-9 gap-y-4 border-t border-white/10 pt-7">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-7 gap-y-6 border-t border-white/10 pt-8">
                   {curso.heroStats.map((s,i)=>(
-                    <div key={i}>
+                    <div key={i} className="flex flex-col min-h-[52px]">
                       {s.valor==="✓"?(
-                        <div className="flex items-center gap-2">
-                          <svg width={16} height={16} viewBox="0 0 20 20" fill="none" className="flex-shrink-0"><path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          <span className={`${FB} text-[12.5px] font-bold text-white/75 leading-tight`}>{s.label}</span>
-                        </div>
+                        <>
+                          <svg width={22} height={22} viewBox="0 0 20 20" fill="none" className="flex-shrink-0"><path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
+                        </>
                       ):(
                         <>
-                          <div className={`${FD} text-2xl lg:text-3xl text-white`}>{s.valor}</div>
-                          <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/30 mt-1.5`}>{s.label}</div>
+                          <div className={`${FD} text-[26px] lg:text-[32px] text-white leading-none`}>{s.valor}</div>
+                          <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
                         </>
                       )}
                     </div>
                   ))}
                 </div>
               ):(curso.cargaHoraria||curso.numAulas||curso.formato)&&(
-                <div className="flex flex-wrap gap-x-9 gap-y-4 border-t border-white/10 pt-7">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-7 gap-y-6 border-t border-white/10 pt-8">
                   {[
                     curso.cargaHoraria&&{v:curso.cargaHoraria,l:"Carga horária"},
                     curso.numAulas&&{v:`${curso.numAulas} aulas`,l:"Ao vivo"},
                     curso.formato&&{v:curso.formato,l:"Formato"},
                   ].filter(Boolean).map((s:any,i)=>(
-                    <div key={i}>
-                      <div className={`${FD} text-2xl lg:text-3xl text-white`}>{s.v}</div>
-                      <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/30 mt-1.5`}>{s.l}</div>
+                    <div key={i} className="flex flex-col min-h-[52px]">
+                      <div className={`${FD} text-[26px] lg:text-[32px] text-white leading-none`}>{s.v}</div>
+                      <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.l}</div>
                     </div>
                   ))}
                 </div>
@@ -237,13 +221,47 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             </FI>
           </div>
 
-          {/* capa — cartão bento estirado à altura do texto */}
-          {curso.capa&&(
-            <FI d={100} className="hidden lg:block relative rounded-[28px] overflow-hidden border border-white/[0.06] min-h-[380px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={curso.capa} alt={curso.title} className="absolute inset-0 w-full h-full object-cover"/>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/10 to-transparent"/>
-              <div className="absolute inset-0 rounded-[28px]" style={{ boxShadow:`inset 0 0 0 1.5px ${cor}40` }}/>
+          {/* capa — cartão bento com selo flutuante, borda em glow e moldura mais presente.
+              Quando existe heroImage (ex: foto real dos mentores, fundo transparente),
+              usa object-contain pra não cortar nada e pula o selo flutuante — a própria
+              foto já mostra quem são os mentores e os clubes, o selo ficaria redundante. */}
+          {(curso.heroImage||curso.capa)&&(
+            <FI d={100} className="hidden lg:block relative">
+              <div className="relative rounded-[32px] overflow-hidden border min-h-[400px] lg:min-h-[440px] shadow-2xl" style={{ borderColor:`${cor}35`, boxShadow:`0 40px 90px -30px rgba(0,0,0,0.7), 0 0 0 1px ${cor}20` }}>
+                {curso.heroImage ? (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={curso.heroImage} alt={curso.title} className="absolute inset-0 w-full h-full object-contain object-bottom"/>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#030712]/50 via-transparent to-transparent"/>
+                  </>
+                ):(
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={curso.capa} alt={curso.title} className="absolute inset-0 w-full h-full object-cover"/>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/15 to-transparent"/>
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#030712]/40"/>
+                  </>
+                )}
+                <div className="absolute inset-0 rounded-[32px]" style={{ boxShadow:`inset 0 0 0 1.5px ${cor}45` }}/>
+
+                {/* selo flutuante — só quando não há foto real dos mentores */}
+                {!curso.heroImage&&(
+                  <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3 rounded-2xl border backdrop-blur-md px-4 py-3.5" style={{ borderColor:`${cor}40`, background:"rgba(3,7,18,0.55)" }}>
+                    <div className="flex -space-x-2.5 flex-shrink-0">
+                      {(curso.mentores??[]).slice(0,3).map((m,i)=>(
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img key={i} src={m.foto} alt="" className="w-8 h-8 rounded-full object-cover object-top border-2" style={{ borderColor:"#030712" }} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+                      ))}
+                    </div>
+                    <p className={`${FB} text-[11.5px] font-semibold text-white/80 leading-snug`}>
+                      Mentores atuando em <span className="text-white font-bold">clubes profissionais</span> agora
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* glow decorativo atrás do cartão */}
+              <div className="absolute -inset-4 -z-10 rounded-[40px] blur-2xl opacity-40 pointer-events-none" style={{ background:cor }}/>
             </FI>
           )}
         </div>
@@ -252,73 +270,121 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
       {/* ══════════════════════════════════════════════════════
           §2A DIFERENCIAIS — grid numerado, full-width, própria seção
          ══════════════════════════════════════════════════════ */}
-      {curso.diferenciais&&curso.diferenciais.length>0&&(
-        <section className="relative py-16 md:py-20 overflow-hidden">
-          <div className="absolute top-0 right-0 w-[460px] h-[460px] rounded-full blur-[120px] opacity-[0.09] pointer-events-none" style={{ background:cor }}/>
+      {curso.diferenciais&&curso.diferenciais.length>0&&(() => {
+        const [primeiro, ...resto] = curso.diferenciais;
+        const [leadP, restoP] = primeiro.split("|");
+        return(
+        <section className="relative py-20 md:py-28 overflow-hidden">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[130px] opacity-[0.12] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
-            <FI className="mb-12 lg:mb-16 max-w-xl">
+            <FI className="mb-14 lg:mb-20 max-w-2xl">
               <Tag cor={cor}>O que só existe aqui</Tag>
-              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mt-5`}>
+              <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[52px] leading-[1.02] tracking-tight text-white mt-6`}>
                 POR QUE ESTA FORMAÇÃO NÃO EXISTE EM NENHUM OUTRO LUGAR
               </h2>
             </FI>
-            <div className="grid sm:grid-cols-2 gap-5">
-              {curso.diferenciais.map((d,i)=>{
-                const [lead,resto]=d.split("|");
-                return(
-                  <FI key={i} d={i*60} className="h-full rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md p-7 lg:p-8 hover:border-white/[0.14] hover:bg-white/[0.04] transition-all duration-300">
-                    <span className={`${FD} text-4xl leading-none block mb-5`} style={{ color:`${cor}60` }}>{String(i+1).padStart(2,"0")}</span>
-                    <p className={`${FB} text-[15px] leading-relaxed`}>
-                      <strong className="text-white font-bold">{lead}</strong>{resto?<span className="text-white/60"> {resto}</span>:null}
-                    </p>
-                  </FI>
-                );
-              })}
+
+            <div className="grid lg:grid-cols-[1.3fr_1fr] gap-5 lg:gap-6">
+              {/* card grande — o diferencial mais forte, com numeral gigante de fundo */}
+              <FI className="group relative rounded-[32px] border overflow-hidden p-9 lg:p-12 flex flex-col justify-end min-h-[320px] lg:min-h-full hover:-translate-y-1 transition-transform duration-300" style={{ borderColor:`${cor}45`, background:`linear-gradient(155deg,${cor}22,rgba(255,255,255,0.02))` }}>
+                <span className={`${FD} absolute -top-6 -left-2 text-[220px] leading-none pointer-events-none select-none`} style={{ color:`${cor}18` }}>01</span>
+                <div className="relative">
+                  <div className="flex items-center justify-center w-14 h-14 rounded-2xl border-2 mb-7" style={{ borderColor:cor, background:"#030712" }}>
+                    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={cor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <p className={`${FB} text-[19px] lg:text-[22px] leading-snug mb-8`}>
+                    <strong className="text-white font-bold">{leadP}</strong>{restoP?<span className="text-white/60"> {restoP}</span>:null}
+                  </p>
+                  {/* clubes parceiros passando em destaque — prova visual dentro do próprio card */}
+                  <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)] -mx-2">
+                    <ul className="flex items-center animate-marquee gap-7 w-max">
+                      {[...Array.from({length:16},(_,i)=>i+1),...Array.from({length:16},(_,i)=>i+1)].map((n,i)=>(
+                        <li key={i} className="flex-shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={`/images/clubes/clube-${n}.webp`} alt="" loading="lazy" className="h-7 w-auto opacity-60"/>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </FI>
+
+              {/* pilha de cards menores */}
+              <div className="grid gap-5 lg:gap-6">
+                {resto.map((d,i)=>{
+                  const [lead,restoTxt]=d.split("|");
+                  return(
+                    <FI key={i} d={(i+1)*60} className="group relative rounded-[24px] border border-white/[0.07] bg-white/[0.02] backdrop-blur-md p-6 lg:p-7 flex items-start gap-5 hover:border-white/[0.16] hover:bg-white/[0.04] transition-all duration-300">
+                      <span className={`${FD} text-3xl leading-none flex-shrink-0`} style={{ color:`${cor}70` }}>{String(i+2).padStart(2,"0")}</span>
+                      <p className={`${FB} text-[14.5px] leading-relaxed pt-1`}>
+                        <strong className="text-white font-bold">{lead}</strong>{restoTxt?<span className="text-white/55"> {restoTxt}</span>:null}
+                      </p>
+                    </FI>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
-      )}
+        );
+      })()}
 
       {/* ══════════════════════════════════════════════════════
           §2B PARA QUEM — layout assimétrico texto + checklist
          ══════════════════════════════════════════════════════ */}
       {curso.paraQuem&&curso.paraQuem.length>0&&(
-        <section className="relative py-16 md:py-20 border-t border-white/[0.05]">
-          <div className="max-w-6xl mx-auto px-6 lg:px-10 grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-16">
-            <FI>
+        <section className="relative py-20 md:py-28 border-t border-white/[0.05]">
+          <div className="max-w-6xl mx-auto px-6 lg:px-10">
+            <FI className="mb-14 lg:mb-16 max-w-2xl">
               <Tag cor={cor}>Pra quem é</Tag>
-              <h2 className={`${FD} text-3xl sm:text-4xl leading-tight tracking-tight text-white mt-5`}>
-                ESTA FORMAÇÃO<br/>É PRA VOCÊ SE...
+              <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white mt-6`}>
+                ESTA FORMAÇÃO É PRA VOCÊ SE...
               </h2>
             </FI>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {curso.paraQuem.map((t,i)=>(
-                <FI key={i} d={i*50} className="h-full flex items-start gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md p-4 hover:bg-white/[0.04] transition-colors duration-300">
-                  <svg width={15} height={15} viewBox="0 0 20 20" fill="none" className="flex-shrink-0 mt-0.5">
-                    <path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span className={`${FB} text-[13px] font-medium text-white/70 leading-relaxed`}>{t}</span>
-                </FI>
-              ))}
-            </div>
-          </div>
 
-          {/* espelho: "Não é pra você se..." — aumenta credibilidade e filtra lead */}
-          {curso.naoEPara&&curso.naoEPara.length>0&&(
-            <div className="max-w-6xl mx-auto px-6 lg:px-10 mt-10">
-              <FI className="rounded-3xl border border-red-500/[0.15] bg-red-500/[0.03] backdrop-blur-md p-6 lg:p-8">
-                <p className={`${FB} text-[11px] font-bold tracking-[0.2em] uppercase text-red-300/60 mb-4`}>Não é pra você se</p>
-                <div className="grid sm:grid-cols-3 gap-4">
-                  {curso.naoEPara.map((t,i)=>(
-                    <div key={i} className="flex items-start gap-2.5">
-                      <span className="text-red-400/70 font-bold leading-none mt-0.5">—</span>
-                      <span className={`${FB} text-[13px] font-medium text-white/55 leading-relaxed`}>{t}</span>
-                    </div>
+            <div className="relative grid lg:grid-cols-2 gap-5 lg:gap-0">
+              {/* lado esquerdo — é pra você se */}
+              <div className="relative rounded-[28px] lg:rounded-r-none border border-white/[0.08] lg:border-r-0 p-8 lg:p-11" style={{ background:`linear-gradient(155deg,${cor}14,rgba(255,255,255,0.02))` }}>
+                <p className={`${FB} text-[11px] font-bold tracking-[0.2em] uppercase mb-6`} style={{ color:cor }}>É pra você se</p>
+                <div className="flex flex-col gap-4">
+                  {curso.paraQuem.map((t,i)=>(
+                    <FI key={i} d={i*50} className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5" style={{ background:`${cor}22` }}>
+                        <svg width={10} height={10} viewBox="0 0 20 20" fill="none">
+                          <path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                      <span className={`${FB} text-[14px] font-medium text-white/80 leading-relaxed`}>{t}</span>
+                    </FI>
                   ))}
                 </div>
-              </FI>
+              </div>
+
+              {/* divisor central com selo — só no desktop */}
+              <div className="hidden lg:flex absolute left-1/2 top-0 bottom-0 w-px bg-white/10 items-center justify-center">
+                <span className="flex items-center justify-center w-11 h-11 rounded-full border border-white/15 bg-[#030712] text-white/40 flex-shrink-0">
+                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none"><path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                </span>
+              </div>
+
+              {/* lado direito — não é pra você se */}
+              {curso.naoEPara&&curso.naoEPara.length>0&&(
+                <div className="relative rounded-[28px] lg:rounded-l-none border border-red-500/[0.15] lg:border-l-0 bg-red-500/[0.03] p-8 lg:p-11">
+                  <p className={`${FB} text-[11px] font-bold tracking-[0.2em] uppercase text-red-300/70 mb-6`}>Não é pra você se</p>
+                  <div className="flex flex-col gap-4">
+                    {curso.naoEPara.map((t,i)=>(
+                      <FI key={i} d={i*50} className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 bg-red-500/15">
+                          <svg width={10} height={10} viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#f87171" strokeOpacity="0.8" strokeWidth="2.4" strokeLinecap="round"/></svg>
+                        </span>
+                        <span className={`${FB} text-[14px] font-medium text-white/65 leading-relaxed`}>{t}</span>
+                      </FI>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </section>
       )}
 
@@ -326,55 +392,62 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §2C EXPERIÊNCIA PRÁTICA — banner de destaque + marquee
          ══════════════════════════════════════════════════════ */}
       {curso.experienciaPratica&&curso.experienciaPratica.length>0&&(
-        <section className="relative py-16 md:py-20 overflow-hidden" style={{ background:`radial-gradient(ellipse 70% 60% at 75% 20%,${cor}14,transparent 65%)` }}>
+        <section className="relative py-20 md:py-28 overflow-hidden" style={{ background:`radial-gradient(ellipse 70% 60% at 75% 20%,${cor}18,transparent 65%)` }}>
           <div className="absolute top-0 left-0 right-0 h-px" style={{ background:`linear-gradient(90deg,transparent,${cor}80,transparent)` }}/>
           <div className="max-w-6xl mx-auto px-6 lg:px-10">
-            <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-start mb-16">
+            <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-start mb-16">
               <FI>
                 <Tag cor={cor}>Exclusivo Futebol Interativo</Tag>
-                <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mt-5 mb-5`}>
-                  VOCÊ TERMINA DENTRO<br/>DE UM CLUBE PROFISSIONAL
+                <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[48px] leading-[1.02] tracking-tight text-white mt-6 mb-6`}>
+                  SUA ÚLTIMA AULA É DENTRO<br/>DE UM CLUBE PROFISSIONAL
                 </h2>
-                <p className={`${FB} text-[15px] text-white/45 leading-relaxed max-w-md mb-7`}>
-                  Não termina o curso em casa. Você vive o dia a dia do departamento dentro de um dos nossos{" "}
-                  <strong className="text-white/80 font-bold">+130 clubes parceiros</strong> espalhados pelo Brasil.
+                <p className={`${FB} text-[15.5px] text-white/50 leading-relaxed max-w-md mb-8`}>
+                  Não termina o curso em casa: são até 2 semanas de imersão no dia a dia do departamento, dentro de um dos nossos{" "}
+                  <strong className="text-white/85 font-bold">+130 clubes parceiros</strong> espalhados pelo Brasil.
                 </p>
-                <a href="#oferta" className="inline-flex items-center gap-2.5 rounded-xl px-6 py-3.5 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor, boxShadow:`0 8px 30px ${cor}50` }}>
-                  <span className={`${FB} text-[14px] font-bold`}>Quero essa experiência</span>
+                <a href="#oferta" className="inline-flex items-center gap-2.5 rounded-2xl px-7 py-4 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor, boxShadow:`0 12px 36px ${cor}55` }}>
+                  <span className={`${FB} text-[14.5px] font-bold`}>Quero essa experiência</span>
                   <svg width={13} height={13} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </a>
               </FI>
-              <FI d={100} className="grid sm:grid-cols-2 gap-2.5">
-                {curso.experienciaPratica.map((t,i)=>(
-                  <div key={i} className="flex items-start gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md p-4">
-                    <svg width={14} height={14} viewBox="0 0 20 20" fill="none" className="flex-shrink-0 mt-0.5">
-                      <path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <span className={`${FB} text-[13px] font-medium text-white/65 leading-snug`}>{t}</span>
-                  </div>
-                ))}
+              <FI d={100} className="relative">
+                <div className="absolute left-[13px] top-2 bottom-2 w-px" style={{ background:`linear-gradient(to bottom, ${cor}60, transparent)` }}/>
+                <div className="flex flex-col gap-5">
+                  {curso.experienciaPratica.map((t,i)=>(
+                    <div key={i} className="relative flex items-start gap-4 pl-0">
+                      <span className={`${FD} relative z-10 flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[10.5px] border-2`} style={{ borderColor:cor, background:"#030712", color:cor }}>
+                        {i+1}
+                      </span>
+                      <span className={`${FB} text-[14px] font-medium text-white/70 leading-relaxed pt-0.5`}>{t}</span>
+                    </div>
+                  ))}
+                </div>
               </FI>
             </div>
 
-            {/* marquee de clubes */}
-            <div className="border-t border-white/[0.06] pt-8">
-              <p className={`${FB} text-center text-[9.5px] font-bold tracking-[0.3em] uppercase text-white/20 mb-4`}>+130 clubes parceiros</p>
-              <Marquee/>
-            </div>
+            {/* "Clubes em todos os estados" agora só introduz o mapa abaixo —
+                removi o marquee de escudos passando, já que o mapa cobre
+                isso de forma melhor (interativo, por estado) */}
+            <p className={`${FB} text-center text-[13.5px] font-medium text-white/50`}>
+              Clubes em todos os estados. Você pratica perto de você.
+            </p>
           </div>
         </section>
       )}
+
+      {/* mapa interativo — mostra os clubes parceiros por estado, reforça "você pratica perto de você" */}
+      {curso.experienciaPratica&&curso.experienciaPratica.length>0&&<MapaClubes/>}
 
       {/* ══════════════════════════════════════════════════════
           §3 EMENTA — timeline interativa
          ══════════════════════════════════════════════════════ */}
       {curso.ementa&&curso.ementa.length>0&&(
-        <section id="ementa" className="relative py-16 md:py-20">
+        <section id="ementa" className="relative py-20 md:py-28">
           <div className="max-w-5xl mx-auto px-6 lg:px-10">
-            <FI className="flex items-end justify-between flex-wrap gap-3 mb-14">
+            <FI className="flex items-end justify-between flex-wrap gap-3 mb-16">
               <div>
                 <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-4`}>Conteúdo</p>
-                <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white`}>O QUE VOCÊ VAI APRENDER</h2>
+                <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white`}>O QUE VOCÊ VAI APRENDER</h2>
               </div>
               <span className={`${FD} text-lg`} style={{ color:`${cor}88` }}>{curso.ementa.length} módulos</span>
             </FI>
@@ -447,34 +520,34 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
         const restoComFoto = resto.filter(m => m.foto);
         const restoSemFoto = resto.filter(m => !m.foto);
         return(
-        <section className="relative py-16 md:py-20 overflow-hidden">
-          <div className="absolute top-0 left-0 w-[420px] h-[420px] rounded-full blur-[120px] opacity-[0.08] pointer-events-none" style={{ background:cor }}/>
+        <section className="relative py-20 md:py-28 overflow-hidden">
+          <div className="absolute top-0 left-0 w-[460px] h-[460px] rounded-full blur-[130px] opacity-[0.1] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
-            <FI className="mb-10 lg:mb-14">
+            <FI className="mb-12 lg:mb-16">
               <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-3`}>Quem vai te ensinar</p>
-              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mb-4`}>MENTORES QUE ESTÃO NOS CLUBES AGORA</h2>
+              <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white mb-4`}>MENTORES QUE ESTÃO NOS CLUBES AGORA</h2>
               {curso.mentores.length>0&&(
-                <p className={`${FB} text-[14px] text-white/40`}>quem te dá aula na segunda, analisa jogo na quarta.</p>
+                <p className={`${FB} text-[15px] text-white/45`}>quem te dá aula na segunda, analisa jogo na quarta.</p>
               )}
             </FI>
 
             {/* mentor-âncora — card grande, foto em ambiente de trabalho, frase 1ª pessoa */}
             {ancora&&(
-              <FI className="mb-6">
-              <div className="rounded-3xl border p-6 lg:p-8 flex flex-col sm:flex-row gap-6 items-start" style={{ borderColor:`${cor}45`, background:"rgba(255,255,255,0.02)" }}>
-                <div className="relative w-full sm:w-40 h-40 rounded-2xl overflow-hidden flex-shrink-0" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
+              <FI className="mb-8">
+              <div className="rounded-[28px] border p-7 lg:p-10 flex flex-col sm:flex-row gap-8 items-start" style={{ borderColor:`${cor}45`, background:`linear-gradient(155deg,rgba(255,255,255,0.03),${cor}08)` }}>
+                <div className="relative w-full sm:w-48 h-48 rounded-2xl overflow-hidden flex-shrink-0 shadow-xl" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={ancora.foto} alt={ancora.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}} className="absolute inset-0 w-full h-full object-cover object-top"/>
                   {ancora.clubeTag&&(
-                    <span className={`${FD} absolute top-2 right-2 w-9 h-9 rounded-full flex items-center justify-center text-[10px] text-white border-2`} style={{ background:"#03263F", borderColor:cor }}>{ancora.clubeTag}</span>
+                    <span className={`${FD} absolute top-2.5 right-2.5 w-10 h-10 rounded-full flex items-center justify-center text-[10.5px] text-white border-2`} style={{ background:"#03263F", borderColor:cor }}>{ancora.clubeTag}</span>
                   )}
                 </div>
-                <div className="flex-1">
-                  <span className="inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] border mb-3" style={{ color:cor, borderColor:`${cor}45`, background:`${cor}14` }}>Mentor âncora</span>
-                  <p className={`${FD} text-xl text-white leading-tight mb-1`}>{ancora.nome}</p>
-                  <p className={`${FB} text-[13px] text-white/45 mb-4`}>{ancora.bio}{ancora.clube?<> · <strong className="text-white/70 font-bold">{ancora.clube}</strong></>:null}</p>
+                <div className="flex-1 pt-1">
+                  <span className="inline-block rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] border mb-4" style={{ color:cor, borderColor:`${cor}45`, background:`${cor}14` }}>Mentor âncora</span>
+                  <p className={`${FD} text-2xl text-white leading-tight mb-2`}>{ancora.nome}</p>
+                  <p className={`${FB} text-[14px] text-white/50 mb-5`}>{ancora.bio}{ancora.clube?<> · <strong className="text-white/75 font-bold">{ancora.clube}</strong></>:null}</p>
                   {ancora.quote&&(
-                    <p className={`${FB} text-[15px] text-white/75 italic leading-relaxed border-l-2 pl-4`} style={{ borderColor:cor }}>&ldquo;{ancora.quote}&rdquo;</p>
+                    <p className={`${FB} text-[16px] text-white/80 italic leading-relaxed border-l-2 pl-5`} style={{ borderColor:cor }}>&ldquo;{ancora.quote}&rdquo;</p>
                   )}
                 </div>
               </div>
@@ -482,9 +555,11 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             )}
 
             {restoComFoto.length>0&&(
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-3">
-                {restoComFoto.map((m,i)=>(
-                  <FI key={i} d={i*55} className="group relative rounded-2xl overflow-hidden border border-white/[0.06] aspect-[3/4]">
+              <div className="sm:[column-count:2] md:[column-count:4] gap-4 lg:gap-5 mb-4" style={{ columnGap:"1.25rem" }}>
+                {restoComFoto.map((m,i)=>{
+                  const aspecto = i%3===0?"aspect-[3/4]":i%3===1?"aspect-square":"aspect-[4/5]";
+                  return(
+                  <FI key={i} d={i*55} className={`group relative rounded-[22px] overflow-hidden border border-white/[0.07] hover:border-white/[0.16] transition-colors duration-300 mb-4 lg:mb-5 break-inside-avoid ${aspecto}`}>
                     <div className="absolute inset-0" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}/>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
@@ -493,26 +568,27 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                       <span className={`${FD} absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center text-[9.5px] text-white border-2`} style={{ background:"#03263Fcc", borderColor:cor }}>{m.clubeTag}</span>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"/>
-                    <div className="absolute inset-x-0 bottom-0 p-3.5">
-                      <p className={`${FD} text-[13px] text-white leading-tight mb-1`}>{m.nome}</p>
+                    <div className="absolute inset-x-0 bottom-0 p-4">
+                      <p className={`${FD} text-[14px] text-white leading-tight mb-1`}>{m.nome}</p>
                       <p className={`${FB} text-[10.5px] font-semibold leading-snug`} style={{ color:cor }}>
                         {m.bio}
                       </p>
                     </div>
                   </FI>
-                ))}
+                  );
+                })}
               </div>
             )}
             {restoSemFoto.length>0&&(
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid sm:grid-cols-2 gap-3.5">
                 {restoSemFoto.map((m,i)=>(
-                  <div key={i} className="flex items-center gap-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] p-4">
-                    <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 border" style={{ background:`${cor}20`, borderColor:`${cor}45` }}>
-                      <span className={`${FD} text-sm`} style={{ color:cor }}>{m.nome.charAt(0)}</span>
+                  <div key={i} className="flex items-center gap-4 rounded-2xl bg-white/[0.03] border border-white/[0.07] p-5">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border-2" style={{ background:`${cor}20`, borderColor:`${cor}45` }}>
+                      <span className={`${FD} text-base`} style={{ color:cor }}>{m.nome.charAt(0)}</span>
                     </div>
                     <div>
-                      <p className={`${FD} text-[13px] text-white leading-none`}>{m.nome}</p>
-                      <p className={`${FB} text-[11px] text-white/40 mt-1`}>{m.bio}</p>
+                      <p className={`${FD} text-[14px] text-white leading-none`}>{m.nome}</p>
+                      <p className={`${FB} text-[11.5px] text-white/45 mt-1.5`}>{m.bio}</p>
                     </div>
                   </div>
                 ))}
@@ -520,9 +596,9 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             )}
 
             {/* fechamento — contagem + CTA, reforça "só ensina quem faz" */}
-            <FI className="mt-8 pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-4">
-              <p className={`${FB} text-[13px] font-semibold text-white/45`}>{curso.mentores.length} mentores · todos atuando em clubes profissionais hoje</p>
-              <a href="#ementa" className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor }}>
+            <FI className="mt-10 pt-7 border-t border-white/[0.07] flex flex-wrap items-center justify-between gap-4">
+              <p className={`${FB} text-[13.5px] font-semibold text-white/50`}>{curso.mentores.length} mentores · todos atuando em clubes profissionais hoje</p>
+              <a href="#ementa" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor }}>
                 <span className={`${FB} text-[13px] font-bold`}>Aprenda com eles</span>
                 <svg width={12} height={12} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
@@ -540,9 +616,9 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           <div className="max-w-6xl mx-auto px-6 lg:px-10">
             <FI className="mb-10 lg:mb-14">
               <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-3`}>Resultados reais</p>
-              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white`}>QUEM JÁ CURSOU E FOI CONTRATADO</h2>
+              <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white`}>QUEM JÁ CURSOU E FOI CONTRATADO</h2>
             </FI>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-4 lg:gap-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-5 lg:gap-6">
               {curso.depoimentos.map((d,i)=>(
                 <FI key={i} d={i*70} className="h-full">
                   <VideoCard id={d.videoUrl?ytId(d.videoUrl):""} nome={d.nome} papel={d.papel} cor={cor}/>
@@ -557,13 +633,13 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §6 STATS
          ══════════════════════════════════════════════════════ */}
       {curso.stats&&curso.stats.length>0&&(
-        <section className="relative py-16 md:py-20 border-y border-white/[0.06]">
-          <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ background:cor }}/>
-          <div className="relative max-w-6xl mx-auto px-6 lg:px-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+        <section className="relative py-16 md:py-20 overflow-hidden" style={{ background:cor }}>
+          <div className="absolute inset-0 opacity-[0.08] pointer-events-none" style={{ backgroundImage:"repeating-linear-gradient(-45deg, #000 0, #000 1px, transparent 1px, transparent 22px)" }}/>
+          <div className="relative max-w-6xl mx-auto px-6 lg:px-10 grid grid-cols-2 sm:grid-cols-4 text-center">
             {curso.stats.map((s,i)=>(
-              <FI key={i} d={i*70}>
-                <div className={`${FD} text-4xl sm:text-5xl lg:text-6xl tracking-tight text-white`}><Cnt v={s.valor}/></div>
-                <div className={`${FB} text-[9.5px] font-bold tracking-[0.18em] uppercase text-white/35 mt-3`}>{s.label}</div>
+              <FI key={i} d={i*70} className={`px-2 ${i>0?"border-l border-black/15":""}`}>
+                <div className={`${FD} text-4xl sm:text-5xl lg:text-6xl tracking-tight`} style={{ color:"#03151F" }}><Cnt v={s.valor}/></div>
+                <div className={`${FB} text-[9.5px] font-bold tracking-[0.18em] uppercase mt-3.5`} style={{ color:"rgba(3,21,31,0.65)" }}>{s.label}</div>
               </FI>
             ))}
           </div>
@@ -582,26 +658,12 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background:cor }}/>
                 <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35`}>Última etapa · vagas limitadas</p>
               </div>
-              <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[44px] leading-tight tracking-tight text-white mb-3`}>GARANTA SUA VAGA NA PRÓXIMA TURMA</h2>
-              <p className={`${FB} text-[15px] text-white/45 max-w-lg`}>Matricule-se agora ou tire suas dúvidas com um consultor antes de decidir.</p>
+              <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white mb-4`}>GARANTA SUA VAGA NA PRÓXIMA TURMA</h2>
+              <p className={`${FB} text-[16px] text-white/50 max-w-lg`}>Matricule-se agora ou tire suas dúvidas com um consultor antes de decidir.</p>
             </FI>
 
-            <div className="grid lg:grid-cols-2 gap-6 items-start">
+            <div className="grid lg:grid-cols-2 gap-6 items-stretch">
               <CursoCTA curso={curso} cor={cor}/>
-
-              <div style={{
-                borderRadius: 24, border: `1px solid ${cor}30`,
-                background: "linear-gradient(155deg,#0F2744,#0A1E35)",
-                padding: "clamp(24px,3vw,34px)",
-              }}>
-                <p style={{ fontFamily: "var(--font-anton), Anton, sans-serif", fontSize: "clamp(19px,2.2vw,23px)", color: "#F4F4F4", marginBottom: 6 }}>
-                  FALE COM UM CONSULTOR
-                </p>
-                <p style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontSize: 13.5, color: "rgba(169,216,245,0.5)", marginBottom: 22, lineHeight: 1.6 }}>
-                  Tire suas dúvidas antes de se matricular — alguém da equipe te chama.
-                </p>
-                <CursoForm curso={curso} />
-              </div>
             </div>
           </div>
         </section>
@@ -625,8 +687,8 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                   </div>
                   <div className="flex-1">
                     <p className={`${FB} text-[10px] font-bold tracking-[0.22em] uppercase mb-2.5`} style={{ color:cor }}>Garantia Futebol Interativo</p>
-                    <h3 className={`${FD} text-2xl sm:text-3xl text-white leading-tight mb-3`}>SE NÃO FUNCIONAR,<br/>DEVOLVEMOS TUDO</h3>
-                    <p className={`${FB} text-sm text-white/40 leading-relaxed max-w-lg`}>{curso.garantiaTexto}</p>
+                    <h3 className={`${FD} text-2xl sm:text-4xl text-white leading-tight mb-3`}>SE NÃO FUNCIONAR,<br/>DEVOLVEMOS TUDO</h3>
+                    <p className={`${FB} text-[14px] text-white/50 leading-relaxed max-w-lg`}>{curso.garantiaTexto}</p>
                   </div>
                 </div>
                 <div className="relative flex justify-end">
@@ -652,7 +714,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             ou R$ {curso.precoAvista?.replace(/^R\$\s*/,"")} à vista
           </p>
         </div>
-        <a href="#oferta" className="flex-shrink-0 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-2.5">
+        <a href="#oferta" className="flex-shrink-0 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-3.5">
           <span className={`${FB} text-[13.5px] font-bold text-white`}>Garantir vaga</span>
           <svg width={12} height={12} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </a>

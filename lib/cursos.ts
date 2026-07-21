@@ -38,6 +38,7 @@ export type Curso = {
   // ---- conteúdo rico (todos opcionais) ----
   capa?: string;
   capaSemTexto?: string;  // versão sem texto/logo, usada em cards e locais onde o nome já aparece como texto próprio (ex: listagem /cursos). Se ausente, cai no fallback de `capa`.
+  heroImage?: string;     // imagem específica pro card da direita no hero (ex: foto do grupo de mentores) — se ausente, cai no fallback de `capa`. Objeto costuma ter fundo transparente, então usa object-contain em vez de cover.
   headline?: string;
   heroTitle?: string;      // título só do H1 do hero — se ausente, usa `title`
   subheadline?: string;
@@ -90,6 +91,7 @@ export const cursos: Curso[] = [
     featured:         true,
     capa:             "/images/cursos/analise-de-desempenho-e-mercado.webp",
     capaSemTexto:     "/images/cursos/analise-de-desempenho-e-mercado-sem-texto.webp",
+    heroImage:        "/images/mentores/professores-analise-hero.webp",
 
     // ── campos ricos ─────────────────────────────────────────────────────
     cargaHoraria: "150h",
@@ -131,9 +133,9 @@ export const cursos: Curso[] = [
       { grupo: "mercado", titulo: "Análise de Mercado na Prática", descricao: "Da definição de necessidades do clube à apresentação de alvos, com simulações e estudos de caso reais." },
       { grupo: "mercado", titulo: "Valuation de Atletas e Transfermarkt", descricao: "Métodos para estimar o valor de mercado de um jogador e o uso estratégico de plataformas como o Transfermarkt." },
       { grupo: "mercado", titulo: "Montagem de um Elenco Profissional", descricao: "Equilíbrio entre posições, perfis táticos, idade, liderança e orçamento na construção de um elenco." },
-      { grupo: "entrada", titulo: "Soft-skills para a Análise no Futebol", descricao: "Quais competências comportamentais um profissional precisa ter para ingressar e crescer na análise no futebol." },
-      { grupo: "entrada", titulo: "Remuneração e Carreira na Análise", descricao: "Possibilidades de atuação e remuneração na área de análise no futebol." },
       { grupo: "entrada", titulo: "Primeiros Passos Após a Experiência Prática", descricao: "Como aproveitar a experiência prática para dar o salto definitivo para o mercado profissional." },
+      { grupo: "entrada", titulo: "Remuneração e Carreira na Análise", descricao: "Possibilidades de atuação e remuneração na área de análise no futebol." },
+      { grupo: "entrada", titulo: "Soft-skills para a Análise no Futebol", descricao: "Quais competências comportamentais um profissional precisa ter para ingressar e crescer na análise no futebol." },
     ],
 
     mentores: [
@@ -164,8 +166,8 @@ export const cursos: Curso[] = [
     ],
 
     depoimentos: [
-      { nome: "Rafael Mantovani", papel: "Contratado pelo Ituano após a Experiência Prática",           videoUrl: "https://www.youtube.com/watch?v=KEZ8JXbGvl4",  texto: "Depoimento sobre a jornada até a contratação no Ituano." },
-      { nome: "Otávio Hoffmann",  papel: "Experiência Prática no Bahia · hoje Analista do Atlético/MG", videoUrl: "https://www.youtube.com/watch?v=OYYnYM1fhVg",   texto: "Da experiência prática no Bahia ao cargo de analista de desempenho." },
+      { nome: "Rafael Mantovani", papel: "Prática no Ituano → Contratado pelo Noroeste/SP",           videoUrl: "https://www.youtube.com/watch?v=KEZ8JXbGvl4",  texto: "Depoimento sobre a jornada até a contratação no Noroeste/SP." },
+      { nome: "Otávio Hoffmann",  papel: "Prática no Bahia → Analista do Anápolis/GO", videoUrl: "https://www.youtube.com/watch?v=OYYnYM1fhVg",   texto: "Da experiência prática no Bahia ao cargo de analista de desempenho no Anápolis/GO." },
       { nome: "Ralff Frederico",  papel: "Experiência Prática no América/RJ",                           videoUrl: "https://www.youtube.com/watch?v=xlayC4Pn0RM",   texto: "Experiência prática no departamento de análise de desempenho do América/RJ." },
     ],
 

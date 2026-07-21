@@ -1,21 +1,20 @@
 "use client";
 import type { Curso } from "@/lib/cursos";
+import CursoForm from "./CursoForm";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 /*
-  Checkout reescrito no formato "estilo G4" (referência do doc de alterações):
-  - Duas colunas: "Sua matrícula inclui" (checklist + garantia) à esquerda,
-    "Investimento" (preço + CTAs + trust line) à direita.
-  - 100% inline style, sem classes Tailwind arbitrárias — conforme o padrão
-    do projeto (projeto-fi-instructions.md).
-  - Garantia trocada de 12 meses (resultado) para 7 dias (satisfação),
-    conforme decisão confirmada.
-  - CTA secundário abre WhatsApp direto, sem formulário no meio.
+  Checkout "estilo G4": 2 cartões — "Sua matrícula inclui" (checklist +
+  garantia) e "Investimento" (preço + CTA de checkout + trust line).
+  Não tem mais grid próprio aqui — retorna um Fragment, e quem decide o
+  layout (2 ou 3 colunas, junto com o card "Fale com um consultor") é o
+  CursoDetalhe.tsx, num grid único. Isso evita o bug de grid aninhado que
+  fazia "Investimento" ficar espremido embaixo de "Sua matrícula inclui".
+  A CTA de "falar com consultor" também não vive mais aqui — tinha duas
+  (essa + o card do formulário), e ficava redundante.
 */
-
-const WHATSAPP_NUM = "5511942009407";
 
 const items = [
   { text: "Prática garantida em um dos +130 clubes parceiros — até 2 semanas de imersão no departamento", destaque: true },
@@ -32,16 +31,12 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
   const inteiro = match?.[2];
   const cents = match?.[3];
   const avista = curso.precoAvista?.replace(/^R\$\s*/, "").trim();
-  const waHref = `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(
-    `Tenho dúvidas sobre o curso "${curso.title}" antes de decidir.`
-  )}`;
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20, alignItems: "stretch" }}>
-
-      {/* ── Coluna esquerda: Sua matrícula inclui ─────────────────────── */}
-      <div style={{ borderRadius: 24, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)", padding: "28px 26px", display: "flex", flexDirection: "column" as const, gap: 18 }}>
-        <p style={{ fontFamily: F, fontSize: 18, color: "#F4F4F4", letterSpacing: "0.01em" }}>SUA MATRÍCULA INCLUI</p>
+    <>
+      {/* ── Sua matrícula inclui ─────────────────────── */}
+      <div style={{ borderRadius: 28, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)", padding: "32px 28px", display: "flex", flexDirection: "column" as const, gap: 20, height: "100%" }}>
+        <p style={{ fontFamily: F, fontSize: 20, color: "#F4F4F4", letterSpacing: "0.01em" }}>SUA MATRÍCULA INCLUI</p>
 
         <ul style={{ listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 10, margin: 0, padding: 0 }}>
           {items.map((item, i) => (
@@ -74,8 +69,8 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
         </div>
       </div>
 
-      {/* ── Coluna direita: Investimento ──────────────────────────────── */}
-      <div style={{ borderRadius: 24, border: "1px solid rgba(64,150,242,0.2)", background: "linear-gradient(160deg, #0F2744 0%, #0A1E35 100%)", boxShadow: "0 32px 64px -24px rgba(0,10,30,0.6)", padding: "28px 26px", display: "flex", flexDirection: "column" as const, gap: 18 }}>
+      {/* ── Investimento ──────────────────────────────── */}
+      <div style={{ borderRadius: 28, border: "1px solid rgba(64,150,242,0.2)", background: "linear-gradient(160deg, #0F2744 0%, #0A1E35 100%)", boxShadow: "0 32px 64px -24px rgba(0,10,30,0.6)", padding: "32px 28px", display: "flex", flexDirection: "column" as const, gap: 20, height: "100%" }}>
         <p style={{ fontFamily: M, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.5)", textAlign: "center" as const }}>
           Investimento
         </p>
@@ -83,11 +78,11 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
         <div style={{ textAlign: "center" as const }}>
           {match ? (
             <>
-              <p style={{ fontFamily: M, fontSize: 12.5, color: "rgba(169,216,245,0.45)", marginBottom: 6 }}>{parcelas}x no cartão de crédito</p>
+              <p style={{ fontFamily: M, fontSize: 12.5, color: "rgba(169,216,245,0.45)", marginBottom: 8 }}>{parcelas}x no cartão de crédito</p>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 3, lineHeight: 1 }}>
-                <span style={{ fontFamily: F, fontSize: 16, color: "rgba(255,255,255,0.7)", paddingBottom: 10 }}>R$</span>
-                <span style={{ fontFamily: F, fontSize: 56, color: "#fff", lineHeight: 0.88, letterSpacing: "-0.02em" }}>{inteiro}</span>
-                <span style={{ fontFamily: F, fontSize: 22, color: "rgba(255,255,255,0.7)", paddingBottom: 8 }}>,{cents}</span>
+                <span style={{ fontFamily: F, fontSize: 17, color: "rgba(255,255,255,0.7)", paddingBottom: 11 }}>R$</span>
+                <span style={{ fontFamily: F, fontSize: 64, color: "#fff", lineHeight: 0.88, letterSpacing: "-0.02em" }}>{inteiro}</span>
+                <span style={{ fontFamily: F, fontSize: 24, color: "rgba(255,255,255,0.7)", paddingBottom: 9 }}>,{cents}</span>
               </div>
               {avista && (
                 <p style={{ marginTop: 10 }}>
@@ -113,12 +108,7 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
             </span>
           </a>
 
-          <a
-            href={waHref} target="_blank" rel="noreferrer"
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 18px", borderRadius: 14, border: "1.5px solid rgba(255,255,255,0.18)", textDecoration: "none" }}
-          >
-            <span style={{ fontFamily: M, fontWeight: 700, fontSize: 13.5, color: "rgba(244,244,244,0.85)" }}>Tenho dúvidas! Quero falar com o consultor</span>
-          </a>
+          <CursoForm curso={curso} variant="secondary" />
 
           <p style={{ textAlign: "center" as const, fontFamily: M, fontSize: 11, fontWeight: 600, color: "rgba(169,216,245,0.4)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, flexWrap: "wrap" as const }}>
             <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M6 10V7a6 6 0 1112 0v3M5 10h14v10H5V10z" stroke="rgba(169,216,245,0.5)" strokeWidth="1.8" strokeLinejoin="round"/></svg>
@@ -126,6 +116,6 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }
