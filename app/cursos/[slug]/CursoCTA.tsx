@@ -79,13 +79,13 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
           {match ? (
             <>
               <p style={{ fontFamily: M, fontSize: 12.5, color: "rgba(169,216,245,0.45)", marginBottom: 8 }}>{parcelas}x no cartão de crédito</p>
-              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 3, lineHeight: 1 }}>
-                <span style={{ fontFamily: F, fontSize: 17, color: "rgba(255,255,255,0.7)", paddingBottom: 11 }}>R$</span>
-                <span style={{ fontFamily: F, fontSize: 64, color: "#fff", lineHeight: 0.88, letterSpacing: "-0.02em" }}>{inteiro}</span>
-                <span style={{ fontFamily: F, fontSize: 24, color: "rgba(255,255,255,0.7)", paddingBottom: 9 }}>,{cents}</span>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 4, lineHeight: 1 }}>
+                <span style={{ fontFamily: F, fontSize: 20, color: "rgba(255,255,255,0.7)", paddingBottom: 13 }}>R$</span>
+                <span style={{ fontFamily: F, fontSize: 76, color: "#fff", lineHeight: 0.88, letterSpacing: "-0.02em" }}>{inteiro}</span>
+                <span style={{ fontFamily: F, fontSize: 28, color: "rgba(255,255,255,0.7)", paddingBottom: 10 }}>,{cents}</span>
               </div>
               {avista && (
-                <p style={{ marginTop: 10 }}>
+                <p style={{ marginTop: 12 }}>
                   <span style={{ display: "inline-block", fontFamily: M, fontSize: 12.5, fontWeight: 700, color: "rgba(169,216,245,0.75)", padding: "5px 14px", borderRadius: 99, border: "1px solid rgba(169,216,245,0.25)" }}>
                     ou R$ {avista} à vista
                   </span>
@@ -95,6 +95,22 @@ export default function CursoCTA({ curso, cor = "#4096F2" }: { curso: Curso; cor
           ) : curso.preco ? (
             <p style={{ fontFamily: F, fontSize: 36, color: "#fff" }}>{curso.preco}</p>
           ) : null}
+        </div>
+
+        {/* resumo rápido — preenche o vão que sobrava entre o preço e o botão,
+            em vez de deixar o espaço vazio por causa do marginTop:auto do CTA */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18, padding: "14px 10px", borderRadius: 14, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          {[
+            { label: "Acesso imediato" },
+            { label: "Certificado incluso" },
+          ].map((f, i) => (
+            <span key={i} style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: M, fontSize: 11.5, fontWeight: 600, color: "rgba(244,244,244,0.7)" }}>
+              <svg width={13} height={13} viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
+                <path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {f.label}
+            </span>
+          ))}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginTop: "auto" }}>

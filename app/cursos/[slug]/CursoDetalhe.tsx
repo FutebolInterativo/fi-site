@@ -85,38 +85,32 @@ function Tag({children,cor}:{children:React.ReactNode;cor:string}){
   );
 }
 
-/* ─── VideoCard — masonry, com insígnia do resultado (papel) ───────── */
-function VideoCard({id,nome,papel,cor}:{id:string;nome:string;papel?:string;cor:string}){
-  const [on,setOn]=useState(false);
+/* ─── VideoCard — usa a capa real do YouTube; clicar avisa a página
+   pra abrir o modal grande (mesmo padrão da página /experiencia-pratica),
+   em vez de trocar pra um iframe embutido no próprio card ────────────── */
+function VideoCard({id,nome,papel,cor,onPlay}:{id:string;nome:string;papel?:string;cor:string;onPlay:()=>void}){
+  const thumb=`https://img.youtube.com/vi/${id}/hqdefault.jpg`;
   return(
-    <div
-      className="h-full flex flex-col group relative rounded-3xl overflow-hidden border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:border-white/[0.14] hover:-translate-y-1"
-    >
-      <div className="relative aspect-[4/5] cursor-pointer" onClick={()=>setOn(true)}>
-        {on?(
-          <iframe src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`}
-            title={nome} allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
-            allowFullScreen className="absolute inset-0 w-full h-full border-0"/>
-        ):(
-          <>
-            <div className="absolute inset-0" style={{ background:`linear-gradient(150deg,#03151F,${cor}35)` }}/>
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-                style={{ background:cor, boxShadow:`0 0 40px ${cor}80` }}
-              >
-                <svg width={22} height={22} viewBox="0 0 24 24" fill="none"><polygon points="9,7 19,12 9,17" fill="#fff"/></svg>
-              </div>
-              <p className={`${FB} text-[11px] font-bold tracking-widest text-white/50`}>ASSISTIR</p>
-            </div>
-            {papel&&(
-              <div className="absolute bottom-3 left-3 right-3">
-                <span className="inline-flex max-w-full items-center rounded-lg px-2.5 py-1.5 text-[10.5px] font-bold text-white backdrop-blur-md bg-black/50 border border-white/10 truncate">
-                  {papel}
-                </span>
-              </div>
-            )}
-          </>
+    <div className="h-full flex flex-col group relative rounded-3xl overflow-hidden border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:border-white/[0.14] hover:-translate-y-1">
+      <div className="relative aspect-[4/5] cursor-pointer bg-black" onClick={onPlay}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={thumb} alt={nome} loading="lazy" className="absolute inset-0 w-full h-full object-cover"/>
+        <div className="absolute inset-0 bg-black/35"/>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+            style={{ background:cor, boxShadow:`0 0 40px ${cor}80` }}
+          >
+            <svg width={22} height={22} viewBox="0 0 24 24" fill="none"><polygon points="9,7 19,12 9,17" fill="#fff"/></svg>
+          </div>
+          <p className={`${FB} text-[11px] font-bold tracking-widest text-white/50`}>ASSISTIR</p>
+        </div>
+        {papel&&(
+          <div className="absolute bottom-3 left-3 right-3">
+            <span className="inline-flex max-w-full items-center rounded-lg px-2.5 py-1.5 text-[10.5px] font-bold text-white backdrop-blur-md bg-black/50 border border-white/10 truncate">
+              {papel}
+            </span>
+          </div>
         )}
       </div>
       <div className="p-5">
@@ -133,8 +127,9 @@ function VideoCard({id,nome,papel,cor}:{id:string;nome:string;papel?:string;cor:
 export default function CursoDetalhe({curso}:{curso:Curso}){
   const cor=COR[curso.area]??"#4096F2";
   const label=LBL[curso.area]??curso.area;
-  const [tab,setTab]=useState<number|null>(0);
+  const [tab,setTab]=useState<number|null>(null);
   const [sticky,setSticky]=useState(false);
+  const [modalVideo,setModalVideo]=useState<{id:string;nome:string}|null>(null);
   const url=curso.checkoutUrl??curso.externalUrl;
 
   useEffect(()=>{
@@ -142,6 +137,19 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
     window.addEventListener("scroll",fn,{passive:true});
     return ()=>window.removeEventListener("scroll",fn);
   },[]);
+
+  // fecha o modal de vídeo com Esc e trava o scroll da página enquanto aberto
+  useEffect(()=>{
+    if(!modalVideo) return;
+    const onKey=(e:KeyboardEvent)=>{ if(e.key==="Escape") setModalVideo(null); };
+    window.addEventListener("keydown",onKey);
+    const prevOverflow=document.body.style.overflow;
+    document.body.style.overflow="hidden";
+    return ()=>{
+      window.removeEventListener("keydown",onKey);
+      document.body.style.overflow=prevOverflow;
+    };
+  },[modalVideo]);
 
   return(
     <div className="bg-[#030712] overflow-x-clip">
@@ -192,17 +200,18 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-7 gap-y-6 border-t border-white/10 pt-8">
                   {curso.heroStats.map((s,i)=>(
                     <div key={i} className="flex flex-col min-h-[52px]">
-                      {s.valor==="✓"?(
-                        <>
-                          <svg width={22} height={22} viewBox="0 0 20 20" fill="none" className="flex-shrink-0"><path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
-                        </>
-                      ):(
-                        <>
-                          <div className={`${FD} text-[26px] lg:text-[32px] text-white leading-none`}>{s.valor}</div>
-                          <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
-                        </>
-                      )}
+                      {/* wrapper de altura fixa: alinha o número e o check no mesmo eixo,
+                          em vez de cada um ocupar uma altura diferente */}
+                      <div className="h-9 flex items-end">
+                        {s.valor==="✓"?(
+                          <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ background:"rgba(8,194,122,0.14)" }}>
+                            <svg width={17} height={17} viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                        ):(
+                          <div className={`${FD} text-[28px] lg:text-[32px] text-white leading-none`}>{s.valor}</div>
+                        )}
+                      </div>
+                      <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
                     </div>
                   ))}
                 </div>
@@ -272,10 +281,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
       {/* ══════════════════════════════════════════════════════
           §2A DIFERENCIAIS — grid numerado, full-width, própria seção
          ══════════════════════════════════════════════════════ */}
-      {curso.diferenciais&&curso.diferenciais.length>0&&(() => {
-        const [primeiro, ...resto] = curso.diferenciais;
-        const [leadP, restoP] = primeiro.split("|");
-        return(
+      {curso.diferenciais&&curso.diferenciais.length>0&&(
         <section className="relative py-20 md:py-28 overflow-hidden">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[130px] opacity-[0.12] pointer-events-none" style={{ background:cor }}/>
           <div className="relative max-w-6xl mx-auto px-6 lg:px-10">
@@ -286,50 +292,54 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               </h2>
             </FI>
 
-            <div className="grid lg:grid-cols-[1.3fr_1fr] gap-5 lg:gap-6">
-              {/* card grande — o diferencial mais forte, com numeral gigante de fundo */}
-              <FI className="group relative rounded-[32px] border overflow-hidden p-9 lg:p-12 flex flex-col justify-end min-h-[320px] lg:min-h-full hover:-translate-y-1 transition-transform duration-300" style={{ borderColor:`${cor}45`, background:`linear-gradient(155deg,${cor}22,rgba(255,255,255,0.02))` }}>
-                <span className={`${FD} absolute -top-6 -left-2 text-[220px] leading-none pointer-events-none select-none`} style={{ color:`${cor}18` }}>01</span>
-                <div className="relative">
-                  <div className="flex items-center justify-center w-14 h-14 rounded-2xl border-2 mb-7" style={{ borderColor:cor, background:"#030712" }}>
-                    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={cor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                  <p className={`${FB} text-[19px] lg:text-[22px] leading-snug mb-8`}>
-                    <strong className="text-white font-bold">{leadP}</strong>{restoP?<span className="text-white/60"> {restoP}</span>:null}
-                  </p>
-                  {/* clubes parceiros passando em destaque — prova visual dentro do próprio card */}
-                  <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)] -mx-2">
-                    <ul className="flex items-center animate-marquee gap-7 w-max">
-                      {[...Array.from({length:16},(_,i)=>i+1),...Array.from({length:16},(_,i)=>i+1)].map((n,i)=>(
-                        <li key={i} className="flex-shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={`/images/clubes/clube-${n}.webp`} alt="" loading="lazy" className="h-7 w-auto opacity-60"/>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </FI>
-
-              {/* pilha de cards menores */}
-              <div className="grid gap-5 lg:gap-6">
-                {resto.map((d,i)=>{
-                  const [lead,restoTxt]=d.split("|");
-                  return(
-                    <FI key={i} d={(i+1)*60} className="group relative rounded-[24px] border border-white/[0.07] bg-white/[0.02] backdrop-blur-md p-6 lg:p-7 flex items-start gap-5 hover:border-white/[0.16] hover:bg-white/[0.04] transition-all duration-300">
-                      <span className={`${FD} text-3xl leading-none flex-shrink-0`} style={{ color:`${cor}70` }}>{String(i+2).padStart(2,"0")}</span>
-                      <p className={`${FB} text-[14.5px] leading-relaxed pt-1`}>
-                        <strong className="text-white font-bold">{lead}</strong>{restoTxt?<span className="text-white/55"> {restoTxt}</span>:null}
+            {/* grid simétrico 2x2 — mesmo peso visual pra todo mundo, sem numeral gigante
+                sobreposto. O primeiro card ganha destaque de cor + o marquee de clubes
+                embaixo, mas ocupa o mesmo espaço que os outros três. */}
+            <div className="grid sm:grid-cols-2 gap-5 lg:gap-6">
+              {curso.diferenciais.map((d,i)=>{
+                const [lead,restoTxt]=d.split("|");
+                const destaque=i===0;
+                return(
+                  <FI key={i} d={i*60} className="h-full">
+                    {/* hover fica no wrapper INTERNO, não no elemento controlado pelo FI —
+                        o FI seta transform/transition inline pra animar a entrada, e isso
+                        sobrescrevia qualquer classe hover:-translate-y aplicada no mesmo nó,
+                        travando o efeito. Separando os dois, o hover volta a funcionar. */}
+                    <div
+                      className={`group h-full rounded-[28px] border p-7 lg:p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${destaque?"":"border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16] hover:bg-white/[0.04]"}`}
+                      style={destaque?{ borderColor:`${cor}45`, background:`linear-gradient(155deg,${cor}22,rgba(255,255,255,0.02))` }:undefined}
+                    >
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="flex items-center justify-center w-11 h-11 rounded-xl border-2 flex-shrink-0" style={{ borderColor:cor, background:"#030712" }}>
+                          <svg width={18} height={18} viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={cor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </div>
+                        <span className={`${FB} text-[11px] font-bold tracking-[0.14em]`} style={{ color:`${cor}90` }}>{String(i+1).padStart(2,"0")}</span>
+                      </div>
+                      <p className={`${FB} text-[15px] lg:text-[16px] leading-relaxed flex-1`}>
+                        <strong className="text-white font-bold">{lead}</strong>{restoTxt?<span className="text-white/60"> {restoTxt}</span>:null}
                       </p>
-                    </FI>
-                  );
-                })}
-              </div>
+
+                      {/* clubes parceiros passando em destaque — só no card 01, prova visual */}
+                      {destaque&&(
+                        <div className="mt-7 pt-6 border-t border-white/10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)] -mx-1">
+                          <ul className="flex items-center animate-marquee gap-7 w-max">
+                            {[...Array.from({length:16},(_,i)=>i+1),...Array.from({length:16},(_,i)=>i+1)].map((n,idx)=>(
+                              <li key={idx} className="flex-shrink-0">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={`/images/clubes/clube-${n}.webp`} alt="" loading="lazy" className="h-7 w-auto opacity-60"/>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </FI>
+                );
+              })}
             </div>
           </div>
         </section>
-        );
-      })()}
+      )}
 
       {/* ══════════════════════════════════════════════════════
           §2B PARA QUEM — layout assimétrico texto + checklist
@@ -424,21 +434,26 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                     </div>
                   ))}
                 </div>
+                {/* deixa claro que a lista é o leque de possibilidades da imersão,
+                    não uma checklist obrigatória — cada aluno vive uma combinação
+                    diferente dependendo do clube e do momento do departamento */}
+                <p className={`${FB} text-[12px] font-medium text-white/35 leading-relaxed pt-5 mt-5 border-t border-white/[0.07]`}>
+                  Atividades possíveis durante a imersão — o dia a dia varia por clube, e você não vai necessariamente passar por todas elas.
+                </p>
               </FI>
             </div>
-
-            {/* "Clubes em todos os estados" agora só introduz o mapa abaixo —
-                removi o marquee de escudos passando, já que o mapa cobre
-                isso de forma melhor (interativo, por estado) */}
-            <p className={`${FB} text-center text-[13.5px] font-medium text-white/50`}>
-              Clubes em todos os estados. Você pratica perto de você.
-            </p>
           </div>
         </section>
       )}
 
-      {/* mapa interativo — mostra os clubes parceiros por estado, reforça "você pratica perto de você" */}
-      {curso.experienciaPratica&&curso.experienciaPratica.length>0&&<MapaClubes/>}
+      {/* mapa interativo — mostra os clubes parceiros por estado, reforça "você pratica perto de você".
+          A transição fade evita o corte seco entre o fundo escuro desta seção e o navy do mapa. */}
+      {curso.experienciaPratica&&curso.experienciaPratica.length>0&&(
+        <>
+          <div className="h-16 md:h-20 -mb-16 md:-mb-20 relative pointer-events-none" style={{ background:"linear-gradient(to bottom, transparent, #03263F)" }}/>
+          <MapaClubes/>
+        </>
+      )}
 
       {/* ══════════════════════════════════════════════════════
           §3 EMENTA — timeline interativa
@@ -485,11 +500,9 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                             >
                               <div className="flex items-center gap-4">
                                 <span
-                                  className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center border-2 ${FD} text-[12.5px] transition-colors duration-300`}
-                                  style={{ borderColor: op ? (destaque ? AMARELO : cor) : "rgba(255,255,255,0.12)", background: op ? (destaque ? AMARELO : cor) : "transparent", color: op ? "#03263F" : "rgba(255,255,255,0.4)" }}
-                                >
-                                  {String(i + 1).padStart(2, "0")}
-                                </span>
+                                  className="flex-shrink-0 w-2.5 h-2.5 rounded-full transition-colors duration-300"
+                                  style={{ background: op ? (destaque ? AMARELO : cor) : "rgba(255,255,255,0.25)" }}
+                                />
                                 <span className={`${FB} flex-1 text-[14px] font-bold text-white leading-snug`}>{item.titulo}</span>
                                 <span className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-transform duration-300 ${op ? "rotate-45" : ""}`} style={{ background: op ? (destaque ? AMARELO : cor) : "rgba(255,255,255,0.06)" }}>
                                   <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke={op ? "#03263F" : "rgba(255,255,255,0.5)"} strokeWidth="2.5" strokeLinecap="round"/></svg>
@@ -497,7 +510,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                               </div>
                               <div className={`grid transition-[grid-template-rows] duration-300 ${op ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                                 <div className="overflow-hidden">
-                                  {item.descricao && <p className={`${FB} text-[13px] text-white/45 leading-relaxed pt-4 pl-[52px]`}>{item.descricao}</p>}
+                                  {item.descricao && <p className={`${FB} text-[13px] text-white/45 leading-relaxed pt-4 pl-[26px]`}>{item.descricao}</p>}
                                 </div>
                               </div>
                             </button>
@@ -517,10 +530,10 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           §4 MENTORES — grid assíncrono estilo elite
          ══════════════════════════════════════════════════════ */}
       {curso.mentores&&curso.mentores.length>0&&(() => {
-        const ancora = curso.mentores.find(m => m.ancora);
-        const resto = curso.mentores.filter(m => !m.ancora);
-        const restoComFoto = resto.filter(m => m.foto);
-        const restoSemFoto = resto.filter(m => !m.foto);
+        // o card de "mentor âncora" foi removido — todo mentor (inclusive quem tinha
+        // ancora:true) entra na mesma grade, sem tratamento especial
+        const restoComFoto = curso.mentores.filter(m => m.foto);
+        const restoSemFoto = curso.mentores.filter(m => !m.foto);
         return(
         <section className="relative py-20 md:py-28 overflow-hidden">
           <div className="absolute top-0 left-0 w-[460px] h-[460px] rounded-full blur-[130px] opacity-[0.1] pointer-events-none" style={{ background:cor }}/>
@@ -533,52 +546,25 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               )}
             </FI>
 
-            {/* mentor-âncora — card grande, foto em ambiente de trabalho, frase 1ª pessoa */}
-            {ancora&&(
-              <FI className="mb-8">
-              <div className="rounded-[28px] border p-7 lg:p-10 flex flex-col sm:flex-row gap-8 items-start" style={{ borderColor:`${cor}45`, background:`linear-gradient(155deg,rgba(255,255,255,0.03),${cor}08)` }}>
-                <div className="relative w-full sm:w-48 h-48 rounded-2xl overflow-hidden flex-shrink-0 shadow-xl" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={ancora.foto} alt={ancora.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}} className="absolute inset-0 w-full h-full object-cover object-top"/>
-                  {ancora.clubeTag&&(
-                    <span className={`${FD} absolute top-2.5 right-2.5 w-10 h-10 rounded-full flex items-center justify-center text-[10.5px] text-white border-2`} style={{ background:"#03263F", borderColor:cor }}>{ancora.clubeTag}</span>
-                  )}
-                </div>
-                <div className="flex-1 pt-1">
-                  <span className="inline-block rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] border mb-4" style={{ color:cor, borderColor:`${cor}45`, background:`${cor}14` }}>Mentor âncora</span>
-                  <p className={`${FD} text-2xl text-white leading-tight mb-2`}>{ancora.nome}</p>
-                  <p className={`${FB} text-[14px] text-white/50 mb-5`}>{ancora.bio}{ancora.clube?<> · <strong className="text-white/75 font-bold">{ancora.clube}</strong></>:null}</p>
-                  {ancora.quote&&(
-                    <p className={`${FB} text-[16px] text-white/80 italic leading-relaxed border-l-2 pl-5`} style={{ borderColor:cor }}>&ldquo;{ancora.quote}&rdquo;</p>
-                  )}
-                </div>
-              </div>
-              </FI>
-            )}
-
             {restoComFoto.length>0&&(
-              <div className="sm:[column-count:2] md:[column-count:4] gap-4 lg:gap-5 mb-4" style={{ columnGap:"1.25rem" }}>
-                {restoComFoto.map((m,i)=>{
-                  const aspecto = i%3===0?"aspect-[3/4]":i%3===1?"aspect-square":"aspect-[4/5]";
-                  return(
-                  <FI key={i} d={i*55} className={`group relative rounded-[22px] overflow-hidden border border-white/[0.07] hover:border-white/[0.16] transition-colors duration-300 mb-4 lg:mb-5 break-inside-avoid ${aspecto}`}>
-                    <div className="absolute inset-0" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}/>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
-                      className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"/>
-                    {m.clubeTag&&(
-                      <span className={`${FD} absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center text-[9.5px] text-white border-2`} style={{ background:"#03263Fcc", borderColor:cor }}>{m.clubeTag}</span>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"/>
-                    <div className="absolute inset-x-0 bottom-0 p-4">
+              <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5 mb-4">
+                {restoComFoto.map((m,i)=>(
+                  <FI key={i} d={i*55} className="group rounded-[22px] overflow-hidden border border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16] transition-colors duration-300">
+                    {/* object-contain pra mostrar a foto inteira (sem cortar escudo/uniforme)
+                        e sem texto sobreposto — nome/cargo ficam numa legenda abaixo */}
+                    <div className="relative aspect-[4/5]" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
+                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"/>
+                    </div>
+                    <div className="p-4">
                       <p className={`${FD} text-[14px] text-white leading-tight mb-1`}>{m.nome}</p>
                       <p className={`${FB} text-[10.5px] font-semibold leading-snug`} style={{ color:cor }}>
                         {m.bio}
                       </p>
                     </div>
                   </FI>
-                  );
-                })}
+                ))}
               </div>
             )}
             {restoSemFoto.length>0&&(
@@ -623,7 +609,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-5 lg:gap-6">
               {curso.depoimentos.map((d,i)=>(
                 <FI key={i} d={i*70} className="h-full">
-                  <VideoCard id={d.videoUrl?ytId(d.videoUrl):""} nome={d.nome} papel={d.papel} cor={cor}/>
+                  <VideoCard id={d.videoUrl?ytId(d.videoUrl):""} nome={d.nome} papel={d.papel} cor={cor} onPlay={()=>setModalVideo({id:d.videoUrl?ytId(d.videoUrl):"",nome:d.nome})}/>
                 </FI>
               ))}
             </div>
@@ -680,22 +666,25 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             <FI>
               <div className="relative overflow-hidden rounded-[28px] border p-8 sm:p-12" style={{ borderColor:`${cor}35`, background:"linear-gradient(145deg,#030712,#021629)" }}>
                 <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[70px] opacity-25 pointer-events-none" style={{ background:cor }}/>
-                <div className="relative flex flex-col sm:flex-row items-start gap-6 mb-8">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center border-2" style={{ background:`${cor}22`, borderColor:`${cor}55` }}>
-                    <svg width={28} height={28} viewBox="0 0 24 24" fill="none">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={cor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M9 12l2 2 4-4" stroke={cor} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                {/* texto e CTA na mesma faixa — antes o botão ficava jogado sozinho embaixo,
+                    desalinhado do resto do card; agora ele acompanha o bloco de texto,
+                    lado a lado no desktop e abaixo no mobile */}
+                <div className="relative flex flex-col lg:flex-row lg:items-center gap-8">
+                  <div className="flex flex-col sm:flex-row items-start gap-6 flex-1">
+                    <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center border-2" style={{ background:`${cor}22`, borderColor:`${cor}55` }}>
+                      <svg width={28} height={28} viewBox="0 0 24 24" fill="none">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={cor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M9 12l2 2 4-4" stroke={cor} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className={`${FB} text-[10px] font-bold tracking-[0.22em] uppercase mb-2.5`} style={{ color:cor }}>Garantia Futebol Interativo</p>
+                      <h3 className={`${FD} text-2xl sm:text-4xl text-white leading-tight mb-3`}>SE NÃO FUNCIONAR,<br/>DEVOLVEMOS TUDO</h3>
+                      <p className={`${FB} text-[14px] text-white/50 leading-relaxed max-w-lg`}>{curso.garantiaTexto}</p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className={`${FB} text-[10px] font-bold tracking-[0.22em] uppercase mb-2.5`} style={{ color:cor }}>Garantia Futebol Interativo</p>
-                    <h3 className={`${FD} text-2xl sm:text-4xl text-white leading-tight mb-3`}>SE NÃO FUNCIONAR,<br/>DEVOLVEMOS TUDO</h3>
-                    <p className={`${FB} text-[14px] text-white/50 leading-relaxed max-w-lg`}>{curso.garantiaTexto}</p>
-                  </div>
-                </div>
-                <div className="relative flex justify-end">
-                  <a href="#oferta" className="inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-7 py-3.5 transition-transform hover:-translate-y-0.5">
-                    <span className={`${FB} text-sm font-bold text-white`}>Garantir minha vaga</span>
+                  <a href="#oferta" className="flex-shrink-0 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-7 py-3.5 transition-transform hover:-translate-y-0.5 w-full lg:w-auto">
+                    <span className={`${FB} text-sm font-bold text-white whitespace-nowrap`}>Garantir minha vaga</span>
                     <svg width={13} height={13} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </a>
                 </div>
@@ -726,6 +715,34 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
       <div className="border-t border-white/[0.05] py-5 text-center">
         <a href="/cursos" className={`${FB} text-[11.5px] font-semibold text-white/20 hover:text-white/40 transition-colors tracking-wide`}>← Ver todas as formações</a>
       </div>
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL DE VÍDEO — mesmo padrão da página /experiencia-pratica
+         ══════════════════════════════════════════════════════ */}
+      {modalVideo&&(
+        <div
+          onClick={()=>setModalVideo(null)}
+          className="fixed inset-0 z-[300] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md"
+        >
+          <div onClick={e=>e.stopPropagation()} className="relative w-full" style={{ maxWidth:880 }}>
+            <button
+              onClick={()=>setModalVideo(null)}
+              aria-label="Fechar"
+              className="absolute -top-11 right-0 w-9 h-9 rounded-[10px] flex items-center justify-center text-white text-lg bg-white/[0.08] border border-white/20"
+            >×</button>
+            <div className="rounded-2xl overflow-hidden bg-black shadow-2xl" style={{ aspectRatio:"16/9" }}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${modalVideo.id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&playsinline=1`}
+                title={modalVideo.nome}
+                className="w-full h-full border-0 block"
+                allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <p className={`${FB} text-[13px] font-semibold text-white/70 text-center mt-3.5`}>{modalVideo.nome}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
