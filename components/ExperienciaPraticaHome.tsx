@@ -9,12 +9,6 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
 const DARK = "#010E1B";
 const VERDE = "#08C27A";
 
-const stats = [
-  { raw: "+130", label: "Clubes parceiros" },
-  { raw: "+4.500", label: "Alunos enviados" },
-  { raw: "15", label: "Dias de imersão" },
-];
-
 /* fade-in ao entrar na viewport, consistente com o resto do site */
 function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -33,36 +27,6 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
     return () => obs.disconnect();
   }, [delay]);
   return <div ref={ref}>{children}</div>;
-}
-
-/* contador animado, mesmo padrão usado em NossaMissao / experiencia-pratica */
-function Counter({ raw }: { raw: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const done = useRef(false);
-  useEffect(() => {
-    const el = ref.current; if (!el || done.current) return;
-    const num = parseFloat(raw.replace(/[^0-9.]/g, ""));
-    if (isNaN(num)) return;
-    const pre = raw.match(/^[^0-9]*/)?.[0] ?? "";
-    const suf = raw.match(/[^0-9.,]+$/)?.[0] ?? "";
-    const obs = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting || done.current) return;
-      done.current = true;
-      const t0 = performance.now();
-      const run = (now: number) => {
-        const t = Math.min((now - t0) / 1200, 1);
-        const v = 1 - Math.pow(1 - t, 3);
-        const rounded = Math.round(v * num);
-        el.textContent = pre + rounded.toLocaleString("pt-BR") + suf;
-        if (t < 1) requestAnimationFrame(run);
-        else el.textContent = raw;
-      };
-      requestAnimationFrame(run);
-    }, { threshold: 0.5 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [raw]);
-  return <span ref={ref}>{raw}</span>;
 }
 
 export default function ExperienciaPraticaHome() {
@@ -86,22 +50,27 @@ export default function ExperienciaPraticaHome() {
               <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4.5vw,46px)", lineHeight: 1.02, color: "#F4F4F4", marginBottom: 18 }}>
                 VOCÊ TERMINA DENTRO DE<br />UM CLUBE PROFISSIONAL
               </h2>
-              <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.55)", lineHeight: 1.75, maxWidth: 440, marginBottom: 32 }}>
+              <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.55)", lineHeight: 1.75, maxWidth: 440, marginBottom: 24 }}>
                 Nenhuma outra escola de futebol no Brasil oferece isso. Ao concluir a parte teórica, você vive até 15 dias dentro do departamento da sua área, em um dos nossos{" "}
                 <strong style={{ color: "rgba(244,244,244,0.88)", fontWeight: 700 }}>+130 clubes parceiros</strong>.
               </p>
 
-              <div className="grid grid-cols-3" style={{ gap: 0, marginBottom: 32 }}>
-                {stats.map((s, i) => (
-                  <div key={s.label} style={{ paddingRight: i < 2 ? 16 : 0, paddingLeft: i > 0 ? 16 : 0, borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
-                    <div style={{ fontFamily: F, fontSize: "clamp(19px,2.6vw,26px)", lineHeight: 1, color: "#F4F4F4" }}>
-                      <Counter raw={s.raw} />
-                    </div>
-                    <div style={{ fontFamily: M, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(169,216,245,0.4)", marginTop: 7 }}>
-                      {s.label}
-                    </div>
-                  </div>
-                ))}
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: 14,
+                padding: "14px 22px 14px 16px", borderRadius: 16, marginBottom: 32,
+                background: "linear-gradient(135deg,rgba(12,152,252,0.14),rgba(12,152,252,0.04))",
+                border: "1px solid rgba(12,152,252,0.3)",
+              }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(12,152,252,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="5" width="18" height="16" rx="2" stroke="#0C98FC" strokeWidth="1.8" />
+                    <path d="M3 9h18M8 3v4M16 3v4" stroke="#0C98FC" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <div>
+                  <span style={{ fontFamily: F, fontSize: 24, lineHeight: 1, color: "#F4F4F4", marginRight: 8 }}>ATÉ 15 DIAS</span>
+                  <span style={{ fontFamily: M, fontSize: 12.5, fontWeight: 600, color: "rgba(169,216,245,0.6)" }}>de imersão real dentro do clube</span>
+                </div>
               </div>
 
               <Link

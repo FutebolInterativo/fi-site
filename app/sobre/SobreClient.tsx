@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import HubspotFormModal from "@/components/HubspotFormModal";
 
 const F = "var(--font-anton), Anton, sans-serif";
 const M = "var(--font-montserrat), Montserrat, sans-serif";
@@ -20,7 +21,7 @@ const TIMELINE = [
   { year: "2021", title: "Rede de parceiros", desc: "Mais de 50 clubes parceiros integrados. O programa de experiências práticas se consolida como diferencial único.", color: "#4096F2" },
   { year: "2023", title: "+130 clubes", desc: "A rede de parceiros ultrapassa 130 clubes em todo o Brasil. Mais de 15.000 alunos formados.", color: "#3B82F6" },
   {
-    year: "2026", title: "Alcance internacional", color: "#08C27A", featured: true,
+    year: "2026", title: "Alcance internacional", color: "#0C98FC", featured: true,
     desc: "Mais de 25.000 alunos formados e 34 formações ativas na maior rede de clubes parceiros do Brasil. E a Experiência Prática já cruza fronteiras: alunos vivem imersões em clubes europeus parceiros, como o SC Braga (Portugal) e o Girona FC (Espanha).",
     images: [
       { src: "/images/ppi/braga-bastidores.jpg", alt: "Bastidores do SC Braga, clube parceiro em Portugal" },
@@ -165,7 +166,7 @@ export default function SobreClient() {
             <FadeIn delay={100}>
               <div style={{ borderRadius: 20, border: "1px solid rgba(140,200,245,0.14)", background: "rgba(3,38,63,0.6)", padding: "32px clamp(24px,3vw,36px)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}>
-                  <span style={{ fontFamily: F, fontSize: 40, lineHeight: 1, color: "#08C27A" }}>100%</span>
+                  <span style={{ fontFamily: F, fontSize: 40, lineHeight: 1, color: "#0C98FC" }}>100%</span>
                   <span style={{ fontFamily: M, fontSize: 12.5, fontWeight: 700, color: "rgba(244,244,244,0.6)", letterSpacing: "0.04em", textTransform: "uppercase" }}>
                     Prática garantida
                   </span>
@@ -178,9 +179,9 @@ export default function SobreClient() {
                     "Certificado de conclusão reconhecido pelo mercado do futebol",
                   ].map((t) => (
                     <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                      <div style={{ width: 22, height: 22, borderRadius: "50%", background: "rgba(8,194,122,0.16)", border: "1.5px solid rgba(8,194,122,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                      <div style={{ width: 22, height: 22, borderRadius: "50%", background: "rgba(12,152,252,0.16)", border: "1.5px solid rgba(12,152,252,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
                         <svg width={11} height={11} viewBox="0 0 20 20" fill="none">
-                          <path d="M4 10l4 4 8-8" stroke="#08C27A" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M4 10l4 4 8-8" stroke="#0C98FC" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
                       <p style={{ fontFamily: M, fontSize: 14, fontWeight: 500, color: "rgba(244,244,244,0.92)", lineHeight: 1.5 }}>{t}</p>
@@ -330,9 +331,22 @@ export default function SobreClient() {
                 <Link href="/cursos" style={{ fontFamily: M, fontWeight: 700, fontSize: 15, color: "#fff", display: "inline-flex", alignItems: "center", gap: 12, padding: "14px 28px", borderRadius: 14, background: "linear-gradient(135deg,#08C27A,#05A567)", border: "1.4px solid rgba(8,194,122,0.9)", textDecoration: "none" }}>
                   Ver todas as formações →
                 </Link>
-                <a href="https://api.whatsapp.com/send/?phone=5511942009407" target="_blank" rel="noreferrer" style={{ fontFamily: M, fontWeight: 700, fontSize: 15, color: "rgba(244,244,244,0.75)", display: "inline-flex", alignItems: "center", gap: 12, padding: "14px 28px", borderRadius: 14, border: "1px solid rgba(140,200,245,0.2)", textDecoration: "none" }}>
-                  Falar com consultor
-                </a>
+                <HubspotFormModal
+                  title="Fale com um consultor"
+                  subtitle="Responda 6 perguntas rápidas e alguém da equipe te chama."
+                  defaultUtm={{
+                    utm_source: "trafego",
+                    utm_medium: "site",
+                    utm_campaign: "geral",
+                    utm_content: "sobre-cta-final-falar-com-consultor",
+                    utm_term: "geral",
+                  }}
+                  trigger={
+                    <span style={{ fontFamily: M, fontWeight: 700, fontSize: 15, color: "rgba(244,244,244,0.75)", display: "inline-flex", alignItems: "center", gap: 12, padding: "14px 28px", borderRadius: 14, border: "1px solid rgba(140,200,245,0.2)" }}>
+                      Falar com consultor
+                    </span>
+                  }
+                />
               </div>
             </div>
           </FadeIn>

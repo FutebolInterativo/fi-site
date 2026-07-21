@@ -12,7 +12,7 @@ export default function CursoForm({ curso }: { curso: Curso }) {
       color="#08C27A"
       title="Fale com um consultor"
       subtitle="Responda 6 perguntas rápidas e alguém da equipe te chama."
-      defaultUtm={{ utm_source: "trafego", utm_medium: "site", utm_campaign: curso.id }}
+      defaultUtm={{ utm_source: "trafego", utm_medium: "site", utm_campaign: curso.id, utm_content: "falar-com-um-consultor", utm_term: "geral" }}
       presetArea={AREA_BY_CURSO_AREA[curso.area]}
       trigger={
         <span

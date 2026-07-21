@@ -41,10 +41,11 @@ export default function CTAFinal() {
                   title="Fale com um consultor"
                   subtitle="Preencha seus dados e retornaremos o quanto antes."
                   defaultUtm={{
-                    utm_source: "site-fi",
-                    utm_medium: "institucional",
-                    utm_campaign: "site-institucional-falar-com-um-consultor",
-                    utm_content: "botao-wa-final-lp",
+                    utm_source: "trafego",
+                    utm_medium: "site",
+                    utm_campaign: "geral",
+                    utm_content: "home-cta-final-falar-com-um-consultor",
+                    utm_term: "geral",
                   }}
                   trigger={
                     <button

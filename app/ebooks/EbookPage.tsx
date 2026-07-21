@@ -72,8 +72,8 @@ export default function EbookPage({ area, tagId, communityUrl, color }: Props) {
               defaultUtm={{
                 utm_source: "trafego",
                 utm_medium: "site",
-                utm_campaign: `ebook-${areaSlug}`,
-                utm_content: `baixou-ebook-${areaSlug}`,
+                utm_campaign: "geral",
+                utm_content: `ebooks-${areaSlug}-formulario`,
                 utm_term: "geral",
               }}
               onContactCaptured={syncActiveCampaign}

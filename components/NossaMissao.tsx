@@ -156,8 +156,8 @@ export default function NossaMissao() {
             defaultUtm={{
               utm_source: "trafego",
               utm_medium: "site",
-              utm_campaign: "site-institucional-nossa-missao",
-              utm_content: "cta-quero-ser-um-dos-10000",
+              utm_campaign: "geral",
+              utm_content: "home-nossa-missao-quero-ser-um-dos-10000",
               utm_term: "geral",
             }}
             trigger={
