@@ -28,12 +28,30 @@ type Props = {
   capa?: string;
 };
 
+// adiciona as UTMs de tráfego pago/orgânico nos links externos dos cursos —
+// utm_campaign usa o slug do próprio curso, pra rastrear cada um separadamente.
+// Cursos com página interna (ex: análise) não passam por aqui, pois `externalUrl`
+// já vem vazio pra eles lá no CursosClient.
+function withUtm(url: string, slug: string): string {
+  try {
+    const u = new URL(url);
+    u.searchParams.set("utm_source", "trafego");
+    u.searchParams.set("utm_medium", "site");
+    u.searchParams.set("utm_campaign", slug);
+    u.searchParams.set("utm_content", "site-cursos");
+    u.searchParams.set("utm_term", "geral");
+    return u.toString();
+  } catch {
+    return url; // URL malformada — mantém original em vez de quebrar o link
+  }
+}
+
 export default function CursoCard({ id, title, type, area, areaLabel, externalUrl, capa }: Props) {
   const [hover, setHover] = useState(false);
   const cor = AREA_COLOR[area] ?? "#4096F2";
   const iconPath = ICON_PATH[area] ?? ICON_PATH["tecnica-e-tatica"];
-  const href = externalUrl || `/cursos/${id}`;
   const externo = !!externalUrl;
+  const href = externo ? withUtm(externalUrl, id) : `/cursos/${id}`;
 
   return (
     <a

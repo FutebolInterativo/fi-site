@@ -54,7 +54,7 @@ const areas = [
     label: "Medicina",
     href: "/ebooks/medicina",
     color: "#F87171",
-    capa: undefined, // sem capa "sem texto" disponível — usa painel genérico
+    capa: "/images/cursos/medicina-sem-texto.png",
     iconPath: "M22 12h-4l-3 9L9 3l-3 9H2",
   },
   {
