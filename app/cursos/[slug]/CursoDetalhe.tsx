@@ -22,8 +22,10 @@ function ytId(u:string){ return u.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-
 
 /* ─── FadeIn — nunca fica permanentemente invisível ────────────────
    comportamento (não visual), por isso continua controlado via JS:
-   Tailwind não tem "anime quando entrar na viewport" sem JS por trás. */
-function FI({children,d=0,y=18,className=""}:{children:React.ReactNode;d?:number;y?:number;className?:string}){
+   Tailwind não tem "anime quando entrar na viewport" sem JS por trás.
+   Aceita `style` além de `className` porque alguns usos precisam de
+   valores runtime (cor dinâmica) que o Tailwind JIT não gera em build. */
+function FI({children,d=0,y=18,className="",style}:{children:React.ReactNode;d?:number;y?:number;className?:string;style?:React.CSSProperties}){
   const r=useRef<HTMLDivElement>(null);
   useEffect(()=>{
     const el=r.current; if(!el) return;
@@ -37,7 +39,7 @@ function FI({children,d=0,y=18,className=""}:{children:React.ReactNode;d?:number
     const fb=setTimeout(reveal,900);
     return ()=>{obs.disconnect();clearTimeout(fb);};
   },[d,y]);
-  return <div ref={r} className={className}>{children}</div>;
+  return <div ref={r} className={className} style={style}>{children}</div>;
 }
 
 /* ─── Counter ────────────────────────────────────────────────────── */
