@@ -99,8 +99,8 @@ export const eventos: Evento[] = [
     slug: "supervisao-no-futebol",
     tipo: "Aula ao vivo",
     gratuito: true,
-    dataHoraLabel: "29 de julho, 19h às 21h",
-    dataHoraISO: "2026-07-29T19:00:00-03:00",
+    dataHoraLabel: "30 de julho, 19h às 21h",
+    dataHoraISO: "2026-07-30T19:00:00-03:00",
 
     title: "Supervisão no futebol: a ponte entre **comissão técnica, diretoria e atletas**",
     nomeEvento: "Supervisão no Futebol",
