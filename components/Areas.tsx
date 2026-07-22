@@ -89,7 +89,7 @@ export default function Areas() {
   }
 
   return (
-    <section id="areas" style={{ position: "relative", background: "linear-gradient(180deg,#03263F 0%,#04395f 48%,#03263F 100%)", paddingBottom: "clamp(44px,7vh,80px)", overflow: "hidden" }}>
+    <section id="areas" style={{ position: "relative", background: "linear-gradient(180deg,#03263F 0%,#04395f 48%,#03263F 100%)", paddingBottom: "clamp(44px,7vh,80px)", overflow: "hidden", contain: "paint", maxWidth: "100vw" }}>
       <div style={{ position: "absolute", left: "50%", top: "55%", transform: "translate(-50%,-50%)", width: "90%", height: "60%", background: "radial-gradient(ellipse at center,rgba(12,154,255,0.30) 0%,transparent 68%)", pointerEvents: "none", zIndex: 0 }} />
 
       <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "clamp(34px,6vh,60px) 22px clamp(6px,2vh,14px)" }}>
@@ -102,7 +102,7 @@ export default function Areas() {
         </p>
       </div>
 
-      <div ref={trackRef} style={{ position: "relative", zIndex: 2, height: 290, margin: "20px 0 0", perspective: "1100px", overflow: "visible" }}>
+      <div ref={trackRef} style={{ position: "relative", zIndex: 2, height: 290, margin: "20px 0 0", perspective: "1100px", overflow: "hidden", contain: "paint", maxWidth: "100vw" }}>
         {visible.map(({ idx, rel }) => {
           const abs = Math.abs(rel);
           const x = rel * SPACING;
@@ -114,7 +114,7 @@ export default function Areas() {
           const zIndex = 100 - Math.round(abs * 10);
 
           return (
-            <div key={`${idx}-${Math.round(rel * 100)}`} style={{ position: "absolute", top: "50%", left: "50%", width: 200, aspectRatio: "4/5", marginTop: -125, marginLeft: -100, borderRadius: 22, overflow: "hidden", boxShadow: abs < 0.5 ? "0 24px 50px rgba(0,0,0,0.6)" : "0 16px 30px rgba(0,0,0,0.4)", transform: `translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg) scale(${scale})`, transformStyle: "preserve-3d", opacity, filter: `brightness(${brightness})`, zIndex, transition: "box-shadow 0.3s ease", willChange: "transform, opacity" }}>
+            <div key={idx} style={{ position: "absolute", top: "50%", left: "50%", width: 200, aspectRatio: "4/5", marginTop: -125, marginLeft: -100, borderRadius: 22, overflow: "hidden", boxShadow: abs < 0.5 ? "0 24px 50px rgba(0,0,0,0.6)" : "0 16px 30px rgba(0,0,0,0.4)", transform: `translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg) scale(${scale})`, transformStyle: "preserve-3d", opacity, filter: `brightness(${brightness})`, zIndex, transition: "box-shadow 0.3s ease", willChange: "transform, opacity" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={cursos[idx].src} alt={cursos[idx].alt} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             </div>
