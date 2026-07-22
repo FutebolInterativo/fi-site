@@ -80,14 +80,14 @@ function ensureEventCampaignSlug(campaignSlug: string): string {
   return `evento-${campaignSlug}`;
 }
 
-/** "2026-07-29T19:00:00-03:00" -> "29-07-26" (dd-mm-aa, direto da string,
+/** "2026-07-30T19:00:00-03:00" -> "30-07-26" (dd-mm-aa, direto da string,
  *  sem passar por Date/timezone do navegador de quem está preenchendo) */
 function dataCurtaDoISO(iso: string): string {
   const [yyyy, mm, dd] = iso.slice(0, 10).split("-");
   return `${dd}-${mm}-${yyyy.slice(-2)}`;
 }
 
-/** Valor final enviado como `fi_campanha` — ex: "evento-supervisao-no-futebol-29-07-26" */
+/** Valor final enviado como `fi_campanha` — ex: "evento-supervisao-no-futebol-30-07-26" */
 export function getFiCampanha(evento: Evento): string {
   const nome = evento.nomeEvento ?? evento.title.replace(/\*\*/g, "");
   const base = slugify(`${nome} ${dataCurtaDoISO(evento.dataHoraISO)}`);
