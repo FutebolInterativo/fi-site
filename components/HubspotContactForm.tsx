@@ -6,7 +6,7 @@ const M = "var(--font-montserrat), Montserrat, sans-serif";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-const COUNTRIES = [
+export const COUNTRIES = [
   { code: "BR", label: "Brasil", dial: "+55", flag: "🇧🇷" },
   { code: "PT", label: "Portugal", dial: "+351", flag: "🇵🇹" },
   { code: "ES", label: "Espanha", dial: "+34", flag: "🇪🇸" },
@@ -40,7 +40,7 @@ export const AREA_BY_CURSO_AREA: Record<string, string> = {
   "gestao-e-operacao": AREA_OPCOES[3].value,
 };
 
-const MOMENTO_OPCOES = [
+export const MOMENTO_OPCOES = [
   { label: "Já trabalho no futebol", value: "Já trabalho no futebol" },
   { label: "Formado há 3+ anos", value: "Formado há 3+ anos" },
   { label: "Recém-formado", value: "Recém-formado" },
@@ -48,7 +48,7 @@ const MOMENTO_OPCOES = [
   { label: "Sem graduação", value: "Sem graduação" },
 ];
 
-const INVESTIMENTO_OPCOES = [
+export const INVESTIMENTO_OPCOES = [
   { label: "Já investi mais de R$ 10.000 em cursos, MBAs, mentorias ou imersões", value: "acima_10k" },
   { label: "Já investi entre R$ 3.000 e R$ 10.000 em formação profissional", value: "3k_10k" },
   { label: "Já investi entre R$ 1.000 e R$ 3.000 em formação profissional", value: "1k_3k" },
@@ -56,7 +56,7 @@ const INVESTIMENTO_OPCOES = [
   { label: "Não paguei por educação ou desenvolvimento profissional extra", value: "zero" },
 ];
 
-function formatPhone(value: string, countryCode: string) {
+export function formatPhone(value: string, countryCode: string) {
   const digits = value.replace(/\D/g, "");
   if (countryCode !== "BR") return digits.slice(0, 15);
   const d = digits.slice(0, 11);
