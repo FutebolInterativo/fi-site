@@ -102,7 +102,7 @@ export const eventos: Evento[] = [
     dataHoraLabel: "30 de julho, 19h às 21h",
     dataHoraISO: "2026-07-30T19:00:00-03:00",
 
-    title: "Supervisão no futebol: a ponte entre **comissão técnica, diretoria e atletas**",
+    title: "Evento Supervisão no futebol: a ponte entre **comissão técnica, diretoria e atletas**",
     nomeEvento: "Supervisão no Futebol",
     subheadline:
       "O que faz, na prática, quem ocupa essa posição dentro de um clube profissional. Entenda também os caminhos reais pra se especializar em gestão esportiva.",
