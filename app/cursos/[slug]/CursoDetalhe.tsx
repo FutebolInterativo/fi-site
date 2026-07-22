@@ -252,12 +252,12 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               usa object-contain pra não cortar nada e pula o selo flutuante — a própria
               foto já mostra quem são os mentores e os clubes, o selo ficaria redundante. */}
           {(curso.heroImage||curso.capa)&&(
-            <FI d={100} className="hidden lg:block relative">
+            <FI d={100} className="block relative mt-2 lg:mt-0">
               {/* imagem 100% visível (sem cortar nada) — container um pouco mais "alto"
                   que a proporção exata do arquivo (1091x849), só pra sobrar um respiro
                   pequeno no topo. object-bottom empurra a imagem pra base, deixando
                   esse respiro em cima em vez de espalhado nos 4 lados */}
-              <div className={`relative rounded-[32px] overflow-hidden border shadow-2xl ${curso.heroImage?"aspect-[1091/885]":"min-h-[460px] lg:min-h-[540px]"}`} style={{ borderColor:`${cor}35`, boxShadow:`0 40px 90px -30px rgba(0,0,0,0.7), 0 0 0 1px ${cor}20` }}>
+              <div className={`relative rounded-[32px] overflow-hidden border shadow-2xl ${curso.heroImage?"aspect-[1091/885]":"aspect-[4/3] lg:aspect-auto lg:min-h-[540px]"}`} style={{ borderColor:`${cor}35`, boxShadow:`0 40px 90px -30px rgba(0,0,0,0.7), 0 0 0 1px ${cor}20` }}>
                 {curso.heroImage ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -319,13 +319,18 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 const [lead,restoTxt]=d.split("|");
                 const destaque=i===0;
                 return(
-                  <FI key={i} d={i*60} className="h-full">
+                  <FI key={i} d={i*60} className="h-full min-w-0">
                     {/* hover fica no wrapper INTERNO, não no elemento controlado pelo FI —
                         o FI seta transform/transition inline pra animar a entrada, e isso
                         sobrescrevia qualquer classe hover:-translate-y aplicada no mesmo nó,
-                        travando o efeito. Separando os dois, o hover volta a funcionar. */}
+                        travando o efeito. Separando os dois, o hover volta a funcionar.
+                        min-w-0 é essencial aqui: sem ele, o item do grid usa o min-content
+                        do card (que inclui o marquee de clubes, w-max — larguíssimo) pra
+                        decidir a largura da própria coluna, forçando TODOS os cards dessa
+                        coluna (não só o 01) a ficarem mais largos que a tela no mobile,
+                        cortando o texto em vez de quebrar a linha. */}
                     <div
-                      className={`group h-full rounded-[28px] border p-7 lg:p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${destaque?"":"border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16] hover:bg-white/[0.04]"}`}
+                      className={`group h-full min-w-0 rounded-[28px] border p-7 lg:p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${destaque?"":"border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16] hover:bg-white/[0.04]"}`}
                       style={destaque?{ borderColor:`${cor}45`, background:`linear-gradient(155deg,${cor}22,rgba(255,255,255,0.02))` }:undefined}
                     >
                       {/* o mesmo ícone de escudo repetido nos 4 cards não agregava nada —
@@ -344,7 +349,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
 
                       {/* clubes parceiros passando em destaque — só no card 01, prova visual */}
                       {destaque&&(
-                        <div className="mt-7 pt-6 border-t border-white/10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)] -mx-1">
+                        <div className="mt-7 pt-6 border-t border-white/10 overflow-hidden w-full [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)] -mx-1">
                           <ul className="flex items-center animate-marquee gap-7 w-max">
                             {[...Array.from({length:16},(_,i)=>i+1),...Array.from({length:16},(_,i)=>i+1)].map((n,idx)=>(
                               <li key={idx} className="flex-shrink-0">
