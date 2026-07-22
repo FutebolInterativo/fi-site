@@ -184,8 +184,46 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 </p>
               )}
 
+              {/* imagem dos mentores — versão mobile/tablet, aparece aqui logo depois
+                  do subtítulo (pedido explícito). Acima de lg, essa cópia fica oculta
+                  e a versão "de verdade" reaparece na coluna bento à direita. */}
+              {(curso.heroImage||curso.capa)&&(
+                <div className="lg:hidden relative mb-10">
+                  <div className={`relative rounded-[28px] overflow-hidden border shadow-2xl ${curso.heroImage?"aspect-[1091/885]":"aspect-[4/3]"}`} style={{ borderColor:`${cor}35`, boxShadow:`0 30px 70px -24px rgba(0,0,0,0.7), 0 0 0 1px ${cor}20` }}>
+                    {curso.heroImage ? (
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={curso.heroImage} alt={curso.title} className="absolute inset-0 w-full h-full object-contain object-bottom"/>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#030712]/50 via-transparent to-transparent"/>
+                      </>
+                    ):(
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={curso.capa} alt={curso.title} className="absolute inset-0 w-full h-full object-cover"/>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/15 to-transparent"/>
+                        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#030712]/40"/>
+                      </>
+                    )}
+                    <div className="absolute inset-0 rounded-[28px]" style={{ boxShadow:`inset 0 0 0 1.5px ${cor}45` }}/>
+                    {!curso.heroImage&&(
+                      <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3 rounded-2xl border backdrop-blur-md px-4 py-3.5" style={{ borderColor:`${cor}40`, background:"rgba(3,7,18,0.55)" }}>
+                        <div className="flex -space-x-2.5 flex-shrink-0">
+                          {(curso.mentores??[]).slice(0,3).map((m,i)=>(
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img key={i} src={m.foto} alt="" className="w-8 h-8 rounded-full object-cover object-top border-2" style={{ borderColor:"#030712" }} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+                          ))}
+                        </div>
+                        <p className={`${FB} text-[11.5px] font-semibold text-white/80 leading-snug`}>
+                          Mentores atuando em <span className="text-white font-bold">clubes profissionais</span> agora
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4 mb-12">
+              <div className="flex flex-wrap items-center gap-4">
                 <a href="#oferta" className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-9 py-4.5 shadow-[0_0_50px_rgba(16,185,129,0.4)] transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]">
                   <span className={`${FB} text-[15.5px] font-bold text-white`}>Garantir minha vaga</span>
                   <svg width={15} height={15} viewBox="0 0 24 24" fill="none" className="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -194,65 +232,17 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                   Ver o conteúdo ↓
                 </a>
               </div>
-
-              {/* stats — os itens numéricos (150h, 15 aulas) formam a barra de números;
-                  os itens de check ("Prática garantida", "Certificado") viram badges/pills
-                  à parte — misturados na mesma grade, ficavam com peso visual desigual */}
-              {curso.heroStats&&curso.heroStats.length>0?(() => {
-                const checks = curso.heroStats.filter(s=>s.valor==="✓");
-                const numericos = curso.heroStats.filter(s=>s.valor!=="✓");
-                return(
-                  <>
-                    {numericos.length>0&&(
-                      // flex compacto em vez de grid esticado — com só 2 itens, o grid
-                      // (auto-fit/1fr) espalhava "150h" e "15" nas pontas, criando um vão
-                      // enorme e desalinhado da linha de badges logo abaixo
-                      <div className="flex flex-wrap items-end border-t border-white/10 pt-8 mb-7" style={{ gap:"40px" }}>
-                        {numericos.map((s,i)=>(
-                          <div key={i} className="flex flex-col">
-                            <div className={`${FD} text-[28px] lg:text-[32px] text-white leading-none`}>{s.valor}</div>
-                            <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.label}</div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {checks.length>0&&(
-                      <div className="flex flex-wrap items-center gap-2.5">
-                        {checks.map((s,i)=>(
-                          <span key={i} className="inline-flex items-center gap-2 rounded-full pl-2 pr-3.5 py-1.5 border" style={{ borderColor:`${cor}40`, background:`${cor}14` }}>
-                            <span className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background:`${cor}28` }}>
-                              <svg width={11} height={11} viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke={cor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                            </span>
-                            <span className={`${FB} text-[11.5px] font-bold text-white/80`}>{s.label}</span>
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                );
-              })():(curso.cargaHoraria||curso.numAulas||curso.formato)&&(
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-7 gap-y-6 border-t border-white/10 pt-8">
-                  {[
-                    curso.cargaHoraria&&{v:curso.cargaHoraria,l:"Carga horária"},
-                    curso.numAulas&&{v:`${curso.numAulas} aulas`,l:"Ao vivo"},
-                    curso.formato&&{v:curso.formato,l:"Formato"},
-                  ].filter(Boolean).map((s:any,i)=>(
-                    <div key={i} className="flex flex-col min-h-[52px]">
-                      <div className={`${FD} text-[26px] lg:text-[32px] text-white leading-none`}>{s.v}</div>
-                      <div className={`${FB} text-[9.5px] font-bold tracking-[0.14em] uppercase text-white/35 mt-2.5`}>{s.l}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </FI>
           </div>
 
           {/* capa — cartão bento com selo flutuante, borda em glow e moldura mais presente.
               Quando existe heroImage (ex: foto real dos mentores, fundo transparente),
               usa object-contain pra não cortar nada e pula o selo flutuante — a própria
-              foto já mostra quem são os mentores e os clubes, o selo ficaria redundante. */}
+              foto já mostra quem são os mentores e os clubes, o selo ficaria redundante.
+              Só aparece a partir de lg — no mobile/tablet, a cópia acima (logo após o
+              subtítulo) já assume esse papel. */}
           {(curso.heroImage||curso.capa)&&(
-            <FI d={100} className="block relative mt-2 lg:mt-0">
+            <FI d={100} className="hidden lg:block relative">
               {/* imagem 100% visível (sem cortar nada) — container um pouco mais "alto"
                   que a proporção exata do arquivo (1091x849), só pra sobrar um respiro
                   pequeno no topo. object-bottom empurra a imagem pra base, deixando
@@ -666,10 +656,10 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
         <section className="relative py-12 md:py-16 overflow-hidden" style={{ background:cor }}>
           {/* removi a textura diagonal de fundo — ela só deixava a faixa poluída;
               agora o número grande é o próprio elemento decorativo */}
-          <div className="relative max-w-6xl mx-auto px-6 lg:px-10 grid grid-cols-2 sm:grid-cols-4 text-center">
+          <div className="relative max-w-6xl mx-auto px-6 lg:px-10 grid grid-cols-2 sm:grid-cols-4 gap-y-10 gap-x-4 text-center">
             {curso.stats.map((s,i)=>(
-              <FI key={i} d={i*70} className="px-2">
-                <div className={`${FD} text-5xl sm:text-6xl lg:text-7xl tracking-tight`} style={{ color:"#03151F" }}><Cnt v={s.valor}/></div>
+              <FI key={i} d={i*70} className="px-2 min-w-0">
+                <div className={`${FD} text-4xl sm:text-6xl lg:text-7xl tracking-tight`} style={{ color:"#03151F" }}><Cnt v={s.valor}/></div>
                 <div className={`${FB} text-[9.5px] font-bold tracking-[0.18em] uppercase mt-4`} style={{ color:"rgba(3,21,31,0.65)" }}>{s.label}</div>
               </FI>
             ))}
