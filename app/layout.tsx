@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Anton, Montserrat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -18,6 +18,18 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Futebol Interativo — Formações no Futebol",
   description: "Escola de formação profissional para o mercado do futebol.",
+};
+
+// Sem isso, o Safari iOS não sabe que a página é responsiva e renderiza
+// assumindo uma largura "desktop" (~980px), fazendo zoom-out automático
+// pra caber na tela — daí todo texto e elemento aparece minúsculo.
+// Android/Chrome tende a tolerar melhor a ausência, por isso o bug só
+// aparecia no iOS.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
