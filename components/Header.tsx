@@ -25,7 +25,7 @@ const LINKS: NavLink[] = [
   { href: "https://blog.futebolinterativo.com/", label: "Blog", external: true },
 ];
 
-const LOGO_SRC = "https://futebolinterativo.com/novo-site/img/logo.png";
+const LOGO_SRC = "/images/logo.png";
 
 export default function Header() {
   const pathname = usePathname();

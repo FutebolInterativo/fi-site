@@ -87,7 +87,7 @@ export default function Footer() {
             {/* TODO: logo.png é a versão branca (feita pra fundo escuro) — o filter
                 abaixo é um jeito provisório de deixá-la legível no footer branco.
                 O ideal é trocar por uma versão navy/escura do logo quando existir. */}
-            <Image src="https://futebolinterativo.com/novo-site/img/logo.png" alt="Futebol Interativo" width={140} height={36} style={{ height:32, width:"auto", marginBottom:16, filter:"invert(1) brightness(0.2)" }} />
+            <Image src="/images/logo.png" alt="Futebol Interativo" width={140} height={36} style={{ height:32, width:"auto", marginBottom:16, filter:"invert(1) brightness(0.2)" }} />
             <p style={{ fontFamily:M, fontSize:13, fontWeight:500, color:TEXT_BODY, lineHeight:1.7, maxWidth:280 }}>Escola de formação profissional para o mercado do futebol. Fundada em 2018, incubada pela UFRN.</p>
             <div style={{ display:"flex", flexWrap:"wrap" as const, gap:8, marginTop:20 }}>
               {socials.map((s) => (
