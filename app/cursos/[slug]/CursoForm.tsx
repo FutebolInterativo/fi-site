@@ -21,8 +21,9 @@ export default function CursoForm({ curso, variant = "primary" }: { curso: Curso
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               width: "100%", padding: "13px 18px", borderRadius: 14,
-              border: "1.5px solid rgba(255,255,255,0.18)",
-              color: "rgba(244,244,244,0.85)", fontFamily: M, fontWeight: 700, fontSize: 13.5,
+              border: "1.5px solid rgba(255,255,255,0.4)",
+              background: "rgba(255,255,255,0.06)",
+              color: "#F4F4F4", fontFamily: M, fontWeight: 700, fontSize: 13.5,
             }}
           >
             Tenho dúvidas! Quero falar com o consultor

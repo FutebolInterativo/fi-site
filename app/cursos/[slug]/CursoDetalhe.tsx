@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import type { Curso } from "@/lib/cursos";
 import CursoCTA from "./CursoCTA";
 import MapaClubes from "@/components/MapaClubes";
+import ConsultorFloatingButton from "@/components/ConsultorFloatingButton";
+import { AREA_BY_CURSO_AREA } from "@/components/HubspotContactForm";
 
 /* ─── tokens de marca (Anton + Montserrat são a identidade visual do
    projeto — usados via arbitrary property do Tailwind, não via `style`,
@@ -634,7 +636,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             {/* nº de colunas acompanha a contagem real de depoimentos — evita sobrar
                 uma coluna vazia quando o curso tem menos de 3 vídeos. Classes estáticas
                 (não geradas dinamicamente) pra garantir que o Tailwind as compile. */}
-            <div className={`grid items-stretch gap-5 lg:gap-6 ${
+            <div className={`grid items-stretch gap-16 lg:gap-20 ${
               curso.depoimentos.length===1 ? "grid-cols-1 max-w-sm mx-auto" :
               curso.depoimentos.length===2 ? "grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto" :
               "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
@@ -683,8 +685,8 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               <p className={`${FB} text-[16px] text-white/50 max-w-lg`}>Matricule-se agora ou tire suas dúvidas com um consultor antes de decidir.</p>
             </FI>
 
-            <div className="grid lg:grid-cols-2 gap-6 items-stretch">
-              <CursoCTA curso={curso} cor={cor}/>
+            <div className="grid gap-6 items-stretch max-w-xl mx-auto">
+              <CursoCTA curso={curso}/>
             </div>
           </div>
         </section>
@@ -782,6 +784,8 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
           </div>
         </div>
       )}
+
+      <ConsultorFloatingButton utmCampaign={curso.id} presetArea={AREA_BY_CURSO_AREA[curso.area]} />
     </div>
   );
 }
