@@ -56,8 +56,6 @@ export default function CursoCard({ id, title, type, area, areaLabel, externalUr
   return (
     <a
       href={href}
-      target={externo ? "_blank" : undefined}
-      rel={externo ? "noreferrer" : undefined}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{ textDecoration: "none", display: "block", height: "100%" }}
