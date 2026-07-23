@@ -89,7 +89,7 @@ export default function NossaFormacao() {
         <h2 style={{ fontFamily: F, fontSize: "clamp(28px,5vw,58px)", lineHeight: 1.0, color: "#F4F4F4", marginBottom: 16 }}>
           NO FUTEBOL INTERATIVO,<br />SÓ ENSINA QUEM FAZ
         </h2>
-        <p style={{ fontFamily: M, fontWeight: 500, fontSize: "clamp(15px,1.5vw,18px)", color: "rgba(169,216,245,0.68)", lineHeight: 1.6 }}>
+        <p style={{ fontFamily: M, fontWeight: 500, fontSize: "clamp(17px,1.6vw,19px)", color: "rgba(169,216,245,0.68)", lineHeight: 1.6 }}>
           +100 professores atuando hoje em clubes, seleções e imprensa esportiva
         </p>
       </div>

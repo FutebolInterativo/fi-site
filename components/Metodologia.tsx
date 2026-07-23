@@ -74,7 +74,7 @@ export default function Metodologia() {
             <h2 style={{ fontFamily: F, fontSize: "clamp(30px,5vw,56px)", lineHeight: 0.98, color: "#F4F4F4", marginBottom: 18 }}>
               APRENDA. APLIQUE.<br />ENTRE EM CAMPO.
             </h2>
-            <p style={{ fontFamily: M, fontSize: 16, fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.65 }}>
+            <p style={{ fontFamily: M, fontSize: 17.5, fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.6 }}>
               Uma metodologia desenhada para encurtar a distância entre você e o mercado do futebol.
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function Metodologia() {
                   <div style={{ fontFamily: F, fontSize: "clamp(16px,1.9vw,19px)", lineHeight: 1.15, color: "#F4F4F4", marginBottom: 10, minHeight: "2.35em" }}>
                     {p.titulo}
                   </div>
-                  <p style={{ fontFamily: M, fontSize: 14.5, fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.6 }}>
+                  <p style={{ fontFamily: M, fontSize: 15.5, fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.6 }}>
                     {p.desc}
                   </p>
                 </div>

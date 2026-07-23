@@ -30,7 +30,7 @@ export default function CTAFinal() {
             <div style={{ maxWidth: 560, flex: "1 1 auto" }}>
               <span style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#A9D8F5", display: "block", marginBottom: 14 }}>Sem compromisso</span>
               <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4.2vw,44px)", lineHeight: 1.04, color: "#F4F4F4", marginBottom: 16 }}>SEU LUGAR NO FUTEBOL<br />JÁ EXISTE. FALTA O<br />CAMINHO ATÉ ELE.</h2>
-              <p style={{ fontFamily: M, fontSize: 16.5, fontWeight: 500, color: "rgba(244,244,244,0.75)", lineHeight: 1.65, maxWidth: 440 }}>
+              <p style={{ fontFamily: M, fontSize: 17.5, fontWeight: 500, color: "rgba(244,244,244,0.75)", lineHeight: 1.6, maxWidth: 440 }}>
                 Fale com um consultor. Ele entende seu momento e indica a formação certa pro seu perfil, em 5 minutos você sai com um plano.
               </p>
             </div>

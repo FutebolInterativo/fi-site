@@ -44,7 +44,7 @@ export default function Hero() {
             TRANSFORME SUA<br />PAIXÃO PELO FUTEBOL<br />EM <span style={{ color: "#0C98FC" }}>CARREIRA.</span>
           </h1>
 
-          <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", marginBottom: 24 }}>
+          <p style={{ fontFamily: M, fontSize: 16.5, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", marginBottom: 24 }}>
             Você aprende com quem trabalha no futebol hoje e termina a formação dentro de um clube de verdade.{" "}
             <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>É assim que se entra no mercado.</strong>
           </p>
