@@ -24,7 +24,7 @@ const IDADE_OPCOES = [
   { label: "Maior ou igual 18 anos", value: "Maior ou igual 18 anos" },
 ];
 
-const AREA_OPCOES = [
+export const AREA_OPCOES = [
   { label: "Técnica e Tática (Análise de Desempenho, Scout, Treinador, Dados…)", value: "Técnica e Tática (Análise de Desempenho, Scout, Treinador, Dados…)" },
   { label: "Comunicação (Jornalismo, Marketing, Fotografia…)", value: "Comunicação (Jornalismo, Marketing, Fotografia…)" },
   { label: "Saúde (Medicina, Fisioterapia, Nutrição, Psicologia, Preparação Física…)", value: "Saúde (Medicina, Fisioterapia, Nutrição, Psicologia, Preparação Física…)" },
@@ -133,12 +133,29 @@ type Props = {
   onSuccess?: () => void;
   successTitle?: string;
   successSubtitle?: string;
+  /**
+   * Propriedades extras enviadas junto em toda chamada ao HubSpot (ex:
+   * fi_campanha) — usado por páginas que precisam de um identificador
+   * próprio além do que o wizard já manda por padrão. Opcional, não afeta
+   * quem já usa o componente sem essa prop.
+   */
+  extraProperties?: Record<string, string>;
+  /**
+   * Quando informado, a primeira etapa (nome/email/telefone) é enviada como
+   * um <form> de verdade com esse id, em vez de só um clique em botão — é
+   * assim que o HubSpot consegue detectar e nomear o envio no feed de
+   * atividade. As etapas seguintes (idade/área/momento/investimento)
+   * continuam sendo cliques normais, sem form nenhum.
+   */
+  formId?: string;
 };
 
 export default function HubspotContactForm({
   pageName, color = "#08C27A", defaultUtm, presetArea, onContactCaptured, onSuccess,
   successTitle = "Recebemos seus dados!",
   successSubtitle = "Em breve alguém da nossa equipe entra em contato.",
+  extraProperties,
+  formId,
 }: Props) {
   const STEP_KEYS = presetArea ? ALL_STEP_KEYS.filter((k) => k !== "area") : ALL_STEP_KEYS;
 
@@ -186,6 +203,7 @@ export default function HubspotContactForm({
       lastname: rest.join(" ") || firstname,
       phone: `${selectedCountry.dial}${answers.phone.replace(/\D/g, "")}`,
       ...utm,
+      ...extraProperties,
     };
   }
 
@@ -248,6 +266,7 @@ export default function HubspotContactForm({
       qual_area_voce_tem_interesse: presetArea ?? finalAnswers.area,
       qual_o_momento_da_carreira: finalAnswers.momento,
       fi_investimento_educacao_12m: finalAnswers.investimento,
+      ...extraProperties,
     });
 
     if (!ok) { setStatus("error"); return; }
@@ -264,7 +283,7 @@ export default function HubspotContactForm({
           </svg>
         </div>
         <p style={{ fontFamily: F, fontSize: 20, color: "#F4F4F4", marginBottom: 8 }}>{successTitle}</p>
-        <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.72)" }}>{successSubtitle}</p>
+        <p style={{ fontFamily: M, fontSize: 14, color: "rgba(244,244,244,0.6)" }}>{successSubtitle}</p>
       </div>
     );
   }
@@ -301,8 +320,12 @@ export default function HubspotContactForm({
         <span style={{ fontFamily: M, fontSize: 11, color: "rgba(169,216,245,0.5)", flexShrink: 0 }}>{step + 1}/{STEP_KEYS.length}</span>
       </div>
 
-      {stepKey === "contato" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {stepKey === "contato" ? (
+        <form
+          id={formId}
+          onSubmit={(e) => { e.preventDefault(); goNext(); }}
+          style={{ display: "flex", flexDirection: "column", gap: 14 }}
+        >
           <div>
             <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Vamos começar — seus dados de contato</label>
           </div>
@@ -339,82 +362,83 @@ export default function HubspotContactForm({
               <input
                 value={answers.phone}
                 onChange={(e) => set("phone", formatPhone(e.target.value, answers.country))}
-                onKeyDown={(e) => e.key === "Enter" && goNext()}
                 placeholder={answers.country === "BR" ? "(00) 00000-0000" : "Número de telefone"}
                 inputMode="numeric"
                 style={{ flex: 1, minWidth: 0, background: "transparent", border: "none", color: "#F4F4F4", padding: "13px 14px", fontSize: 15, fontFamily: M, outline: "none" }}
               />
             </div>
           </div>
-        </div>
-      )}
 
-      {stepKey === "idade" && (
-        <div>
-          <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual sua idade?</label>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {IDADE_OPCOES.map((o) => (
-              <OptionButton key={o.value} label={o.label} active={answers.idade === o.value} onClick={() => chooseAndAdvance("idade", o.value)} />
-            ))}
-          </div>
-        </div>
-      )}
+          {error && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 2 }}>{error}</p>}
+          {status === "error" && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 2 }}>{errorMsg}</p>}
 
-      {stepKey === "area" && (
-        <div>
-          <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual área você tem interesse?</label>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {AREA_OPCOES.map((o) => (
-              <OptionButton key={o.value} label={o.label} active={answers.area === o.value} onClick={() => chooseAndAdvance("area", o.value)} />
-            ))}
-          </div>
-        </div>
-      )}
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            style={{
+              width: "100%", marginTop: 2,
+              background: `linear-gradient(135deg,${color},#059669)`,
+              border: "none", borderRadius: 12, color: "#fff",
+              fontFamily: M, fontWeight: 700, fontSize: 14, padding: 14,
+              cursor: status === "loading" ? "default" : "pointer",
+              boxShadow: `0 8px 24px ${color}55`,
+              opacity: status === "loading" ? 0.7 : 1,
+            }}
+          >
+            Continuar
+          </button>
+        </form>
+      ) : (
+        <>
+          {stepKey === "idade" && (
+            <div>
+              <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual sua idade?</label>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {IDADE_OPCOES.map((o) => (
+                  <OptionButton key={o.value} label={o.label} active={answers.idade === o.value} onClick={() => chooseAndAdvance("idade", o.value)} />
+                ))}
+              </div>
+            </div>
+          )}
 
-      {stepKey === "momento" && (
-        <div>
-          <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual o momento da sua carreira?</label>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {MOMENTO_OPCOES.map((o) => (
-              <OptionButton key={o.value} label={o.label} active={answers.momento === o.value} onClick={() => chooseAndAdvance("momento", o.value)} />
-            ))}
-          </div>
-        </div>
-      )}
+          {stepKey === "area" && (
+            <div>
+              <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual área você tem interesse?</label>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {AREA_OPCOES.map((o) => (
+                  <OptionButton key={o.value} label={o.label} active={answers.area === o.value} onClick={() => chooseAndAdvance("area", o.value)} />
+                ))}
+              </div>
+            </div>
+          )}
 
-      {stepKey === "investimento" && (
-        <div>
-          <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>
-            Nos últimos 12 meses, quanto você já investiu em educação?
-          </label>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {INVESTIMENTO_OPCOES.map((o) => (
-              <OptionButton key={o.value} label={o.label} active={answers.investimento === o.value} onClick={() => chooseAndAdvance("investimento", o.value)} />
-            ))}
-          </div>
-        </div>
-      )}
+          {stepKey === "momento" && (
+            <div>
+              <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>Qual o momento da sua carreira?</label>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {MOMENTO_OPCOES.map((o) => (
+                  <OptionButton key={o.value} label={o.label} active={answers.momento === o.value} onClick={() => chooseAndAdvance("momento", o.value)} />
+                ))}
+              </div>
+            </div>
+          )}
 
-      {error && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{error}</p>}
-      {status === "error" && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{errorMsg}</p>}
+          {stepKey === "investimento" && (
+            <div>
+              <label style={{ fontFamily: F, fontSize: 17, color: "#F4F4F4", display: "block", marginBottom: 12 }}>
+                Nos últimos 12 meses, quanto você já investiu em educação?
+              </label>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {INVESTIMENTO_OPCOES.map((o) => (
+                  <OptionButton key={o.value} label={o.label} active={answers.investimento === o.value} onClick={() => chooseAndAdvance("investimento", o.value)} />
+                ))}
+              </div>
+            </div>
+          )}
 
-      {stepKey === "contato" && (
-        <button
-          type="button"
-          onClick={goNext}
-          disabled={status === "loading"}
-          style={{
-            width: "100%", marginTop: 16,
-            background: `linear-gradient(135deg,${color},#059669)`,
-            border: "none", borderRadius: 12, color: "#fff",
-            fontFamily: M, fontWeight: 700, fontSize: 14, padding: 14,
-            cursor: status === "loading" ? "default" : "pointer",
-            boxShadow: `0 8px 24px ${color}55`,
-            opacity: status === "loading" ? 0.7 : 1,
-          }}
-        >
-          Continuar
-        </button>
+          {error && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{error}</p>}
+          {status === "error" && <p style={{ fontFamily: M, fontSize: 12.5, color: "#ff6b6b", marginTop: 10 }}>{errorMsg}</p>}
+        </>
       )}
 
       {isLast && status === "loading" && (
