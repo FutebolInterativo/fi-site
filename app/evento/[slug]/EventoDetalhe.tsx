@@ -54,8 +54,8 @@ function calcularRestante(alvo: number) {
   };
 }
 
-function Contador({ iso }: { iso: string }) {
-  const alvo = new Date(iso).getTime();
+function Contador({ iso }: { iso?: string }) {
+  const alvo = iso ? new Date(iso).getTime() : NaN;
   const valido = !isNaN(alvo);
   // Começa sempre "não montado" — servidor e o primeiro render do cliente
   // ficam idênticos (o placeholder abaixo), sem depender de Date.now().
@@ -157,12 +157,14 @@ export default function EventoDetalhe({ evento }: { evento: Evento }) {
               <span className="w-2 h-2 rounded-full animate-blink" style={{ background: AZUL }} />
               <span style={{ fontFamily: M, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: AZUL }}>{evento.tipo}</span>
             </span>
-            <span className="inline-flex items-center rounded-full border border-white/15 px-4 py-2" style={{ fontFamily: M, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(244,244,244,0.6)" }}>
-              {evento.dataHoraLabel}
-            </span>
+            {evento.dataHoraLabel && (
+              <span className="inline-flex items-center rounded-full border border-white/15 px-4 py-2" style={{ fontFamily: M, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(244,244,244,0.6)" }}>
+                {evento.dataHoraLabel}
+              </span>
+            )}
             {evento.gratuito && (
               <span className="inline-flex items-center rounded-full border px-4 py-2" style={{ borderColor: "rgba(8,194,122,0.4)", background: "rgba(8,194,122,0.12)", fontFamily: M, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#08C27A" }}>
-                Gratuita
+                Gratuito
               </span>
             )}
           </FI>
@@ -173,11 +175,13 @@ export default function EventoDetalhe({ evento }: { evento: Evento }) {
             </h1>
           </FI>
 
-          <FI d={130} className="mb-10">
-            <p style={{ fontFamily: M, fontSize: "clamp(17px,1.8vw,19px)", lineHeight: 1.65, color: "rgba(244,244,244,0.72)", maxWidth: 640, margin: "0 auto" }}>
-              {evento.subheadline}
-            </p>
-          </FI>
+          {evento.subheadline && (
+            <FI d={130} className="mb-10">
+              <p style={{ fontFamily: M, fontSize: "clamp(16px,1.8vw,19px)", lineHeight: 1.7, color: "rgba(244,244,244,0.55)", maxWidth: 640, margin: "0 auto" }}>
+                {evento.subheadline}
+              </p>
+            </FI>
+          )}
 
           <FI d={180} className="mb-12">
             <a
@@ -230,6 +234,7 @@ export default function EventoDetalhe({ evento }: { evento: Evento }) {
       )}
 
       {/* ══════════ O QUE VOCÊ VAI APRENDER ══════════ */}
+      {evento.bullets.length > 0 && (
       <section style={{ background: DARK, position: "relative" }} className="py-14 md:py-20">
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(140,200,245,0.18),transparent)" }} />
         <div className="max-w-[720px] mx-auto px-6">
@@ -252,6 +257,7 @@ export default function EventoDetalhe({ evento }: { evento: Evento }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ══════════ INSCRIÇÃO ══════════ */}
       <section id="oferta" style={{ background: NAVY }} className="py-14 md:py-20">
@@ -259,7 +265,7 @@ export default function EventoDetalhe({ evento }: { evento: Evento }) {
           <FI className="text-center mb-10">
             <p style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(169,216,245,0.5)", marginBottom: 12 }}>Inscrição gratuita</p>
             <h2 style={{ fontFamily: F, fontSize: "clamp(26px,4vw,40px)", lineHeight: 1.05, color: "#F4F4F4", marginBottom: 14 }}>Garanta sua vaga</h2>
-            <p style={{ fontFamily: M, fontSize: 16.5, color: "rgba(244,244,244,0.7)", lineHeight: 1.6 }}>Vagas limitadas. Preencha seus dados e receba o link de acesso pelo WhatsApp.</p>
+            <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.5)", lineHeight: 1.6 }}>Vagas limitadas. Preencha seus dados e receba o link de acesso pelo WhatsApp.</p>
           </FI>
 
           <FI d={80}>

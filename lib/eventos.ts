@@ -24,15 +24,18 @@ export type Evento = {
   /** Só usado quando gratuito=false */
   preco?: string;
 
-  /** Texto de exibição, ex: "28 de julho, 19h" */
-  dataHoraLabel: string;
+  /** Texto de exibição, ex: "28 de julho, 19h" — opcional: sem data ainda
+   *  definida, o badge de data e a contagem regressiva simplesmente somem */
+  dataHoraLabel?: string;
   /** ISO com timezone — usado pra contagem regressiva E pra gerar a data
-   *  dentro do valor de fi_campanha (formato dd-mm-aa) */
-  dataHoraISO: string;
+   *  dentro do valor de fi_campanha (formato dd-mm-aa). Opcional pelo
+   *  mesmo motivo do dataHoraLabel. */
+  dataHoraISO?: string;
 
   /** Pode usar **trecho** pra virar destaque em azul */
   title: string;
-  subheadline: string;
+  /** Opcional — sem subtítulo, o espaço simplesmente não aparece */
+  subheadline?: string;
 
   /**
    * Nome curto e "limpo" do evento, sem formatação de destaque — usado só
@@ -81,20 +84,41 @@ function ensureEventCampaignSlug(campaignSlug: string): string {
 }
 
 /** "2026-07-30T19:00:00-03:00" -> "30-07-26" (dd-mm-aa, direto da string,
- *  sem passar por Date/timezone do navegador de quem está preenchendo) */
-function dataCurtaDoISO(iso: string): string {
+ *  sem passar por Date/timezone do navegador de quem está preenchendo).
+ *  Retorna null se a data estiver ausente ou num formato inválido. */
+function dataCurtaDoISO(iso?: string): string | null {
+  if (!iso || isNaN(new Date(iso).getTime())) return null;
   const [yyyy, mm, dd] = iso.slice(0, 10).split("-");
   return `${dd}-${mm}-${yyyy.slice(-2)}`;
 }
 
-/** Valor final enviado como `fi_campanha` — ex: "evento-supervisao-no-futebol-30-07-26" */
+/** Valor final enviado como `fi_campanha` — ex: "evento-supervisao-no-futebol-30-07-26".
+ *  Sem data ainda definida, sai só "evento-nome-do-evento" (sem quebrar). */
 export function getFiCampanha(evento: Evento): string {
   const nome = evento.nomeEvento ?? evento.title.replace(/\*\*/g, "");
-  const base = slugify(`${nome} ${dataCurtaDoISO(evento.dataHoraISO)}`);
+  const dataCurta = dataCurtaDoISO(evento.dataHoraISO);
+  const base = slugify(dataCurta ? `${nome} ${dataCurta}` : nome);
   return ensureEventCampaignSlug(base);
 }
 
 export const eventos: Evento[] = [
+  {
+    slug: "como-trabalhar-com-futebol-na-europa",
+    tipo: "Evento",
+    gratuito: true,
+
+    title: "Como trabalhar com futebol na Europa",
+    nomeEvento: "Como Trabalhar com Futebol na Europa 08-26",
+
+    // Sem data/subtítulo/bullets/palestrantes ainda — a página já lida bem
+    // com isso: o badge de data, a contagem regressiva, o subtítulo e a
+    // seção "o que você vai aprender" simplesmente não aparecem enquanto
+    // esses campos não forem preenchidos.
+    bullets: [],
+    palestrantes: [],
+
+    whatsappGroupUrl: "https://chat.whatsapp.com/Kpfx5FyuysXAd17OG2OwO0?s=cl&p=a&ilr=4",
+  },
   {
     slug: "supervisao-no-futebol",
     tipo: "Aula ao vivo",
