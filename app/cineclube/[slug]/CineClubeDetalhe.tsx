@@ -123,14 +123,14 @@ export default function CineClubeDetalhe({ sessao }: { sessao: CineClubeSessao }
   return (
     <>
       {/* header mínimo */}
-      <header style={{ background: DARK }} className="flex items-center justify-center py-8">
+      <header style={{ background: DARK }} className="flex items-center justify-center py-6">
         <Link href="/" aria-label="Futebol Interativo">
           <Image src="/images/logo.png" alt="Futebol Interativo" width={110} height={30} style={{ height: 28, width: "auto" }} />
         </Link>
       </header>
 
       {/* ══════════ ABERTURA — identidade do Cine Clube (série, não a sessão) ══════════ */}
-      <section style={{ background: `linear-gradient(150deg,${DARK} 0%,#021629 50%,${AZUL}14 100%)`, position: "relative", overflow: "hidden" }} className="pt-12 md:pt-16 pb-16 md:pb-20">
+      <section style={{ background: `linear-gradient(150deg,${DARK} 0%,#021629 50%,${AZUL}14 100%)`, position: "relative", overflow: "hidden" }} className="pt-6 md:pt-8 pb-16 md:pb-20">
         <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 65% 55% at 50% 20%,${AZUL}22 0%,transparent 65%)`, pointerEvents: "none" }} />
 
         <div className="max-w-[1100px] mx-auto px-6 text-center relative">
