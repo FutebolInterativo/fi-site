@@ -264,7 +264,7 @@ export default function HubspotContactForm({
           </svg>
         </div>
         <p style={{ fontFamily: F, fontSize: 20, color: "#F4F4F4", marginBottom: 8 }}>{successTitle}</p>
-        <p style={{ fontFamily: M, fontSize: 14, color: "rgba(244,244,244,0.6)" }}>{successSubtitle}</p>
+        <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.72)" }}>{successSubtitle}</p>
       </div>
     );
   }

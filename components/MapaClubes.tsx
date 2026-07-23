@@ -366,7 +366,7 @@ export default function MapaClubes() {
             <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4vw,44px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 14 }}>
               +130 CLUBES PARCEIROS
             </h2>
-            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.65, maxWidth: 480 }}>
+            <p style={{ fontFamily: M, fontSize: 16.5, fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.65, maxWidth: 480 }}>
               Toque em um estado do mapa abaixo para ver os clubes parceiros da região.
             </p>
           </div>

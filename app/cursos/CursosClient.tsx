@@ -68,7 +68,7 @@ export default function CursosClient() {
       {/* Grid */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px" }}>
         {filtrados.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "80px 0", color: "rgba(244,244,244,0.4)", fontFamily: M, fontSize: 16 }}>
+          <div style={{ textAlign: "center", padding: "80px 0", color: "rgba(244,244,244,0.55)", fontFamily: M, fontSize: 16 }}>
             Nenhuma formação encontrada.
           </div>
         ) : (

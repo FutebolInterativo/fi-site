@@ -178,8 +178,8 @@ export default function ExperienciaPraticaPage() {
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 65% 55% at 70% 40%, rgba(8,194,122,0.18) 0%, transparent 65%)", pointerEvents: "none" }} />
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg,transparent,rgba(140,200,245,0.3),transparent)" }} />
 
-          <div style={{ maxWidth: 1152, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", position: "relative" }}>
-            <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(22px,5vw,64px)", position: "relative" }}>
+            <div className="grid md:grid-cols-[1.8fr_1fr] gap-10 md:gap-16 items-center">
 
               {/* ── Coluna de texto ── */}
               <FadeIn>
@@ -189,12 +189,12 @@ export default function ExperienciaPraticaPage() {
                     <span style={{ fontFamily: M, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "#A9D8F5" }}>Diferencial exclusivo do Futebol Interativo</span>
                   </div>
 
-                  <h1 style={{ fontFamily: F, fontSize: "clamp(38px,6vw,72px)", lineHeight: 1.0, color: "#F4F4F4", letterSpacing: "0.01em", marginBottom: 22 }}>
+                  <h1 style={{ fontFamily: F, fontSize: "clamp(38px,4.6vw,56px)", lineHeight: 1.08, color: "#F4F4F4", letterSpacing: "0.01em", marginBottom: 22 }}>
                     EXPERIÊNCIA <span style={{ color: "#0C98FC" }}>PRÁTICA</span><br />
                     DENTRO DE UM CLUBE
                   </h1>
 
-                  <p style={{ fontFamily: M, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 400, lineHeight: 1.7, color: "rgba(244,244,244,0.58)", maxWidth: 480, marginBottom: 36 }}>
+                  <p style={{ fontFamily: M, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 400, lineHeight: 1.7, color: "rgba(244,244,244,0.58)", maxWidth: 560, marginBottom: 36 }}>
                     Ao concluir a parte teórica de uma especialização do FI, você tem direito a até{" "}
                     <strong style={{ color: "#F4F4F4", fontWeight: 700 }}>15 dias de experiência prática dentro de um clube parceiro</strong>,
                     atuando no departamento da sua área.

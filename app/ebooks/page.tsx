@@ -184,7 +184,7 @@ export default function EbooksPage() {
             <h1 style={{ fontFamily: F, fontSize: "clamp(36px,5vw,62px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 16 }}>
               BIBLIOTECA GRATUITA DO FUTEBOL
             </h1>
-            <p style={{ fontFamily: M, fontSize: 16, fontWeight: 500, lineHeight: 1.7, color: "rgba(244,244,244,0.65)", maxWidth: 500, margin: "0 auto" }}>
+            <p style={{ fontFamily: M, fontSize: 17.5, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", maxWidth: 500, margin: "0 auto" }}>
               Selecione a área de interesse e receba seu e-book gratuito no e-mail.
             </p>
           </div>

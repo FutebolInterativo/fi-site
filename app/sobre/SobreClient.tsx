@@ -249,7 +249,7 @@ export default function SobreClient() {
                         <div style={{ fontFamily: F, fontSize: 20, lineHeight: 1, color: "#F4F4F4", marginBottom: 8 }}>
                           {item.title}
                         </div>
-                        <p style={{ fontFamily: M, fontSize: 14, fontWeight: 500, lineHeight: 1.7, color: "rgba(244,244,244,0.65)" }}>
+                        <p style={{ fontFamily: M, fontSize: 15.5, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.72)" }}>
                           {item.desc}
                         </p>
                       </div>
@@ -287,7 +287,7 @@ export default function SobreClient() {
                   <h3 style={{ fontFamily: F, fontSize: "clamp(22px,3vw,32px)", lineHeight: 1.05, color: "#F4F4F4", marginBottom: 14 }}>
                     PESSOAS REAIS. RESULTADOS REAIS.
                   </h3>
-                  <p style={{ fontFamily: M, fontSize: 14.5, fontWeight: 500, lineHeight: 1.7, color: "rgba(244,244,244,0.65)", maxWidth: 420 }}>
+                  <p style={{ fontFamily: M, fontSize: 16, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.72)", maxWidth: 420 }}>
                     Um time que atuou e ainda atua dentro de clubes como Atlético-MG, Fluminense, Botafogo, Palmeiras e Santos — e leva essa vivência real pra sala de aula.
                   </p>
                 </div>
@@ -306,7 +306,7 @@ export default function SobreClient() {
                   <div style={{ fontFamily: F, fontSize: 22, lineHeight: 1, color: "#F4F4F4", marginBottom: 10 }}>
                     {v.title}
                   </div>
-                  <p style={{ fontFamily: M, fontSize: 14, fontWeight: 500, lineHeight: 1.7, color: "rgba(244,244,244,0.65)" }}>
+                  <p style={{ fontFamily: M, fontSize: 15.5, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.72)" }}>
                     {v.desc}
                   </p>
                 </div>
@@ -324,7 +324,7 @@ export default function SobreClient() {
               <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4vw,48px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 16 }}>
                 PRONTO PARA ENTRAR EM CAMPO?
               </h2>
-              <p style={{ fontFamily: M, fontSize: 16, fontWeight: 500, lineHeight: 1.7, color: "rgba(244,244,244,0.65)", marginBottom: 36, maxWidth: 440, margin: "0 auto 36px" }}>
+              <p style={{ fontFamily: M, fontSize: 17.5, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.75)", marginBottom: 36, maxWidth: 440, margin: "0 auto 36px" }}>
                 Explore as formações e encontre a área certa para construir sua carreira no futebol.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>

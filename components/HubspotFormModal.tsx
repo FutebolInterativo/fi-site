@@ -80,7 +80,7 @@ export default function HubspotFormModal({
           {title}
         </p>
         {subtitle && (
-          <p style={{ fontFamily: M, fontSize: 13, color: "rgba(169,216,245,0.5)", marginBottom: 18 }}>
+          <p style={{ fontFamily: M, fontSize: 14.5, color: "rgba(169,216,245,0.65)", marginBottom: 18 }}>
             {subtitle}
           </p>
         )}

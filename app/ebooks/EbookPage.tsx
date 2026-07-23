@@ -57,7 +57,7 @@ export default function EbookPage({ area, tagId, communityUrl, color }: Props) {
             <h1 style={{ fontFamily: F, fontSize: "clamp(30px,4.5vw,50px)", lineHeight: 0.98, color: "#F4F4F4", marginBottom: 12 }}>
               PREENCHA E RECEBA SEU E-BOOK DE <span style={{ color }}>{area.toUpperCase()}</span>
             </h1>
-            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, lineHeight: 1.6, color: "rgba(244,244,244,0.6)" }}>
+            <p style={{ fontFamily: M, fontSize: 16.5, fontWeight: 500, lineHeight: 1.65, color: "rgba(244,244,244,0.72)" }}>
               Preencha os dados abaixo e receba o material gratuito no seu e-mail.
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function EbookPage({ area, tagId, communityUrl, color }: Props) {
             <h2 style={{ fontFamily: F, fontSize: 18, lineHeight: 1, color: "#F4F4F4", marginBottom: 6 }}>
               ENTRE NA NOSSA COMUNIDADE
             </h2>
-            <p style={{ fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.6)", marginBottom: 16 }}>
+            <p style={{ fontFamily: M, fontSize: 14.5, fontWeight: 500, color: "rgba(244,244,244,0.7)", marginBottom: 16 }}>
               Receba 2 vezes por semana conteúdo gratuito sobre {area}.
             </p>
             <a href={communityUrl} target="_blank" rel="noreferrer" style={{ fontFamily: M, fontWeight: 700, fontSize: 13.5, color: "#fff", display: "inline-flex", alignItems: "center", gap: 10, padding: "11px 22px", borderRadius: 12, background: "#25d366", textDecoration: "none" }}>

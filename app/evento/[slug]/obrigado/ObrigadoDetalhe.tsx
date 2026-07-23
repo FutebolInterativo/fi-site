@@ -73,7 +73,7 @@ export default function ObrigadoDetalhe({ evento }: { evento: Evento }) {
                 </div>
               </div>
 
-              <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.6)", lineHeight: 1.7 }} className="mb-8 mt-6">
+              <p style={{ fontFamily: M, fontSize: 17, color: "rgba(244,244,244,0.75)", lineHeight: 1.65 }} className="mb-8 mt-6">
                 É muito importante que você <strong style={{ color: "#F4F4F4" }}>entre no grupo do WhatsApp</strong> para concluir sua inscrição — lá vamos compartilhar <strong style={{ color: "#F4F4F4" }}>comunicações e materiais exclusivos</strong> pra tornar sua experiência ainda melhor.
               </p>
 
@@ -93,7 +93,7 @@ export default function ObrigadoDetalhe({ evento }: { evento: Evento }) {
           )}
 
           {!temGrupo && (
-            <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.6)", lineHeight: 1.7 }} className="mb-2">
+            <p style={{ fontFamily: M, fontSize: 17, color: "rgba(244,244,244,0.75)", lineHeight: 1.65 }} className="mb-2">
               Recebemos sua inscrição. Você vai receber os detalhes de acesso por e-mail e WhatsApp antes do evento.
             </p>
           )}

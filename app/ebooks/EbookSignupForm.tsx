@@ -130,7 +130,7 @@ export default function EbookSignupForm({ tagId, color }: { tagId: string; color
           </svg>
         </div>
         <p style={{ fontFamily: F, fontSize: 20, color: "#F4F4F4", marginBottom: 8 }}>Recebemos sua inscrição!</p>
-        <p style={{ fontFamily: M, fontSize: 14, color: "rgba(244,244,244,0.6)" }}>O e-book chega no seu e-mail em poucos minutos.</p>
+        <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.72)" }}>O e-book chega no seu e-mail em poucos minutos.</p>
       </div>
     );
   }
