@@ -19,7 +19,7 @@ function ChatIcon() {
   );
 }
 
-export default function ConsultorFloatingButton({ utmCampaign = "botao-flutuante", presetArea }: { utmCampaign?: string; presetArea?: string }) {
+export default function ConsultorFloatingButton({ utmCampaign = "botao-flutuante", presetArea, visible = true }: { utmCampaign?: string; presetArea?: string; visible?: boolean }) {
   return (
     <HubspotFormModal
       pageName="Botão flutuante"
@@ -31,8 +31,8 @@ export default function ConsultorFloatingButton({ utmCampaign = "botao-flutuante
       trigger={
         <button
           aria-label="Fale com um consultor"
-          className="group flex fixed bottom-24 md:bottom-6 right-5 md:right-6 z-40 items-center rounded-full shadow-[0_12px_32px_-8px_rgba(12,152,252,0.55)] transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-8px_rgba(12,152,252,0.7)] overflow-hidden"
-          style={{ background: "linear-gradient(135deg,#0C98FC,#0A6FBF)", padding: "14px", border: "1.5px solid rgba(12,152,252,0.6)" }}
+          className={`group flex fixed bottom-24 md:bottom-6 right-5 md:right-6 z-40 items-center rounded-full shadow-[0_12px_32px_-8px_rgba(12,152,252,0.55)] transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-8px_rgba(12,152,252,0.7)] overflow-hidden ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"}`}
+          style={{ background: "linear-gradient(135deg,#0C98FC,#0A6FBF)", padding: "14px", border: "1.5px solid rgba(12,152,252,0.6)", transitionDuration: "300ms" }}
         >
           <ChatIcon />
           <span

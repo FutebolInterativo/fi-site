@@ -785,7 +785,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
         </div>
       )}
 
-      <ConsultorFloatingButton utmCampaign={curso.id} presetArea={AREA_BY_CURSO_AREA[curso.area]} />
+      <ConsultorFloatingButton utmCampaign={curso.id} presetArea={AREA_BY_CURSO_AREA[curso.area]} visible={sticky} />
     </div>
   );
 }
