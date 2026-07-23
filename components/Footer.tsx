@@ -38,9 +38,9 @@ const socials = [
 
 const cols = [
   { title: "Formações", links: [
-    { href: "/cursos?area=tecnica-e-tatica",      label: "Técnico / Tático" },
+    { href: "/cursos?area=tecnica-e-tatica",      label: "Técnico e Tático" },
     { href: "/cursos?area=comunicacao-marketing", label: "Comunicação e Marketing" },
-    { href: "/cursos?area=gestao-e-operacao",     label: "Gestão e Operação" },
+    { href: "/cursos?area=gestao-e-operacao",     label: "Gestão e Jurídico" },
     { href: "/cursos?area=saude",                 label: "Saúde e Performance" },
     { href: "/cursos",                            label: "Todos os cursos" },
   ]},

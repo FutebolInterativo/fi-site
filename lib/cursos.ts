@@ -72,10 +72,10 @@ export type Area = {
 
 export const areas: Area[] = [
   { id: "todas",                 label: "Todas",             color: "#0C98FC" },
-  { id: "tecnica-e-tatica",      label: "Técnico / Tático",       color: "#4096F2" },
+  { id: "tecnica-e-tatica",      label: "Técnico e Tático",       color: "#4096F2" },
   { id: "comunicacao-marketing", label: "Comunicação e Marketing", color: "#818CF8" },
   { id: "saude",                 label: "Saúde e Performance",    color: "#2DD4BF" },
-  { id: "gestao-e-operacao",     label: "Gestão e Operação",      color: "#F59E0B" },
+  { id: "gestao-e-operacao",     label: "Gestão e Jurídico",      color: "#F59E0B" },
 ];
 
 export const cursos: Curso[] = [

@@ -151,7 +151,7 @@ export default function Header() {
                     <div
                       style={{
                         position: "absolute", top: "calc(100% + 14px)", left: "50%",
-                        minWidth: 220, padding: 8, borderRadius: 14,
+                        minWidth: 250, padding: 8, borderRadius: 14,
                         background: "#03263F", border: "1px solid rgba(140,200,245,0.16)",
                         boxShadow: "0 24px 48px -16px rgba(0,10,25,0.6)",
                         opacity: formacoesOpen ? 1 : 0,
@@ -165,7 +165,7 @@ export default function Header() {
                           key={a.id}
                           href={`/cursos?area=${a.id}`}
                           className="fi-drawer-link"
-                          style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 9, fontFamily: M, fontSize: 13, fontWeight: 500, color: "rgba(244,244,244,0.8)", textDecoration: "none" }}
+                          style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 9, fontFamily: M, fontSize: 13, fontWeight: 500, color: "rgba(244,244,244,0.8)", textDecoration: "none", whiteSpace: "nowrap" }}
                         >
                           <span style={{ width: 7, height: 7, borderRadius: "50%", background: a.color, flexShrink: 0 }} />
                           {a.label}

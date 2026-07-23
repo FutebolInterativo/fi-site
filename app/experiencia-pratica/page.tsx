@@ -16,23 +16,23 @@ const depoimentos = [
   { area: "Análise e Dados",     nome: "Rafael Mantovani",   texto: "A experiência prática no Ituano foi o que abriu as portas. Entrei no clube, mostrei meu trabalho e fui contratado.",                  ytId: "KEZ8JXbGvl4" },
   { area: "Análise e Dados",     nome: "Rhostann de Almeida",texto: "Fiz minha Experiência Prática no Atlético-GO. Logo depois, fui contratado pelo clube.",                                              ytId: "NAe8BMn3E0g" },
   { area: "Análise e Dados",     nome: "Giulia Zanchett",    texto: "Realizei minha Experiência Prática no Avaí. Depois, fui contratada pelo clube.",                                                      ytId: "_foOBOYAWTM" },
-  { area: "Técnico / Tático",    nome: "Rafael Belini",      texto: "Fiz experiência prática no departamento técnico da Portuguesa/RJ.",                                                                   ytId: "UkmLfPMX8_s" },
-  { area: "Técnico / Tático",    nome: "Alan Ramos",         texto: "Fiz experiência prática no departamento técnico do Grêmio Osasco Audax.",                                                            ytId: "yy4-EH5rfEE" },
+  { area: "Técnico e Tático",    nome: "Rafael Belini",      texto: "Fiz experiência prática no departamento técnico da Portuguesa/RJ.",                                                                   ytId: "UkmLfPMX8_s" },
+  { area: "Técnico e Tático",    nome: "Alan Ramos",         texto: "Fiz experiência prática no departamento técnico do Grêmio Osasco Audax.",                                                            ytId: "yy4-EH5rfEE" },
   { area: "Saúde e Performance", nome: "Roque Alencar",      texto: "Realizei minha Experiência Prática no Atlético-GO. Depois, fui contratado pelo clube.",                                              ytId: "a49fOzPuZE4" },
   { area: "Saúde e Performance", nome: "Caique Neves",       texto: "Fiz minha experiência prática no departamento de preparação física do São Caetano/SP.",                                             ytId: "TKrFekb3yMc" },
-  { area: "Gestão e Operação",   nome: "Diego Carneiro",     texto: "Realizei minha Experiência Prática no departamento de gestão do Bahia.",                                                             ytId: "2fENX6EJN0E" },
-  { area: "Gestão e Operação",   nome: "Thamires Hermida",   texto: "Formada em direito, fiz experiência prática no jurídico do Figueirense e fui contratada pelo clube.",                               ytId: "WpaGKFy-Ls0" },
+  { area: "Gestão e Jurídico",   nome: "Diego Carneiro",     texto: "Realizei minha Experiência Prática no departamento de gestão do Bahia.",                                                             ytId: "2fENX6EJN0E" },
+  { area: "Gestão e Jurídico",   nome: "Thamires Hermida",   texto: "Formada em direito, fiz experiência prática no jurídico do Figueirense e fui contratada pelo clube.",                               ytId: "WpaGKFy-Ls0" },
   { area: "Comunicação e Marketing", nome: "Victória Souza", texto: "Fiz experiência prática no departamento de comunicação do Bahia e fui contratada pelo Botafogo.",                                   ytId: "XX5ml4f0zeM" },
   { area: "Comunicação e Marketing", nome: "Pedro Tanure",   texto: "Fiz experiência prática no departamento de comunicação do América-MG.",                                                             ytId: "Saz4bGb-YEM" },
 ];
 
-const AREAS = ["Análise e Dados","Técnico / Tático","Saúde e Performance","Gestão e Operação","Comunicação e Marketing"] as const;
+const AREAS = ["Análise e Dados","Técnico e Tático","Saúde e Performance","Gestão e Jurídico","Comunicação e Marketing"] as const;
 
 const AREA_COR: Record<string, string> = {
   "Análise e Dados":     "#4096F2",
-  "Técnico / Tático":    "#818CF8",
+  "Técnico e Tático":    "#818CF8",
   "Saúde e Performance": "#2DD4BF",
-  "Gestão e Operação":   "#F59E0B",
+  "Gestão e Jurídico":   "#F59E0B",
   "Comunicação e Marketing": "#F472B6",
 };
 

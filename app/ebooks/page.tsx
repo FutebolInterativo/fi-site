@@ -16,7 +16,7 @@ const areas = [
     iconPath: "M18 20V10M12 20V4M6 20v-6",
   },
   {
-    label: "Técnico / Tático",
+    label: "Técnico e Tático",
     href: "/ebooks/area-tecnica",
     color: "#0C98FC",
     capa: "/images/cursos/ciencia-de-dados-sem-texto.webp",

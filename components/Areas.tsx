@@ -32,7 +32,7 @@ const areas = [
   },
   {
     href: "/cursos?area=tecnica-e-tatica",
-    label: "TÉCNICO / TÁTICO",
+    label: "TÉCNICO E TÁTICO",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
         <path d="M3 11a5 5 0 0 0 5 5h4l6 3v-9a4 4 0 0 0-4-4H8a5 5 0 0 0-5 5Z" /><circle cx="8" cy="11" r="1.7" />
@@ -50,7 +50,7 @@ const areas = [
   },
   {
     href: "/cursos?area=gestao-e-operacao",
-    label: "GESTÃO E OPERAÇÃO",
+    label: "GESTÃO E JURÍDICO",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
         <rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18" />
@@ -122,12 +122,12 @@ export default function Areas() {
         })}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ position: "relative", zIndex: 3, maxWidth: 960, margin: "clamp(18px,3vh,30px) auto 0", padding: "0 22px" }}>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ position: "relative", zIndex: 3, maxWidth: 1040, margin: "clamp(18px,3vh,30px) auto 0", padding: "0 22px" }}>
         {areas.map((a) => (
-          <Link key={a.href} href={a.href} style={{ textDecoration: "none", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, padding: "12px 14px", borderRadius: 40, border: "1px solid rgba(140,200,245,0.32)", background: "linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)", backdropFilter: "blur(10px)", minHeight: 54, transition: "border-color .2s ease, background .2s ease" }}
+          <Link key={a.href} href={a.href} style={{ textDecoration: "none", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 5, padding: "12px 12px", borderRadius: 40, border: "1px solid rgba(140,200,245,0.32)", background: "linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)", backdropFilter: "blur(10px)", minHeight: 54, transition: "border-color .2s ease, background .2s ease" }}
             onMouseEnter={e=>{const l=e.currentTarget as HTMLAnchorElement;l.style.borderColor="rgba(43,180,255,0.6)";l.style.background="linear-gradient(90deg,rgba(12,90,150,0.6) 0%,rgba(10,46,78,0.5) 100%)";}}
             onMouseLeave={e=>{const l=e.currentTarget as HTMLAnchorElement;l.style.borderColor="rgba(140,200,245,0.32)";l.style.background="linear-gradient(90deg,rgba(12,90,150,0.45) 0%,rgba(10,46,78,0.35) 100%)";}}>
-            <span style={{ fontFamily: M, fontWeight: 700, fontSize: "clamp(9.5px,1.35vw,12px)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#F4F4F4", lineHeight: 1.2 }}>{a.label}</span>
+            <span className="md:whitespace-nowrap" style={{ fontFamily: M, fontWeight: 700, fontSize: "clamp(9px,1.3vw,11.5px)", textTransform: "uppercase", letterSpacing: "0.01em", color: "#F4F4F4", lineHeight: 1.2 }}>{a.label}</span>
             <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", color: "#2BB4FF", filter: "drop-shadow(0 2px 6px rgba(12,154,255,0.45))" }}>{a.icon}</span>
           </Link>
         ))}
