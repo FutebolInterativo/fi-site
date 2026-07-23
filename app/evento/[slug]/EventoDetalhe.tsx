@@ -259,7 +259,7 @@ export default function EventoDetalhe({ evento }: { evento: Evento }) {
           <FI className="text-center mb-10">
             <p style={{ fontFamily: M, fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(169,216,245,0.5)", marginBottom: 12 }}>Inscrição gratuita</p>
             <h2 style={{ fontFamily: F, fontSize: "clamp(26px,4vw,40px)", lineHeight: 1.05, color: "#F4F4F4", marginBottom: 14 }}>Garanta sua vaga</h2>
-            <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.5)", lineHeight: 1.6 }}>Vagas limitadas. Preencha seus dados e receba o link de acesso por e-mail e WhatsApp.</p>
+            <p style={{ fontFamily: M, fontSize: 15.5, color: "rgba(244,244,244,0.5)", lineHeight: 1.6 }}>Vagas limitadas. Preencha seus dados e receba o link de acesso pelo WhatsApp.</p>
           </FI>
 
           <FI d={80}>
