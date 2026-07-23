@@ -124,7 +124,7 @@ export default function NossaMissao() {
             TORNAR O FUTEBOL BRASILEIRO, NOVAMENTE, O MELHOR DO MUNDO.
           </h2>
 
-          <p style={{ fontFamily: M, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, color: "rgba(244,244,244,0.68)", lineHeight: 1.7, maxWidth: 540, margin: "0 auto 48px" }}>
+          <p style={{ fontFamily: M, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, color: "rgba(244,244,244,0.75)", lineHeight: 1.7, maxWidth: 540, margin: "0 auto 48px" }}>
             E isso começa por quem trabalha nele: a nova geração de profissionais que estamos formando.
           </p>
         </FadeIn>

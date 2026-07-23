@@ -50,7 +50,7 @@ export default function ExperienciaPraticaHome() {
               <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4.5vw,46px)", lineHeight: 1.02, color: "#F4F4F4", marginBottom: 18 }}>
                 VOCÊ TERMINA DENTRO DE<br />UM CLUBE PROFISSIONAL
               </h2>
-              <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.55)", lineHeight: 1.75, maxWidth: 440, marginBottom: 24 }}>
+              <p style={{ fontFamily: M, fontSize: 16, fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.75, maxWidth: 440, marginBottom: 24 }}>
                 Nenhuma outra escola de futebol no Brasil oferece isso. Ao concluir a parte teórica, você vive até 15 dias dentro do departamento da sua área, em um dos nossos{" "}
                 <strong style={{ color: "rgba(244,244,244,0.88)", fontWeight: 700 }}>+130 clubes parceiros</strong>.
               </p>

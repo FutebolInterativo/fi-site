@@ -51,7 +51,7 @@ export default function Depoimentos() {
             <h2 style={{ fontFamily: F, fontSize: "clamp(30px,5vw,56px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 16 }}>
               DA PRÁTICA À CONTRATAÇÃO
             </h2>
-            <p style={{ fontFamily: M, fontSize: "clamp(14px,1.5vw,17px)", fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.6, maxWidth: 560 }}>
+            <p style={{ fontFamily: M, fontSize: "clamp(15px,1.6vw,18px)", fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.6, maxWidth: 560 }}>
               +4.500 alunos passaram por clubes parceiros. Estes são alguns dos que foram contratados.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function Depoimentos() {
                 </span>
 
                 <p style={{
-                  fontFamily: M, fontSize: 13.5, fontWeight: 500, color: "rgba(244,244,244,0.8)", lineHeight: 1.55, flex: 1, marginBottom: 18, position: "relative",
+                  fontFamily: M, fontSize: 14.5, fontWeight: 500, color: "rgba(244,244,244,0.8)", lineHeight: 1.55, flex: 1, marginBottom: 18, position: "relative",
                 }}>
                   &ldquo;{d.quote}&rdquo;
                 </p>
