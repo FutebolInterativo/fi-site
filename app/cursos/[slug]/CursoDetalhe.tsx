@@ -181,7 +181,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               </h1>
 
               {curso.subheadline&&(
-                <p className={`${FB} text-[17px] lg:text-[19px] font-normal leading-relaxed text-white/70 max-w-lg mb-10`}>
+                <p className={`${FB} text-[16px] lg:text-[18px] font-normal leading-relaxed text-white/50 max-w-lg mb-10`}>
                   {curso.subheadline}
                 </p>
               )}
@@ -336,7 +336,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                         </span>
                       </div>
                       <p className={`${FB} text-[15px] lg:text-[16px] leading-relaxed flex-1`}>
-                        <strong className="text-white font-bold">{lead}</strong>{restoTxt?<><br/><span className="text-white/75 inline-block mt-1.5">{restoTxt}</span></>:null}
+                        <strong className="text-white font-bold">{lead}</strong>{restoTxt?<><br/><span className="text-white/60 inline-block mt-1.5">{restoTxt}</span></>:null}
                       </p>
 
                       {/* clubes parceiros passando em destaque — só no card 01, prova visual */}
@@ -409,7 +409,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                         <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 bg-red-500/15">
                           <svg width={10} height={10} viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#f87171" strokeOpacity="0.8" strokeWidth="2.4" strokeLinecap="round"/></svg>
                         </span>
-                        <span className={`${FB} text-[14.5px] font-medium text-white/72 leading-relaxed`}>{t}</span>
+                        <span className={`${FB} text-[14px] font-medium text-white/65 leading-relaxed`}>{t}</span>
                       </FI>
                     ))}
                   </div>
@@ -433,7 +433,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 <h2 className={`${FD} text-3xl sm:text-4xl lg:text-[48px] leading-[1.02] tracking-tight text-white mt-6 mb-6`}>
                   SUA ÚLTIMA AULA É DENTRO<br/>DE UM CLUBE PROFISSIONAL
                 </h2>
-                <p className={`${FB} text-[16.5px] text-white/70 leading-relaxed max-w-md mb-2`}>
+                <p className={`${FB} text-[15.5px] text-white/50 leading-relaxed max-w-md mb-2`}>
                   Não termina o curso em casa: são até 2 semanas de imersão no dia a dia do departamento, dentro de um dos nossos{" "}
                   <strong className="text-white/85 font-bold">+130 clubes parceiros</strong> espalhados pelo Brasil.
                 </p>
@@ -455,7 +455,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                       <span className={`${FD} relative z-10 flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[10.5px] border-2`} style={{ borderColor:cor, background:"#030712", color:cor }}>
                         {i+1}
                       </span>
-                      <span className={`${FB} text-[14.5px] font-medium text-white/78 leading-relaxed pt-0.5`}>{t}</span>
+                      <span className={`${FB} text-[14px] font-medium text-white/70 leading-relaxed pt-0.5`}>{t}</span>
                     </div>
                   ))}
                 </div>
@@ -529,7 +529,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                               </div>
                               <div className={`grid transition-[grid-template-rows] duration-300 ${op ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                                 <div className="overflow-hidden">
-                                  {item.descricao && <p className={`${FB} text-[14px] text-white/62 leading-relaxed pt-4 pl-[26px]`}>{item.descricao}</p>}
+                                  {item.descricao && <p className={`${FB} text-[13px] text-white/45 leading-relaxed pt-4 pl-[26px]`}>{item.descricao}</p>}
                                 </div>
                               </div>
                             </button>
@@ -561,7 +561,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
               <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35 mb-3`}>Quem vai te ensinar</p>
               <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white mb-4`}>MENTORES QUE ESTÃO NOS CLUBES AGORA</h2>
               {curso.mentores.length>0&&(
-                <p className={`${FB} text-[16px] text-white/68`}>quem te dá aula na segunda, analisa jogo na quarta.</p>
+                <p className={`${FB} text-[15px] text-white/45`}>quem te dá aula na segunda, analisa jogo na quarta.</p>
               )}
             </FI>
 
@@ -576,7 +576,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                       {/* object-contain: mostra 100% da foto, sem cortar nada (escudo,
                           uniforme, etc.) — o preço disso é que fotos com proporções
                           diferentes aparecem em tamanhos distintos dentro do card */}
-                      <div className="relative aspect-[4/5] overflow-hidden" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
+                      <div className="relative aspect-[4/4.3] overflow-hidden" style={{ background:`linear-gradient(155deg,#0A1E35,${cor}28)` }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={m.foto} alt={m.nome} loading="lazy" onError={e=>{(e.target as HTMLImageElement).style.opacity="0";}}
                           className="absolute inset-0 w-full h-full object-contain object-bottom transition-transform duration-500 group-hover:scale-[1.06]"/>
@@ -603,7 +603,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                     </div>
                     <div>
                       <p className={`${FD} text-[14px] text-white leading-none`}>{m.nome}</p>
-                      <p className={`${FB} text-[12px] text-white/58 mt-1.5`}>{m.bio}</p>
+                      <p className={`${FB} text-[11.5px] text-white/45 mt-1.5`}>{m.bio}</p>
                     </div>
                   </div>
                 ))}
@@ -612,7 +612,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
 
             {/* fechamento — contagem + CTA, reforça "só ensina quem faz" */}
             <FI className="mt-8 pt-6 border-t border-white/[0.07] flex flex-wrap items-center justify-between gap-4">
-              <p className={`${FB} text-[14.5px] font-semibold text-white/68`}>{curso.mentores.length} mentores · todos atuando em clubes profissionais hoje</p>
+              <p className={`${FB} text-[13.5px] font-semibold text-white/50`}>{curso.mentores.length} mentores · todos atuando em clubes profissionais hoje</p>
               <a href="#ementa" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-white transition-transform hover:-translate-y-0.5" style={{ background:cor }}>
                 <span className={`${FB} text-[13px] font-bold`}>Aprenda com eles</span>
                 <svg width={12} height={12} viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -662,7 +662,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
             {curso.stats.map((s,i)=>(
               <FI key={i} d={i*70} className="px-2 min-w-0">
                 <div className={`${FD} text-4xl sm:text-6xl lg:text-7xl tracking-tight`} style={{ color:"#03151F" }}><Cnt v={s.valor}/></div>
-                <div className={`${FB} text-[12px] sm:text-[13px] font-bold tracking-[0.14em] uppercase mt-4`} style={{ color:"rgba(3,21,31,0.8)" }}>{s.label}</div>
+                <div className={`${FB} text-[9.5px] font-bold tracking-[0.18em] uppercase mt-4`} style={{ color:"rgba(3,21,31,0.65)" }}>{s.label}</div>
               </FI>
             ))}
           </div>
@@ -682,7 +682,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                 <p className={`${FB} text-[11px] font-bold tracking-[0.24em] uppercase text-white/35`}>Última etapa · vagas limitadas</p>
               </div>
               <h2 className={`${FD} text-3xl sm:text-5xl lg:text-[50px] leading-[1.02] tracking-tight text-white mb-4`}>GARANTA SUA VAGA NA PRÓXIMA TURMA</h2>
-              <p className={`${FB} text-[17px] text-white/70 max-w-lg`}>Matricule-se agora ou tire suas dúvidas com um consultor antes de decidir.</p>
+              <p className={`${FB} text-[16px] text-white/50 max-w-lg`}>Matricule-se agora ou tire suas dúvidas com um consultor antes de decidir.</p>
             </FI>
 
             <div className="grid gap-6 items-stretch max-w-xl mx-auto">
@@ -717,7 +717,7 @@ export default function CursoDetalhe({curso}:{curso:Curso}){
                     <div className="flex-1">
                       <p className={`${FB} text-[10px] font-bold tracking-[0.22em] uppercase mb-2.5`} style={{ color:cor }}>Garantia Futebol Interativo</p>
                       <h3 className={`${FD} text-2xl sm:text-4xl text-white leading-tight mb-3`}>SE NÃO FUNCIONAR,<br/>DEVOLVEMOS TUDO</h3>
-                      <p className={`${FB} text-[15px] text-white/68 leading-relaxed`}>{curso.garantiaTexto}</p>
+                      <p className={`${FB} text-[14px] text-white/50 leading-relaxed`}>{curso.garantiaTexto}</p>
                     </div>
                   </div>
                   <a href="#oferta" className="flex-shrink-0 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-7 py-3.5 transition-transform hover:-translate-y-0.5 w-full lg:w-auto">
