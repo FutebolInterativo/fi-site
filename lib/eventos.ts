@@ -145,6 +145,11 @@ export const eventos: Evento[] = [
         cargo: "Supervisor de Futebol do Ceará SC",
         foto: "/images/eventos/homero-neto.webp",
       },
+      {
+        nome: "Elvis Freire",
+        cargo: "Supervisor de Futebol do Vasco da Gama",
+        foto: "/images/eventos/elvis-freire.jpeg",
+      },
     ],
 
     microcopy: "Evento 100% online e gratuito · Vagas limitadas",

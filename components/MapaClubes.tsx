@@ -19,8 +19,10 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "Confiança", cidade: "Aracaju, Sergipe", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FAD%20confian%C3%A7a.png" },
     { nome: "Sergipe", cidade: "Aracaju, Sergipe", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fsergipe.png" },
     { nome: "Itabaiana", cidade: "Itabaiana, Sergipe", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fitabaiana.png" },
+    { nome: "Lagarto", cidade: "Lagarto, Sergipe", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Flagarto.png" },
   ]},
   pe: { label: "Pernambuco", clubes: [
+    { nome: "Sport", cidade: "Recife, Pernambuco", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fsport.png" },
     { nome: "Náutico", cidade: "Recife, Pernambuco", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fcnc.png" },
     { nome: "Sete de Setembro", cidade: "Garanhuns, Pernambuco", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2F7%20de%20setembro.png" },
     { nome: "Vitoria de Santo Antão", cidade: "Vitoria de Santo Antão, Pernambuco", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FVitoria.png" },
@@ -30,6 +32,7 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "CRB", cidade: "Maceió, Alagoas", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fcrb.png" },
     { nome: "CSA", cidade: "Maceió, Alagoas", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fcsa.png" },
     { nome: "ASA de Arapiraca", cidade: "Arapiraca, Alagoas", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FASA.png" },
+    { nome: "Aracity", cidade: "Arapiraca, Alagoas", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Faracity.png" },
   ]},
   am: { label: "Amazonas", clubes: [
     { nome: "Amazonas", cidade: "Manaus, Amazonas", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fafc.png" },
@@ -56,6 +59,7 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "Carapebus", cidade: "Carapebus, Rio de Janeiro", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FCarapebus.png" },
     { nome: "America", cidade: "Rio de Janeiro, Rio de Janeiro", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FAmerica.png" },
     { nome: "Magnitude", cidade: "Rio de Janeiro, Rio de Janeiro", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fmagnitudeseg.png" },
+    { nome: "Barcelona Rio", cidade: "Rio de Janeiro, Rio de Janeiro", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FBarcelonaRio.png" },
   ]},
   rs: { label: "Rio Grande do Sul", clubes: [
     { nome: "Juventude", cidade: "Caxias do Sul, Rio Grande do Sul", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FJuventude.png" },
@@ -68,6 +72,7 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "Ypiranga", cidade: "Erechim, Rio Grande do Sul", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FYpiranga.png" },
     { nome: "Passo Fundo", cidade: "Passo Fundo, Rio Grande do Sul", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FPasso%20fundo.png" },
     { nome: "Esportivo", cidade: "Bento Gonçalves, Rio Grande do Sul", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FBentoGoncalves%20(1).png" },
+    { nome: "Novo Hamburgo", cidade: "Novo Hamburgo, Rio Grande do Sul", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FNovoHamburgo.png" },
   ]},
   sc: { label: "Santa Catarina", clubes: [
     { nome: "Avaí", cidade: "Florianópolis, Santa Catarina", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Favai.png" },
@@ -78,6 +83,7 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "Nação Araquari", cidade: "Joinville, Santa Catarina", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FNa%C3%A7%C3%A3o%20Araquari.png" },
     { nome: "Blumenau", cidade: "Blumenau, Santa Catarina", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FBlumenau.png" },
     { nome: "SC Jaraguá", cidade: "Jaraguá do Sul, Santa Catarina", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FJaragu%C3%A1.png" },
+    { nome: "Criciúma", cidade: "Criciúma, Santa Catarina", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FCriciuma.png" },
   ]},
   pr: { label: "Paraná", clubes: [
     { nome: "Londrina", cidade: "Londrina, Paraná", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FLondrinaEC%20(1).png" },
@@ -115,6 +121,8 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "EC São Bernardo", cidade: "São Bernardo do Campo, São Paulo", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FEC%20S%C3%A3o%20Bernardo.png" },
     { nome: "Harpias", cidade: "Guarulhos, São Paulo", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FHARPIAS.png" },
     { nome: "SNA BRASIL", cidade: "Piracicaba, São Paulo", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FSNAFC.png" },
+    { nome: "Elleve Soccer", cidade: "São Paulo, São Paulo", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Felleve.png" },
+    { nome: "Paulinense", cidade: "Paulínia, São Paulo", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fpaulinense.png" },
   ]},
   go: { label: "Goiás", clubes: [
     { nome: "Atlético Goianiense", cidade: "Goiânia, Goiás", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Facg.png" },
@@ -122,6 +130,7 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "Aparecidense", cidade: "Aparecida, Goiás", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Faparecidense.png" },
     { nome: "Cerrado", cidade: "Aparecida de Goiânia, Goiás", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fcec.png" },
     { nome: "Anapolina", cidade: "Anápolis, Goiás", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Faaa.png" },
+    { nome: "Planalto", cidade: "Aparecida de Goiânia, Goiás", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fplanalto.png" },
   ]},
   mg: { label: "Minas Gerais", clubes: [
     { nome: "Pouso Alegre", cidade: "Pouso Alegre, Minas Gerais", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fpousoalegre.png" },
@@ -134,6 +143,7 @@ const ESTADOS: Record<string, Estado> = {
     { nome: "Araguari", cidade: "Araguari, Minas Gerais", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FAraguari.png" },
     { nome: "Guarani", cidade: "Divinópolis, Minas Gerais", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FGuarani_MG.png" },
     { nome: "Base Sporting Club", cidade: "Uberlândia, Minas Gerais", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FBaseSportingClub.png" },
+    { nome: "Santa Cruz", cidade: "Belo Horizonte, Minas Gerais", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FSantaCruzFC.png" },
   ]},
   es: { label: "Espírito Santo", clubes: [
     { nome: "Porto Vitória", cidade: "Vitória, Espirito Santo", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fportovitoria.png" },
@@ -158,6 +168,7 @@ const ESTADOS: Record<string, Estado> = {
   rn: { label: "Rio Grande do Norte", clubes: [
     { nome: "ABC", cidade: "Natal, Rio Grande do Norte", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FABC.png" },
     { nome: "América de Natal", cidade: "Natal, Rio Grande do Norte", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Farn.png" },
+    { nome: "QFC", cidade: "Parnamirim, Rio Grande do Norte", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fqfc.png" },
   ]},
   pb: { label: "Paraíba", clubes: [
     { nome: "Botafogo da Paraíba", cidade: "João Pessoa, Paraíba", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FBelo.png" },
@@ -167,6 +178,7 @@ const ESTADOS: Record<string, Estado> = {
   df: { label: "Distrito Federal", clubes: [
     { nome: "Minas Brasília", cidade: "Brasília, Distrito Federal", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fminas.png" },
     { nome: "Grêmio Brazlândia", cidade: "Brazlândia, Distrito Federal", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FBRaz.png" },
+    { nome: "Capital", cidade: "Brasília, Distrito Federal", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2FCapitalDF.png" },
   ]},
   ms: { label: "Mato Grosso do Sul", clubes: [
     { nome: "Next Academy", cidade: "Brasil", logo: "https://objectstorage.sa-saopaulo-1.oraclecloud.com/n/grohgpofzbof/b/arquivos-sistema/o/clubes%2Fnext.png" },
@@ -366,7 +378,7 @@ export default function MapaClubes() {
             <h2 style={{ fontFamily: F, fontSize: "clamp(28px,4vw,44px)", lineHeight: 0.95, color: "#F4F4F4", marginBottom: 14 }}>
               +130 CLUBES PARCEIROS
             </h2>
-            <p style={{ fontFamily: M, fontSize: 16.5, fontWeight: 500, color: "rgba(244,244,244,0.72)", lineHeight: 1.65, maxWidth: 480 }}>
+            <p style={{ fontFamily: M, fontSize: 15, fontWeight: 500, color: "rgba(244,244,244,0.6)", lineHeight: 1.65, maxWidth: 480 }}>
               Toque em um estado do mapa abaixo para ver os clubes parceiros da região.
             </p>
           </div>
@@ -612,14 +624,14 @@ export default function MapaClubes() {
                 </div>
 
                 {/* Grid de clubes — rola dentro do modal, o resto da página fica intocado */}
-                <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 8, overflowY: "auto" as const }}>
+                <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(170px,1fr))", gap: 8, overflowY: "auto" as const }}>
                   {estado.clubes.map((clube, i) => (
                     <div
                       key={i}
                       className="mc-club"
                       style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 10px", borderRadius: 12, background: "rgba(255,255,255,0.035)", border: "1px solid rgba(140,200,245,0.08)", transition: "transform .15s ease, border-color .15s ease" }}
                     >
-                      <div style={{ width: 36, height: 36, borderRadius: 10, background: "#EDEDED", border: "1px solid rgba(0,0,0,0.08)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: 4 }}>
+                      <div style={{ width: 50, height: 50, borderRadius: 12, background: "#EDEDED", border: "1px solid rgba(0,0,0,0.08)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, padding: 5 }}>
                         <img
                           src={clube.logo}
                           alt={clube.nome}
@@ -630,7 +642,7 @@ export default function MapaClubes() {
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <p style={{ fontFamily: M, fontWeight: 700, fontSize: 12.5, color: "#F4F4F4", lineHeight: 1.2, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.nome}</p>
-                        <p style={{ fontFamily: M, fontSize: 10.5, color: "rgba(169,216,245,0.45)", marginTop: 1, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.cidade}</p>
+                        <p style={{ fontFamily: M, fontSize: 10.5, color: "rgba(169,216,245,0.45)", marginTop: 1, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{clube.cidade.split(",")[0].trim()}</p>
                       </div>
                     </div>
                   ))}
