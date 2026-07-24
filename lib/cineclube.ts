@@ -103,8 +103,8 @@ export const sessoes: CineClubeSessao[] = [
     descricaoCurta:
       "Exibição de um levantamento sobre a crise institucional da CBF: indicação política, dinheiro público e proteção jurídica. Depois, roda de conversa aberta com todo mundo que estiver na sala.",
 
-    dataHoraLabel: "24 de julho de 2026, 17h",
-    dataHoraISO: "2026-07-24T17:00:00-03:00",
+    dataHoraLabel: "30 de julho de 2026, 17h",
+    dataHoraISO: "2026-07-30T17:00:00-03:00",
 
     local: "Edifício São Miguel, Avenida Paulista 967, 12º andar, Bela Vista, São Paulo, SP, 01311100",
     vagas: 70,
